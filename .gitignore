@@ -5,6 +5,7 @@
 *.suo
 *.csproj.user
 TestResults/
+output/
 
 # Resharper
 *[Rr]e[Ss]harper.user
