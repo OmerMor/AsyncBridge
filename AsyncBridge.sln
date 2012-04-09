@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncBridge", "AsyncBridge\AsyncBridge.csproj", "{12A1B828-6F9C-4748-8955-3C6B71187714}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncBridge.Tests", "AsyncBridge.Tests\AsyncBridge.Tests.csproj", "{67AF19E0-08F0-4E5A-A05B-83818C4359B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12A1B828-6F9C-4748-8955-3C6B71187714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12A1B828-6F9C-4748-8955-3C6B71187714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12A1B828-6F9C-4748-8955-3C6B71187714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12A1B828-6F9C-4748-8955-3C6B71187714}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67AF19E0-08F0-4E5A-A05B-83818C4359B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67AF19E0-08F0-4E5A-A05B-83818C4359B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67AF19E0-08F0-4E5A-A05B-83818C4359B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67AF19E0-08F0-4E5A-A05B-83818C4359B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

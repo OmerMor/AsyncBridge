@@ -1,0 +1,12 @@
+# Visual Studio
+[Dd]ebug/
+[Rr]elease/
+*.sln.cache
+*.suo
+*.csproj.user
+TestResults/
+
+# Resharper
+*[Rr]e[Ss]harper.user
+_ReSharper.*/
+*.DotSettings.user
