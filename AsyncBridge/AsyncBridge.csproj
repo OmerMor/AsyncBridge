@@ -42,6 +42,9 @@
     <Compile Include="AsyncTaskMethodBuilder.cs" />
     <Compile Include="AsyncVoidMethodBuilder.cs" />
     <None Include="readme.txt" />
+    <Compile Include="CallerFilePathAttribute.cs" />
+    <Compile Include="CallerLineNumberAttribute.cs" />
+    <Compile Include="CallerMemberNameAttribute.cs" />
     <Compile Include="IAsyncStateMachine.cs" />
     <Compile Include="ICriticalNotifyCompletion.cs" />
     <Compile Include="INotifyCompletion.cs" />

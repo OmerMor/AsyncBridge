@@ -4,43 +4,40 @@ namespace System.Threading.Tasks
 {
     public struct TaskAwaiter : INotifyCompletion
     {
-        readonly Task task;
+        private readonly Task m_task;
 
         internal TaskAwaiter(Task task)
         {
-            this.task = task;
+            m_task = task;
         }
 
         internal static TaskScheduler TaskScheduler
         {
             get
             {
-                if (SynchronizationContext.Current == null)
-                    return TaskScheduler.Default;
-                else
-                    return TaskScheduler.FromCurrentSynchronizationContext();
+                var taskScheduler = SynchronizationContext.Current == null
+                                        ? TaskScheduler.Default
+                                        : TaskScheduler.FromCurrentSynchronizationContext();
+                return taskScheduler;
             }
         }
 
         public bool IsCompleted
         {
-            get { return task.IsCompleted; }
+            get { return m_task.IsCompleted; }
         }
 
         public void OnCompleted(Action continuation)
         {
-            this.task.ContinueWith(
-                delegate(Task task)
-                {
-                    continuation();
-                }, TaskAwaiter.TaskScheduler);
+            m_task.ContinueWith(
+                delegate { continuation(); }, TaskScheduler);
         }
 
         public void GetResult()
         {
             try
             {
-                task.Wait();
+                m_task.Wait();
             }
             catch (AggregateException ex)
             {
@@ -51,32 +48,29 @@ namespace System.Threading.Tasks
 
     public struct TaskAwaiter<T> : INotifyCompletion
     {
-        readonly Task<T> task;
+        private readonly Task<T> m_task;
 
         internal TaskAwaiter(Task<T> task)
         {
-            this.task = task;
+            m_task = task;
         }
 
         public bool IsCompleted
         {
-            get { return task.IsCompleted; }
+            get { return m_task.IsCompleted; }
         }
 
         public void OnCompleted(Action continuation)
         {
-            this.task.ContinueWith(
-                delegate(Task<T> task)
-                {
-                    continuation();
-                }, TaskAwaiter.TaskScheduler);
+            m_task.ContinueWith(
+                delegate { continuation(); }, TaskAwaiter.TaskScheduler);
         }
 
         public T GetResult()
         {
             try
             {
-                return task.Result;
+                return m_task.Result;
             }
             catch (AggregateException ex)
             {

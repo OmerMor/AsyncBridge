@@ -4,15 +4,15 @@ namespace System.Runtime.CompilerServices
 {
     public struct AsyncTaskMethodBuilder
     {
-        TaskCompletionSource<object> tcs;
+        TaskCompletionSource<object> m_tcs;
 
-        public Task Task { get { return tcs.Task; } }
+        public Task Task { get { return m_tcs.Task; } }
 
         public static AsyncTaskMethodBuilder Create()
         {
-            AsyncTaskMethodBuilder b;
-            b.tcs = new TaskCompletionSource<object>();
-            return b;
+            AsyncTaskMethodBuilder builder;
+            builder.m_tcs = new TaskCompletionSource<object>();
+            return builder;
         }
 
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
@@ -42,26 +42,26 @@ namespace System.Runtime.CompilerServices
 
         public void SetResult()
         {
-            tcs.SetResult(null);
+            m_tcs.SetResult(null);
         }
 
         public void SetException(Exception exception)
         {
-            tcs.SetException(exception);
+            m_tcs.SetException(exception);
         }
     }
 
     public struct AsyncTaskMethodBuilder<T>
     {
-        TaskCompletionSource<T> tcs;
+        TaskCompletionSource<T> m_tcs;
 
-        public Task<T> Task { get { return tcs.Task; } }
+        public Task<T> Task { get { return m_tcs.Task; } }
 
         public static AsyncTaskMethodBuilder<T> Create()
         {
-            AsyncTaskMethodBuilder<T> b;
-            b.tcs = new TaskCompletionSource<T>();
-            return b;
+            AsyncTaskMethodBuilder<T> builder;
+            builder.m_tcs = new TaskCompletionSource<T>();
+            return builder;
         }
 
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
@@ -91,12 +91,12 @@ namespace System.Runtime.CompilerServices
 
         public void SetResult(T result)
         {
-            tcs.SetResult(result);
+            m_tcs.SetResult(result);
         }
 
         public void SetException(Exception exception)
         {
-            tcs.SetException(exception);
+            m_tcs.SetException(exception);
         }
     }
 
