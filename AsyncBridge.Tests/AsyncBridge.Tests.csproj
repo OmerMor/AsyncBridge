@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DelayTest.cs" />
     <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>

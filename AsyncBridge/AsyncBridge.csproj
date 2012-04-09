@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="AsyncTaskMethodBuilder.cs" />
     <Compile Include="AsyncVoidMethodBuilder.cs" />
+    <Compile Include="TaskUtils.cs" />
     <None Include="readme.txt" />
     <Compile Include="CallerFilePathAttribute.cs" />
     <Compile Include="CallerLineNumberAttribute.cs" />
