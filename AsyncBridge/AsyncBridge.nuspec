@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>AsyncBridge</id>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <title>AsyncBridge</title>
-    <authors>Daniel Grunwald, Omer Mor</authors>
+    <authors>Daniel Grunwald, Omer Mor, Alex Davies</authors>
     <owners>Omer Mor</owners>
-    <projectUrl>https://github.com/OmerMor/AsyncBridge</projectUrl>
+    <projectUrl>http://omermor.github.com/AsyncBridge/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Adds the new C#5 async features for .NET 4 projects</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>Added Task.Delay</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>async bridge C# .NET40</tags>
   </metadata>
