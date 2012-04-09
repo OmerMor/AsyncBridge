@@ -4,7 +4,7 @@
     <id>AsyncBridge</id>
     <version>0.0.1</version>
     <title>AsyncBridge</title>
-    <authors>Daniel Grunwald, Omer Mor</authors>
+    <authors>Daniel Grunwald, Omer Mor, Alex Davies</authors>
     <owners>Omer Mor</owners>
     <projectUrl>https://github.com/OmerMor/AsyncBridge</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
