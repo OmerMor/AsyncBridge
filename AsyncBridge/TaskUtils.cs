@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace AsyncBridge
 {
@@ -52,6 +53,17 @@ namespace AsyncBridge
             }
 
             return finishedItems;
+        }
+
+        public static async Task WhenAll(IEnumerable<Task> tasks)
+        {
+            await WhenAll(tasks.Select(Genericify));
+        }
+
+        private static async Task<object> Genericify(Task task)
+        {
+            await task;
+            return null;
         }
 
         private static readonly Lazy<Task> s_cancelledTask = new Lazy<Task>(() =>
