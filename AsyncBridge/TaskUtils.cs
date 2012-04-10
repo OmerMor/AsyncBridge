@@ -13,11 +13,11 @@ namespace AsyncBridge
 
         public static Task Delay(TimeSpan delay, CancellationToken cancellationToken)
         {
-            var num = (long) delay.TotalMilliseconds;
+            var num = (long)delay.TotalMilliseconds;
             if (num < -1L || num > int.MaxValue)
                 throw new ArgumentOutOfRangeException("delay");
 
-            return Delay((int) num, cancellationToken);
+            return Delay((int)num, cancellationToken);
         }
 
         public static Task Delay(int millisecondsDelay)
@@ -31,57 +31,22 @@ namespace AsyncBridge
                 throw new ArgumentOutOfRangeException("millisecondsDelay");
 
             if (cancellationToken.IsCancellationRequested)
-                return fromCancellation(cancellationToken);
+                return s_cancelledTask.Value;
 
             if (millisecondsDelay == 0)
                 return s_completedTask.Value;
 
-            var delayPromise = new DelayPromise(cancellationToken);
-            if (cancellationToken.CanBeCanceled)
-                delayPromise.Registration = cancellationToken.Register(state => ((DelayPromise) state).Complete(),
-                                                                         delayPromise, useSynchronizationContext: false);
-            if (millisecondsDelay != Timeout.Infinite)
-            {
-                delayPromise.Timer = new Timer(state => ((DelayPromise) state).Complete(), delayPromise,
-                                                 millisecondsDelay, Timeout.Infinite);
-                GC.SuppressFinalize(delayPromise.Timer);
-            }
-            return delayPromise.TaskCompletionSource.Task;
+            var delayTask = new DelayTask(cancellationToken, millisecondsDelay);
+
+            return delayTask.Task;
         }
 
-        private sealed class DelayPromise
+        private static readonly Lazy<Task> s_cancelledTask = new Lazy<Task>(() =>
         {
-            internal CancellationTokenRegistration Registration;
-            internal Timer Timer;
-            internal readonly TaskCompletionSource<object> TaskCompletionSource = new TaskCompletionSource<object>();
-            private readonly CancellationToken m_token;
-
-            internal DelayPromise(CancellationToken token)
-                //: base((object)null, CancellationToken.None, TaskCreationOptions.None, InternalTaskOptions.PromiseTask)
-            {
-                m_token = token;
-            }
-
-            internal void Complete()
-            {
-                var alreadyDisposed =
-                    !(m_token.IsCancellationRequested ? TaskCompletionSource.TrySetCanceled() : TaskCompletionSource.TrySetResult(null));
-                if (alreadyDisposed)
-                    return;
-                if (Timer != null)
-                    Timer.Dispose();
-                Registration.Dispose();
-            }
-        }
-
-        private static Task fromCancellation(CancellationToken cancellationToken)
-        {
-            if (!cancellationToken.IsCancellationRequested)
-                throw new ArgumentOutOfRangeException("cancellationToken");
             var tcs = new TaskCompletionSource<object>();
             tcs.SetCanceled();
             return tcs.Task;
-        }
+        }, isThreadSafe: true);
 
         private static readonly Lazy<Task> s_completedTask = new Lazy<Task>(() =>
         {
