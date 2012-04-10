@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="DelayTest.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="WhenAllTests.cs" />
+    <Compile Include="WhenAnyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

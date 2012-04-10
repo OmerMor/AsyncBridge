@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace AsyncBridge
 {
@@ -13,11 +15,11 @@ namespace AsyncBridge
 
         public static Task Delay(TimeSpan delay, CancellationToken cancellationToken)
         {
-            var num = (long) delay.TotalMilliseconds;
+            var num = (long)delay.TotalMilliseconds;
             if (num < -1L || num > int.MaxValue)
                 throw new ArgumentOutOfRangeException("delay");
 
-            return Delay((int) num, cancellationToken);
+            return Delay((int)num, cancellationToken);
         }
 
         public static Task Delay(int millisecondsDelay)
@@ -31,57 +33,50 @@ namespace AsyncBridge
                 throw new ArgumentOutOfRangeException("millisecondsDelay");
 
             if (cancellationToken.IsCancellationRequested)
-                return fromCancellation(cancellationToken);
+                return s_cancelledTask.Value;
 
             if (millisecondsDelay == 0)
                 return s_completedTask.Value;
 
-            var delayPromise = new DelayPromise(cancellationToken);
-            if (cancellationToken.CanBeCanceled)
-                delayPromise.Registration = cancellationToken.Register(state => ((DelayPromise) state).Complete(),
-                                                                         delayPromise, useSynchronizationContext: false);
-            if (millisecondsDelay != Timeout.Infinite)
-            {
-                delayPromise.Timer = new Timer(state => ((DelayPromise) state).Complete(), delayPromise,
-                                                 millisecondsDelay, Timeout.Infinite);
-                GC.SuppressFinalize(delayPromise.Timer);
-            }
-            return delayPromise.TaskCompletionSource.Task;
+            var delayTask = new DelayTask(cancellationToken, millisecondsDelay);
+
+            return delayTask.Task;
         }
 
-        private sealed class DelayPromise
+        public static async Task<IEnumerable<T>> WhenAll<T>(IEnumerable<Task<T>> tasks)
         {
-            internal CancellationTokenRegistration Registration;
-            internal Timer Timer;
-            internal readonly TaskCompletionSource<object> TaskCompletionSource = new TaskCompletionSource<object>();
-            private readonly CancellationToken m_token;
-
-            internal DelayPromise(CancellationToken token)
-                //: base((object)null, CancellationToken.None, TaskCreationOptions.None, InternalTaskOptions.PromiseTask)
+            // Just wait for all the things in turn
+            List<T> finishedItems = new List<T>();
+            foreach (Task<T> eachTask in tasks)
             {
-                m_token = token;
+                finishedItems.Add(await eachTask);
             }
 
-            internal void Complete()
-            {
-                var alreadyDisposed =
-                    !(m_token.IsCancellationRequested ? TaskCompletionSource.TrySetCanceled() : TaskCompletionSource.TrySetResult(null));
-                if (alreadyDisposed)
-                    return;
-                if (Timer != null)
-                    Timer.Dispose();
-                Registration.Dispose();
-            }
+            return finishedItems;
         }
 
-        private static Task fromCancellation(CancellationToken cancellationToken)
+        public static async Task WhenAll(IEnumerable<Task> tasks)
         {
-            if (!cancellationToken.IsCancellationRequested)
-                throw new ArgumentOutOfRangeException("cancellationToken");
+            await WhenAll(tasks.Select(Genericify));
+        }
+
+        public static Task<T> WhenAny<T>(Task<T>[] tasks)
+        {
+            return new TaskFactory<T>().ContinueWhenAny(tasks, task => task.Result);
+        }
+
+        private static async Task<object> Genericify(Task task)
+        {
+            await task;
+            return null;
+        }
+
+        private static readonly Lazy<Task> s_cancelledTask = new Lazy<Task>(() =>
+        {
             var tcs = new TaskCompletionSource<object>();
             tcs.SetCanceled();
             return tcs.Task;
-        }
+        }, isThreadSafe: true);
 
         private static readonly Lazy<Task> s_completedTask = new Lazy<Task>(() =>
         {
