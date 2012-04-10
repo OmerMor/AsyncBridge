@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,6 +40,18 @@ namespace AsyncBridge
             var delayTask = new DelayTask(cancellationToken, millisecondsDelay);
 
             return delayTask.Task;
+        }
+
+        public static async Task<IEnumerable<T>> WhenAll<T>(IEnumerable<Task<T>> tasks)
+        {
+            // Just wait for all the things in turn
+            List<T> finishedItems = new List<T>();
+            foreach (Task<T> eachTask in tasks)
+            {
+                 finishedItems.Add(await eachTask);
+            }
+
+            return finishedItems;
         }
 
         private static readonly Lazy<Task> s_cancelledTask = new Lazy<Task>(() =>

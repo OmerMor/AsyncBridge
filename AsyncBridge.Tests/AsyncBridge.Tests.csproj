@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="DelayTest.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="WhenAllTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AsyncBridge\AsyncBridge.csproj">
