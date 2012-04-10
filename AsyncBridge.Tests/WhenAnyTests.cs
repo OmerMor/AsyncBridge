@@ -23,5 +23,33 @@ namespace AsyncBridge.Tests
             Assert.AreEqual(2, result);
         }
 
+        [TestMethod]
+        public async Task GenericIEnumerableWithSomeContents()
+        {
+            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
+                                                                    {
+                                                                        new TaskCompletionSource<int>(),
+                                                                        new TaskCompletionSource<int>()
+                                                                    };
+            Task<int> whenAnyTask = TaskUtils.WhenAny(taskCompletionSources.Select(tcs => tcs.Task));
+            taskCompletionSources[1].SetResult(2);
+            int result = await whenAnyTask;
+            Assert.AreEqual(2, result);
+        }
+
+        [TestMethod]
+        public async Task EnumerableWithSomeContents()
+        {
+            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
+                                                                    {
+                                                                        new TaskCompletionSource<int>(),
+                                                                        new TaskCompletionSource<int>()
+                                                                    };
+            Task whenAnyTask = TaskUtils.WhenAny(taskCompletionSources.Select(tcs => (Task)tcs.Task));
+            Assert.IsFalse(whenAnyTask.IsCompleted);
+            taskCompletionSources[1].SetResult(2);
+            await whenAnyTask;
+        }
+
     }
 }

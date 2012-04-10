@@ -43,21 +43,10 @@ namespace AsyncBridge
             return delayTask.Task;
         }
 
-        public static async Task<IEnumerable<T>> WhenAll<T>(IEnumerable<Task<T>> tasks)
+        // Methods which are implemented in terms of TaskFactory
+        public static Task<T[]> WhenAll<T>(Task<T>[] tasks)
         {
-            // Just wait for all the things in turn
-            List<T> finishedItems = new List<T>();
-            foreach (Task<T> eachTask in tasks)
-            {
-                finishedItems.Add(await eachTask);
-            }
-
-            return finishedItems;
-        }
-
-        public static async Task WhenAll(IEnumerable<Task> tasks)
-        {
-            await WhenAll(tasks.Select(Genericify));
+            return new TaskFactory<T[]>().ContinueWhenAll(tasks, finishedTasks => finishedTasks.Select(t => t.Result).ToArray());
         }
 
         public static Task<T> WhenAny<T>(Task<T>[] tasks)
@@ -65,6 +54,28 @@ namespace AsyncBridge
             return new TaskFactory<T>().ContinueWhenAny(tasks, task => task.Result);
         }
 
+        // Everything else is implemented in terms of those
+        public static async Task<IEnumerable<T>> WhenAll<T>(IEnumerable<Task<T>> tasks)
+        {
+            return await WhenAll(tasks.ToArray());
+        }
+
+        public static async Task WhenAll(IEnumerable<Task> tasks)
+        {
+            await WhenAll(tasks.Select(Genericify));
+        }
+
+        public static async Task<T> WhenAny<T>(IEnumerable<Task<T>> tasks)
+        {
+            return await WhenAny(tasks.ToArray());
+        }
+
+        public static async Task WhenAny(IEnumerable<Task> tasks)
+        {
+            await WhenAny(tasks.Select(Genericify));
+        }
+
+        // Helpers
         private static async Task<object> Genericify(Task task)
         {
             await task;

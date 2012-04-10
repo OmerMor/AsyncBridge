@@ -38,9 +38,19 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public async Task NonGenericVersion()
         {
-            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
-                                                                    {new TaskCompletionSource<int>(), new TaskCompletionSource<int>()};
-            Task whenAllTask = TaskUtils.WhenAll(taskCompletionSources.Select(tcs => (Task) tcs.Task));
+            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>> { new TaskCompletionSource<int>(), new TaskCompletionSource<int>() };
+            Task whenAllTask = TaskUtils.WhenAll(taskCompletionSources.Select(tcs => (Task)tcs.Task));
+            taskCompletionSources[0].SetResult(1);
+            Assert.IsFalse(whenAllTask.IsCompleted);
+            taskCompletionSources[1].SetResult(1);
+            await whenAllTask;
+        }
+
+        [TestMethod]
+        public async Task ArrayVersion()
+        {
+            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>> { new TaskCompletionSource<int>(), new TaskCompletionSource<int>() };
+            Task whenAllTask = TaskUtils.WhenAll(taskCompletionSources.Select(tcs => tcs.Task).ToArray());
             taskCompletionSources[0].SetResult(1);
             Assert.IsFalse(whenAllTask.IsCompleted);
             taskCompletionSources[1].SetResult(1);
