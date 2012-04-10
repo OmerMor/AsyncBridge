@@ -11,10 +11,12 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public async Task GenericIEnumerableWithSomeContents()
         {
-            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>();
-            taskCompletionSources.Add(new TaskCompletionSource<int>());
-            taskCompletionSources.Add(new TaskCompletionSource<int>());
-            taskCompletionSources.Add(new TaskCompletionSource<int>());
+            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
+                                                                    {
+                                                                        new TaskCompletionSource<int>(),
+                                                                        new TaskCompletionSource<int>(),
+                                                                        new TaskCompletionSource<int>()
+                                                                    };
             Task<IEnumerable<int>> whenAllTask = TaskUtils.WhenAll(taskCompletionSources.Select(tcs => tcs.Task));
             taskCompletionSources[0].SetResult(1);
             taskCompletionSources[1].SetResult(2);
@@ -26,9 +28,8 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void DontCompleteOne()
         {
-            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>();
-            taskCompletionSources.Add(new TaskCompletionSource<int>());
-            taskCompletionSources.Add(new TaskCompletionSource<int>());
+            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
+                                                                    {new TaskCompletionSource<int>(), new TaskCompletionSource<int>()};
             Task<IEnumerable<int>> whenAllTask = TaskUtils.WhenAll(taskCompletionSources.Select(tcs => tcs.Task));
             taskCompletionSources[0].SetResult(1);
             Assert.IsFalse(whenAllTask.IsCompleted);
@@ -37,9 +38,8 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public async Task NonGenericVersion()
         {
-            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>();
-            taskCompletionSources.Add(new TaskCompletionSource<int>());
-            taskCompletionSources.Add(new TaskCompletionSource<int>());
+            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
+                                                                    {new TaskCompletionSource<int>(), new TaskCompletionSource<int>()};
             Task whenAllTask = TaskUtils.WhenAll(taskCompletionSources.Select(tcs => (Task) tcs.Task));
             taskCompletionSources[0].SetResult(1);
             Assert.IsFalse(whenAllTask.IsCompleted);

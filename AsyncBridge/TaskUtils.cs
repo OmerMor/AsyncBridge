@@ -49,7 +49,7 @@ namespace AsyncBridge
             List<T> finishedItems = new List<T>();
             foreach (Task<T> eachTask in tasks)
             {
-                 finishedItems.Add(await eachTask);
+                finishedItems.Add(await eachTask);
             }
 
             return finishedItems;
@@ -58,6 +58,11 @@ namespace AsyncBridge
         public static async Task WhenAll(IEnumerable<Task> tasks)
         {
             await WhenAll(tasks.Select(Genericify));
+        }
+
+        public static Task<T> WhenAny<T>(Task<T>[] tasks)
+        {
+            return new TaskFactory<T>().ContinueWhenAny(tasks, task => task.Result);
         }
 
         private static async Task<object> Genericify(Task task)
