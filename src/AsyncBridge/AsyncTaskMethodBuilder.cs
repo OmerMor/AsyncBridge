@@ -4,14 +4,14 @@ namespace System.Runtime.CompilerServices
 {
     public struct AsyncTaskMethodBuilder
     {
-        TaskCompletionSource<object> m_tcs;
+        TaskCompletionSource<VoidTaskResult> m_tcs;
 
         public Task Task { get { return m_tcs.Task; } }
 
         public static AsyncTaskMethodBuilder Create()
         {
             AsyncTaskMethodBuilder builder;
-            builder.m_tcs = new TaskCompletionSource<object>();
+            builder.m_tcs = new TaskCompletionSource<VoidTaskResult>();
             return builder;
         }
 
@@ -42,7 +42,7 @@ namespace System.Runtime.CompilerServices
 
         public void SetResult()
         {
-            m_tcs.SetResult(null);
+            m_tcs.SetResult(default(VoidTaskResult));
         }
 
         public void SetException(Exception exception)

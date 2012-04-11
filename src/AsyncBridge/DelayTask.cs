@@ -1,12 +1,9 @@
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace AsyncBridge
+namespace System.Threading.Tasks
 {
-    class DelayTask
+    internal class DelayTask
     {
         private readonly Timer m_timer;
-        private readonly TaskCompletionSource<object> m_taskCompletionSource = new TaskCompletionSource<object>();
+        private readonly TaskCompletionSource<VoidTaskResult> m_taskCompletionSource = new TaskCompletionSource<VoidTaskResult>();
         private readonly CancellationToken m_cancellationToken;
 
         public DelayTask(CancellationToken cancellationToken, int millisecondsDelay)
@@ -30,12 +27,15 @@ namespace AsyncBridge
 
         private void Complete()
         {
-            var alreadyDisposed =
-                !(m_cancellationToken.IsCancellationRequested ? m_taskCompletionSource.TrySetCanceled() : m_taskCompletionSource.TrySetResult(null));
-            if (alreadyDisposed)
-                return;
-            if (m_timer != null)
+            var notDisposed =
+                m_cancellationToken.IsCancellationRequested
+                    ? m_taskCompletionSource.TrySetCanceled()
+                    : m_taskCompletionSource.TrySetResult(default(VoidTaskResult));
+            
+            if (notDisposed && m_timer != null)
+            {
                 m_timer.Dispose();
+            }
         }
     }
 }

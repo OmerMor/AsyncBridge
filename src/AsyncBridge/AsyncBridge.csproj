@@ -38,6 +38,8 @@
     <Compile Include="AsyncVoidMethodBuilder.cs" />
     <Compile Include="DelayTask.cs" />
     <Compile Include="TaskUtils.cs" />
+    <Compile Include="VoidTaskResult.cs" />
+    <Compile Include="YieldAwaitable.cs" />
     <None Include="readme.txt" />
     <Compile Include="CallerFilePathAttribute.cs" />
     <Compile Include="CallerLineNumberAttribute.cs" />

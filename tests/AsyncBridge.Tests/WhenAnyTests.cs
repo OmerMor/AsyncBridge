@@ -11,45 +11,44 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public async Task GenericArrayWithSomeContents()
         {
-            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
-                                                                    {
-                                                                        new TaskCompletionSource<int>(),
-                                                                        new TaskCompletionSource<int>(),
-                                                                        new TaskCompletionSource<int>()
-                                                                    };
-            Task<int> whenAnyTask = TaskUtils.WhenAny(taskCompletionSources.Select(tcs => tcs.Task).ToArray());
+            var taskCompletionSources = new []
+                                        {
+                                            new TaskCompletionSource<int>(),
+                                            new TaskCompletionSource<int>(),
+                                            new TaskCompletionSource<int>()
+                                        };
+            var whenAnyTask = TaskUtils.WhenAny(taskCompletionSources.Select(tcs => tcs.Task).ToArray());
             taskCompletionSources[1].SetResult(2);
-            int result = await whenAnyTask;
+            var result = await whenAnyTask;
             Assert.AreEqual(2, result);
         }
 
         [TestMethod]
         public async Task GenericIEnumerableWithSomeContents()
         {
-            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
-                                                                    {
-                                                                        new TaskCompletionSource<int>(),
-                                                                        new TaskCompletionSource<int>()
-                                                                    };
-            Task<int> whenAnyTask = TaskUtils.WhenAny(taskCompletionSources.Select(tcs => tcs.Task));
+            var taskCompletionSources = new []
+                                        {
+                                            new TaskCompletionSource<int>(),
+                                            new TaskCompletionSource<int>()
+                                        };
+            var whenAnyTask = TaskUtils.WhenAny(taskCompletionSources.Select(tcs => tcs.Task));
             taskCompletionSources[1].SetResult(2);
-            int result = await whenAnyTask;
+            var result = await whenAnyTask;
             Assert.AreEqual(2, result);
         }
 
         [TestMethod]
         public async Task EnumerableWithSomeContents()
         {
-            List<TaskCompletionSource<int>> taskCompletionSources = new List<TaskCompletionSource<int>>
-                                                                    {
-                                                                        new TaskCompletionSource<int>(),
-                                                                        new TaskCompletionSource<int>()
-                                                                    };
-            Task whenAnyTask = TaskUtils.WhenAny(taskCompletionSources.Select(tcs => (Task)tcs.Task));
+            var taskCompletionSources = new []
+                                        {
+                                            new TaskCompletionSource<int>(),
+                                            new TaskCompletionSource<int>()
+                                        };
+            var whenAnyTask = TaskUtils.WhenAny(taskCompletionSources.Select(tcs => tcs.Task).Cast<Task>());
             Assert.IsFalse(whenAnyTask.IsCompleted);
             taskCompletionSources[1].SetResult(2);
             await whenAnyTask;
         }
-
     }
 }

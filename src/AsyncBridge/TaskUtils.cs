@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
@@ -43,15 +44,33 @@ namespace AsyncBridge
             return delayTask.Task;
         }
 
-        // Methods which are implemented in terms of TaskFactory
-        public static Task<T[]> WhenAll<T>(Task<T>[] tasks)
+        public static Task<TResult> FromResult<TResult>(TResult result)
         {
-            return new TaskFactory<T[]>().ContinueWhenAll(tasks, finishedTasks => finishedTasks.Select(t => t.Result).ToArray());
+            var completionSource = new TaskCompletionSource<TResult>(result);
+            completionSource.TrySetResult(result);
+            return completionSource.Task;
         }
 
-        public static Task<T> WhenAny<T>(Task<T>[] tasks)
+        public static YieldAwaitable Yield()
         {
-            return new TaskFactory<T>().ContinueWhenAny(tasks, task => task.Result);
+            return new YieldAwaitable((object)SynchronizationContext.Current ?? TaskScheduler.Current);
+        }
+
+        // Methods which are implemented in terms of TaskFactory
+        public static Task<T[]> WhenAll<T>(params Task<T>[] tasks)
+        {
+            return new TaskFactory<T[]>().ContinueWhenAll(
+                tasks,
+                finishedTasks => finishedTasks
+                                     .Select(t => t.Result)
+                                     .ToArray(),
+                TaskContinuationOptions.ExecuteSynchronously);
+        }
+
+        public static Task<T> WhenAny<T>(params Task<T>[] tasks)
+        {
+            return new TaskFactory<T>().ContinueWhenAny(tasks, task => task.Result,
+                                                        TaskContinuationOptions.ExecuteSynchronously);
         }
 
         // Everything else is implemented in terms of those
@@ -62,7 +81,12 @@ namespace AsyncBridge
 
         public static async Task WhenAll(IEnumerable<Task> tasks)
         {
-            await WhenAll(tasks.Select(Genericify));
+            await WhenAll(tasks.Select(genericify));
+        }
+
+        public static async Task WhenAll(params Task[] tasks)
+        {
+            await WhenAll(tasks.Select(genericify));
         }
 
         public static async Task<T> WhenAny<T>(IEnumerable<Task<T>> tasks)
@@ -72,27 +96,32 @@ namespace AsyncBridge
 
         public static async Task WhenAny(IEnumerable<Task> tasks)
         {
-            await WhenAny(tasks.Select(Genericify));
+            await WhenAny(tasks.Select(genericify));
+        }
+
+        public static async Task WhenAny(params Task[] tasks)
+        {
+            await WhenAny(tasks.Select(genericify));
         }
 
         // Helpers
-        private static async Task<object> Genericify(Task task)
+        private static async Task<VoidTaskResult> genericify(Task task)
         {
             await task;
-            return null;
+            return default(VoidTaskResult);
         }
 
         private static readonly Lazy<Task> s_cancelledTask = new Lazy<Task>(() =>
         {
-            var tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<VoidTaskResult>();
             tcs.SetCanceled();
             return tcs.Task;
         }, isThreadSafe: true);
 
         private static readonly Lazy<Task> s_completedTask = new Lazy<Task>(() =>
         {
-            var tcs = new TaskCompletionSource<object>();
-            tcs.SetResult(null);
+            var tcs = new TaskCompletionSource<VoidTaskResult>();
+            tcs.SetResult(default(VoidTaskResult));
             return tcs.Task;
         }, isThreadSafe: true);
     }

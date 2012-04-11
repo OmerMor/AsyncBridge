@@ -20,18 +20,18 @@ namespace AsyncBridge.Tests
             await TaskUtils.Delay(TimeSpan.FromMilliseconds(1));
         }
 
-        [TestMethod, ExpectedException(typeof(TaskCanceledException))]
+        [TestMethod, ExpectedException(typeof (TaskCanceledException))]
         public async Task CancelImmediately()
         {
-            CancellationToken cancellationToken = new CancellationToken(true);
+            var cancellationToken = new CancellationToken(true);
             await TaskUtils.Delay(1, cancellationToken);
         }
 
         [TestMethod]
         public async Task ResiliantToGc()
         {
-            bool keepGcing = true;
-            Thread gcAllTheTime = new Thread(() => { while (keepGcing) GC.Collect(); });
+            var keepGcing = true;
+            var gcAllTheTime = new Thread(() => { while (keepGcing) GC.Collect(); });
             gcAllTheTime.Start();
             await TaskUtils.Delay(500);
             keepGcing = false;
