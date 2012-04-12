@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="AsyncTaskMethodBuilder.cs" />
     <Compile Include="AsyncVoidMethodBuilder.cs" />
+    <Compile Include="ConfigurableTaskAwaitable.cs" />
     <Compile Include="DelayTask.cs" />
     <Compile Include="TaskUtils.cs" />
     <Compile Include="VoidTaskResult.cs" />

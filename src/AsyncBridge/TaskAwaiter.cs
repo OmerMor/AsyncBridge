@@ -5,10 +5,12 @@ namespace System.Threading.Tasks
     public struct TaskAwaiter : INotifyCompletion
     {
         private readonly Task m_task;
+        private readonly bool m_useCapturedContext;
 
-        internal TaskAwaiter(Task task)
+        internal TaskAwaiter(Task task, bool useCapturedContext = true)
         {
             m_task = task;
+            m_useCapturedContext = useCapturedContext;
         }
 
         internal static TaskScheduler TaskScheduler
@@ -16,7 +18,7 @@ namespace System.Threading.Tasks
             get
             {
                 var taskScheduler = SynchronizationContext.Current == null
-                                        ? TaskScheduler.Default
+                                        ? TaskScheduler.Current
                                         : TaskScheduler.FromCurrentSynchronizationContext();
                 return taskScheduler;
             }
@@ -30,7 +32,9 @@ namespace System.Threading.Tasks
         public void OnCompleted(Action continuation)
         {
             m_task.ContinueWith(
-                delegate { continuation(); }, TaskScheduler);
+                delegate { continuation(); },
+                // I don't think continuing on the thread pool is what people really wanted when they called ConfigureAwait, but it's what the CTP did
+                m_useCapturedContext ? TaskScheduler : TaskScheduler.Default);
         }
 
         public void GetResult()
@@ -49,10 +53,12 @@ namespace System.Threading.Tasks
     public struct TaskAwaiter<T> : INotifyCompletion
     {
         private readonly Task<T> m_task;
+        private readonly bool m_useCapturedContext;
 
-        internal TaskAwaiter(Task<T> task)
+        public TaskAwaiter(Task<T> task, bool useCapturedContext = true)
         {
             m_task = task;
+            m_useCapturedContext = useCapturedContext;
         }
 
         public bool IsCompleted
@@ -63,7 +69,9 @@ namespace System.Threading.Tasks
         public void OnCompleted(Action continuation)
         {
             m_task.ContinueWith(
-                delegate { continuation(); }, TaskAwaiter.TaskScheduler);
+                delegate { continuation(); },
+                // I don't think continuing on the thread pool is what people really wanted when they called ConfigureAwait, but it's what the CTP did
+                m_useCapturedContext ? TaskAwaiter.TaskScheduler : TaskScheduler.Default);
         }
 
         public T GetResult()
