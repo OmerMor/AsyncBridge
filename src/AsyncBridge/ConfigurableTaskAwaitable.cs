@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace AsyncBridge
+namespace System.Runtime.CompilerServices
 {
     /// <summary>
     /// An awaitable which wraps a class, maybe preventing it from capturing the SynchronizationContext

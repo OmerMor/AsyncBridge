@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace AsyncBridge
+namespace System.Threading.Tasks
 {
     public static class TaskUtils
     {

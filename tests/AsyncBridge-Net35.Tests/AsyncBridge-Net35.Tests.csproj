@@ -43,13 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AsyncBridge.Tests\DelayTest.cs" />
-    <Compile Include="..\AsyncBridge.Tests\SyncContextTests.cs" />
-    <Compile Include="..\AsyncBridge.Tests\Test.cs" />
-    <Compile Include="..\AsyncBridge.Tests\WhenAllTests.cs" />
-    <Compile Include="..\AsyncBridge.Tests\WhenAnyTests.cs" />
-      <Link>SyncContextTests.cs</Link>
-    </Compile>
+    <Compile Include="..\AsyncBridge.Tests\*.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
