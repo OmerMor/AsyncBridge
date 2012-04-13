@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>AsyncBridge</id>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <title>AsyncBridge</title>
     <authors>Daniel Grunwald, Omer Mor, Alex Davies</authors>
     <owners>Omer Mor</owners>
@@ -12,8 +12,11 @@
     <releaseNotes>Added Task.Delay</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>async bridge C# .NET40</tags>
+	<dependencies>
+      <dependency id="Rx-Core-old" version="[1.0.2856.0]" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="output\lib\**\*.dll" target="lib" />
+    <file src="output\lib\**\Async*.dll" target="lib" />
   </files>
 </package>
