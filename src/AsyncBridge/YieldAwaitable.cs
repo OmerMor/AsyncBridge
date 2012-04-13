@@ -21,7 +21,7 @@ namespace System.Runtime.CompilerServices
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 1)]
-        public struct YieldAwaiter : ICriticalNotifyCompletion
+        public struct YieldAwaiter : ICriticalNotifyCompletion, INotifyCompletion
         {
             private static readonly WaitCallback s_waitCallbackRunAction = runAction;
             private static readonly SendOrPostCallback s_sendOrPostCallbackRunAction =

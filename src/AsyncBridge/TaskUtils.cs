@@ -56,6 +56,16 @@ namespace AsyncBridge
             return new YieldAwaitable((object)SynchronizationContext.Current ?? TaskScheduler.Current);
         }
 
+        public static ConfigurableTaskAwaitable<T> ConfigureAwait<T>(this Task<T> original, bool continueOnCapturedContext)
+        {
+            return new ConfigurableTaskAwaitable<T>(original, continueOnCapturedContext);
+        }
+
+        public static ConfigurableTaskAwaitable ConfigureAwait(this Task original, bool continueOnCapturedContext)
+        {
+            return new ConfigurableTaskAwaitable(original, continueOnCapturedContext);
+        }
+
         // Methods which are implemented in terms of TaskFactory
         public static Task<T[]> WhenAll<T>(params Task<T>[] tasks)
         {
