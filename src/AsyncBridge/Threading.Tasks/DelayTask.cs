@@ -10,12 +10,12 @@ namespace System.Threading.Tasks
         {
             if (cancellationToken.CanBeCanceled)
             {
-                cancellationToken.Register(Complete, false);
+                cancellationToken.Register(complete, false);
             }
 
             if (millisecondsDelay != Timeout.Infinite)
             {
-                m_timer = new Timer(_ => Complete(), null, millisecondsDelay, Timeout.Infinite);
+                m_timer = new Timer(_ => complete(), null, millisecondsDelay, Timeout.Infinite);
             }
             m_cancellationToken = cancellationToken;
         }
@@ -25,7 +25,7 @@ namespace System.Threading.Tasks
             get { return m_taskCompletionSource.Task; }
         }
 
-        private void Complete()
+        private void complete()
         {
             var notDisposed =
                 m_cancellationToken.IsCancellationRequested

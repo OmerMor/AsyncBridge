@@ -7,11 +7,11 @@
     <ProjectGuid>{5E096B1B-2881-429C-977B-76AC58980E2B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System.Threading.Tasks</RootNamespace>
+    <RootNamespace>System</RootNamespace>
     <AssemblyName>AsyncBridge</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -33,23 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Threading">
       <HintPath>..\..\packages\Rx-Core-old.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AsyncBridge\*.cs" />
-    <Compile Include="..\AsyncBridge\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
+    <Compile Include="..\AsyncBridge\**\*.cs">
+      <Link>%(Compile.RecursiveDir)%(Compile.FileName)</Link>
     </Compile>
-    <Compile Include="TargetedPatchingOptOutAttribute.cs" />
+    <Compile Include="Runtime\TargetedPatchingOptOutAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

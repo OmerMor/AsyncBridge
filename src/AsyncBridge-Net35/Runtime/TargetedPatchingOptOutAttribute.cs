@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System.Runtime
+﻿namespace System.Runtime
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
     public sealed class TargetedPatchingOptOutAttribute : Attribute
     {
-        private String m_reason;
+        private readonly string m_reason;
 
         public TargetedPatchingOptOutAttribute(String reason)
         {
@@ -19,7 +14,5 @@ namespace System.Runtime
         {
             get { return m_reason; }
         }
-
-        private TargetedPatchingOptOutAttribute() { }
     }
 }

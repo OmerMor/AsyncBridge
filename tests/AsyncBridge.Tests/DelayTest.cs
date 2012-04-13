@@ -31,7 +31,9 @@ namespace AsyncBridge.Tests
         public async Task ResiliantToGc()
         {
             var keepGcing = true;
+            // ReSharper disable AccessToModifiedClosure
             var gcAllTheTime = new Thread(() => { while (keepGcing) GC.Collect(); });
+            // ReSharper restore AccessToModifiedClosure
             gcAllTheTime.Start();
             await TaskUtils.Delay(500);
             keepGcing = false;

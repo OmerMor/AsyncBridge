@@ -7,10 +7,11 @@
     <ProjectGuid>{12A1B828-6F9C-4748-8955-3C6B71187714}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System.Threading.Tasks</RootNamespace>
+    <RootNamespace>System</RootNamespace>
     <AssemblyName>AsyncBridge</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,23 +35,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncTaskMethodBuilder.cs" />
-    <Compile Include="AsyncVoidMethodBuilder.cs" />
-    <Compile Include="ConfigurableTaskAwaitable.cs" />
-    <Compile Include="DelayTask.cs" />
-    <Compile Include="TaskUtils.cs" />
-    <Compile Include="VoidTaskResult.cs" />
-    <Compile Include="YieldAwaitable.cs" />
+    <Compile Include="Runtime.CompilerServices\AsyncTaskMethodBuilder.cs" />
+    <Compile Include="Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
+    <Compile Include="Runtime.CompilerServices\ConfigurableTaskAwaitable.cs" />
+    <Compile Include="Threading.Tasks\DelayTask.cs" />
+    <Compile Include="Threading.Tasks\TaskUtils.cs" />
+    <Compile Include="Threading.Tasks\VoidTaskResult.cs" />
+    <Compile Include="Runtime.CompilerServices\YieldAwaitable.cs" />
     <None Include="readme.txt" />
-    <Compile Include="CallerFilePathAttribute.cs" />
-    <Compile Include="CallerLineNumberAttribute.cs" />
-    <Compile Include="CallerMemberNameAttribute.cs" />
-    <Compile Include="IAsyncStateMachine.cs" />
-    <Compile Include="ICriticalNotifyCompletion.cs" />
-    <Compile Include="INotifyCompletion.cs" />
+    <Compile Include="Runtime.CompilerServices\CallerFilePathAttribute.cs" />
+    <Compile Include="Runtime.CompilerServices\CallerLineNumberAttribute.cs" />
+    <Compile Include="Runtime.CompilerServices\CallerMemberNameAttribute.cs" />
+    <Compile Include="Runtime.CompilerServices\IAsyncStateMachine.cs" />
+    <Compile Include="Runtime.CompilerServices\ICriticalNotifyCompletion.cs" />
+    <Compile Include="Runtime.CompilerServices\INotifyCompletion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaskAwaiter.cs" />
-    <Compile Include="TaskEx.cs" />
+    <Compile Include="Threading.Tasks\TaskAwaiter.cs" />
+    <Compile Include="Threading.Tasks\TaskEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
