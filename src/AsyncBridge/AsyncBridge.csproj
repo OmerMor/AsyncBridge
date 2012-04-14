@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\SpecificAssemblyInfo.cs" />
     <Compile Include="Runtime.CompilerServices\AsyncTaskMethodBuilder.cs" />
     <Compile Include="Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
     <Compile Include="Runtime.CompilerServices\ConfigurableTaskAwaitable.cs" />
@@ -42,6 +43,7 @@
     <Compile Include="Threading.Tasks\TaskUtils.cs" />
     <Compile Include="Threading.Tasks\VoidTaskResult.cs" />
     <Compile Include="Runtime.CompilerServices\YieldAwaitable.cs" />
+    <None Include="AsyncBridge.nuspec" />
     <None Include="readme.txt" />
     <Compile Include="Runtime.CompilerServices\CallerFilePathAttribute.cs" />
     <Compile Include="Runtime.CompilerServices\CallerLineNumberAttribute.cs" />

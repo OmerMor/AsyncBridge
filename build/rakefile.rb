@@ -34,7 +34,8 @@ namespace :build do
 		mkdir OUTPUT_PATH unless File.exists?(OUTPUT_PATH)
 		specs = FileList["#{SOURCE_PATH}/**/*.nuspec"]
 		specs.each do |spec|
-			sh "#{NUGET_EXE} pack #{spec} -OutputDirectory #{OUTPUT_PATH}"
+			folder = File.dirname(spec)
+			sh "#{NUGET_EXE} pack #{spec} -BasePath #{folder} -OutputDirectory #{OUTPUT_PATH}"
 		end
 	end	
 	

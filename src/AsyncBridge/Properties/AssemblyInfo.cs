@@ -4,10 +4,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AsyncBridge")]
-[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Daniel Grunwald,Omer Mor,Alex Davies")]
 [assembly: AssemblyProduct("AsyncBridge")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
@@ -29,7 +27,7 @@ using System.Runtime.InteropServices;
 //      Minor: New features, but backwards compatible.
 //      Patch: Backwards compatible bug fixes only.
 //
-[assembly: AssemblyVersion("0.1.0")]
-[assembly: AssemblyFileVersion("0.1.0")]
-[assembly: AssemblyInformationalVersion("0.1.0")]
+[assembly: AssemblyVersion("0.1.1")]
+[assembly: AssemblyFileVersion("0.1.1")]
+[assembly: AssemblyInformationalVersion("0.1.1")]
  

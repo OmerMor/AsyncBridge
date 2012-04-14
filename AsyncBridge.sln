@@ -10,13 +10,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4DAF26
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncBridge-Net35", "src\AsyncBridge-Net35\AsyncBridge-Net35.csproj", "{5E096B1B-2881-429C-977B-76AC58980E2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncBridge.Net35", "src\AsyncBridge.Net35\AsyncBridge.Net35.csproj", "{5E096B1B-2881-429C-977B-76AC58980E2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FF710108-A2A9-4CA2-A49A-6CA9AB166F97}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0E3D69B7-00E8-410B-A1D7-6152419AB8D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncBridge-Net35.Tests", "tests\AsyncBridge-Net35.Tests\AsyncBridge-Net35.Tests.csproj", "{51F1734D-A5AA-4C45-8458-EBC56F046549}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncBridge.Net35.Tests", "tests\AsyncBridge.Net35.Tests\AsyncBridge.Net35.Tests.csproj", "{51F1734D-A5AA-4C45-8458-EBC56F046549}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
