@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AsyncBridgeKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,6 +49,7 @@
     <Compile Include="Threading.Tasks\TaskUtils.cs" />
     <Compile Include="Threading.Tasks\VoidTaskResult.cs" />
     <Compile Include="Runtime.CompilerServices\YieldAwaitable.cs" />
+    <None Include="AsyncBridgeKey.snk" />
     <None Include="AsyncBridge.nuspec" />
     <None Include="readme.txt" />
     <Compile Include="Runtime.CompilerServices\CallerFilePathAttribute.cs" />
