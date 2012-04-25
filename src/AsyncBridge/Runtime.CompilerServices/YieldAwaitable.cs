@@ -75,15 +75,20 @@ namespace System.Runtime.CompilerServices
                     var scheduler = (TaskScheduler)m_target;
                     if (scheduler == TaskScheduler.Default)
                     {
+#if !PORTABLE
                         if (flowContext)
                             ThreadPool.QueueUserWorkItem(s_waitCallbackRunAction, continuation);
                         else
                             ThreadPool.UnsafeQueueUserWorkItem(s_waitCallbackRunAction, continuation);
+#else
+                        ThreadPool.QueueUserWorkItem(s_waitCallbackRunAction, continuation);
+#endif
                     }
                     else
                     {
                         Task.Factory.StartNew(continuation, CancellationToken.None, TaskCreationOptions.PreferFairness,
-                                              scheduler);}
+                                              scheduler);
+                    }
                 }
             }
 

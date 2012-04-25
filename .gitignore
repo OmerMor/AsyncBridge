@@ -4,6 +4,7 @@
 *.sln.cache
 *.suo
 *.csproj.user
+*.bak
 TestResults/
 output/
 
