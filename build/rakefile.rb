@@ -32,7 +32,7 @@ namespace :build do
 	desc "Package with NuGet"
 	task :pack => [:compile] do
 		mkdir OUTPUT_PATH unless File.exists?(OUTPUT_PATH)
-		specs = FileList["#{SOURCE_PATH}/**/*.nuspec"]
+		specs = FileList["#{SOURCE_PATH}/src/**/*.csproj"]
 		specs.each do |spec|
 			folder = File.dirname(spec)
 			sh "#{NUGET_EXE} pack #{spec} -BasePath #{folder} -OutputDirectory #{OUTPUT_PATH}"

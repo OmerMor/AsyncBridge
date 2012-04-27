@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
  
 internal class Metadata
 {
-    internal const string Version = "0.1.2";
+    internal const string Version = "0.2.0";
 }

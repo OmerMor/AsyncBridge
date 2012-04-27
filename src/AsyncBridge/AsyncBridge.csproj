@@ -21,14 +21,16 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\AsyncBridge.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\output\lib\net40\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\AsyncBridge.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -41,13 +43,20 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncCompatLibExtensions.cs" />
     <Compile Include="Properties\SpecificAssemblyInfo.cs" />
+    <Compile Include="Runtime.CompilerServices\AsyncMethodBuilderCore.cs" />
+    <Compile Include="Runtime.CompilerServices\AsyncMethodTaskCache.cs" />
+    <Compile Include="Runtime.CompilerServices\AsyncStateMachineAttribute.cs" />
     <Compile Include="Runtime.CompilerServices\AsyncTaskMethodBuilder.cs" />
     <Compile Include="Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
-    <Compile Include="Runtime.CompilerServices\ConfigurableTaskAwaitable.cs" />
-    <Compile Include="Threading.Tasks\DelayTask.cs" />
-    <Compile Include="Threading.Tasks\TaskUtils.cs" />
-    <Compile Include="Threading.Tasks\VoidTaskResult.cs" />
+    <Compile Include="Runtime.CompilerServices\ConfiguredTaskAwaitable.cs" />
+    <Compile Include="Runtime.CompilerServices\IAsyncMethodBuilder.cs" />
+    <Compile Include="Runtime.CompilerServices\IteratorStateMachineAttribute.cs" />
+    <Compile Include="Runtime.CompilerServices\StateMachineAttribute.cs" />
+    <Compile Include="Runtime.CompilerServices\TaskAwaiter.cs" />
+    <Compile Include="Runtime.CompilerServices\VoidTaskResult.cs" />
+    <Compile Include="Threading.Tasks\TaskEx.cs" />
     <Compile Include="Runtime.CompilerServices\YieldAwaitable.cs" />
     <None Include="AsyncBridgeKey.snk" />
     <None Include="AsyncBridge.nuspec" />
@@ -59,8 +68,6 @@
     <Compile Include="Runtime.CompilerServices\ICriticalNotifyCompletion.cs" />
     <Compile Include="Runtime.CompilerServices\INotifyCompletion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Threading.Tasks\TaskAwaiter.cs" />
-    <Compile Include="Threading.Tasks\TaskEx.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

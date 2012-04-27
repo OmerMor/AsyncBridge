@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncBridge.Net35.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncBridge.Portable", "src\AsyncBridge.Portable\AsyncBridge.Portable.csproj", "{38E9A844-C7B5-46EF-ABE1-5B9A5590A348}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncTargetingPack.Tests", "tests\AsyncTargetingPack.Tests\AsyncTargetingPack.Tests.csproj", "{D0A9D7E7-DD63-43A8-9891-74E58CC80C8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferenceAsync.Net45", "tests\ReferenceAsync.Net45\ReferenceAsync.Net45.csproj", "{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,14 @@ Global
 		{67AF19E0-08F0-4E5A-A05B-83818C4359B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67AF19E0-08F0-4E5A-A05B-83818C4359B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67AF19E0-08F0-4E5A-A05B-83818C4359B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A9D7E7-DD63-43A8-9891-74E58CC80C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A9D7E7-DD63-43A8-9891-74E58CC80C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A9D7E7-DD63-43A8-9891-74E58CC80C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A9D7E7-DD63-43A8-9891-74E58CC80C8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +68,7 @@ Global
 		{51F1734D-A5AA-4C45-8458-EBC56F046549} = {0E3D69B7-00E8-410B-A1D7-6152419AB8D8}
 		{5E096B1B-2881-429C-977B-76AC58980E2B} = {FF710108-A2A9-4CA2-A49A-6CA9AB166F97}
 		{67AF19E0-08F0-4E5A-A05B-83818C4359B6} = {0E3D69B7-00E8-410B-A1D7-6152419AB8D8}
+		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245} = {0E3D69B7-00E8-410B-A1D7-6152419AB8D8}
+		{D0A9D7E7-DD63-43A8-9891-74E58CC80C8E} = {0E3D69B7-00E8-410B-A1D7-6152419AB8D8}
 	EndGlobalSection
 EndGlobal

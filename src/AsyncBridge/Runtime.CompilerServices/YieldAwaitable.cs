@@ -1,38 +1,50 @@
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.Runtime.CompilerServices
 {
+    /// <summary>
+    ///   Provides an awaitable context for switching into a target environment.
+    /// </summary>
+    /// <remarks>
+    ///   This type is intended for compiler use only.
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential, Size = 1)]
     public struct YieldAwaitable
     {
-        private readonly object m_target;
-
-        internal YieldAwaitable(object target)
-        {
-            m_target = target;
-        }
-        
+        /// <summary>
+        ///   Gets an awaiter for this <see cref="YieldAwaitable" /> .
+        /// </summary>
+        /// <returns> An awaiter for this awaitable. </returns>
+        /// <remarks>
+        ///   This method is intended for compiler user rather than use directly in code.
+        /// </remarks>
         public YieldAwaiter GetAwaiter()
         {
-            return new YieldAwaiter(m_target);
+            return new YieldAwaiter();
         }
 
+        /// <summary>
+        ///   Provides an awaiter that switches into a target environment.
+        /// </summary>
+        /// <remarks>
+        ///   This type is intended for compiler use only.
+        /// </remarks>
         [StructLayout(LayoutKind.Sequential, Size = 1)]
         public struct YieldAwaiter : ICriticalNotifyCompletion
         {
-            private static readonly WaitCallback s_waitCallbackRunAction = runAction;
-            private static readonly SendOrPostCallback s_sendOrPostCallbackRunAction =
-                runAction;
-            private readonly object m_target;
+            /// <summary>
+            ///   A completed task.
+            /// </summary>
+            private static readonly Task s_completed = TaskEx.FromResult(0);
 
-            internal YieldAwaiter(object target)
-            {
-                m_target = target;
-            }
-
+            /// <summary>
+            ///   Gets whether a yield is not required.
+            /// </summary>
+            /// <remarks>
+            ///   This property is intended for compiler user rather than use directly in code.
+            /// </remarks>
             public bool IsCompleted
             {
                 get { return false; }
@@ -42,63 +54,32 @@ namespace System.Runtime.CompilerServices
             {
             }
 
-            [SecuritySafeCritical]
-            [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
+            /// <summary>
+            ///   Posts the <paramref name="continuation" /> back to the current context.
+            /// </summary>
+            /// <param name="continuation"> The action to invoke asynchronously. </param>
+            /// <exception cref="InvalidOperationException">The awaiter was not properly initialized.</exception>
             public void OnCompleted(Action continuation)
             {
-                queueContinuation(continuation, true);
+                s_completed.GetAwaiter().OnCompleted(continuation);
             }
 
+            /// <summary>
+            ///   Posts the <paramref name="continuation" /> back to the current context.
+            /// </summary>
+            /// <param name="continuation"> The action to invoke asynchronously. </param>
+            /// <exception cref="InvalidOperationException">The awaiter was not properly initialized.</exception>
             [SecurityCritical]
-            [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
             public void UnsafeOnCompleted(Action continuation)
             {
-                queueContinuation(continuation, false);
+                s_completed.GetAwaiter().UnsafeOnCompleted(continuation);
             }
 
-            [SecurityCritical]
-            private void queueContinuation(Action continuation, bool flowContext)
-            {
-                if (continuation == null)
-                    throw new ArgumentNullException("continuation");
-
-                if (m_target == null)
-                    throw new InvalidOperationException("The awaitable was not properly initialized.");
-
-                var synchronizationContext = m_target as SynchronizationContext;
-                if (synchronizationContext != null)
-                {
-                    synchronizationContext.Post(s_sendOrPostCallbackRunAction, continuation);
-                }
-                else
-                {
-                    var scheduler = (TaskScheduler)m_target;
-                    if (scheduler == TaskScheduler.Default)
-                    {
-#if !PORTABLE
-                        if (flowContext)
-                            ThreadPool.QueueUserWorkItem(s_waitCallbackRunAction, continuation);
-                        else
-                            ThreadPool.UnsafeQueueUserWorkItem(s_waitCallbackRunAction, continuation);
-#else
-                        ThreadPool.QueueUserWorkItem(s_waitCallbackRunAction, continuation);
-#endif
-                    }
-                    else
-                    {
-                        Task.Factory.StartNew(continuation, CancellationToken.None, TaskCreationOptions.PreferFairness,
-                                              scheduler);
-                    }
-                }
-            }
-
+            /// <summary>
+            ///   Ends the await operation.
+            /// </summary>
             public void GetResult()
             {
-            }
-
-            private static void runAction(object state)
-            {
-                ((Action) state)();
             }
         }
     }

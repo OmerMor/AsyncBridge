@@ -7,7 +7,7 @@
     <ProjectGuid>{38E9A844-C7B5-46EF-ABE1-5B9A5590A348}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AsyncBridge.Portable</RootNamespace>
+    <RootNamespace>System</RootNamespace>
     <AssemblyName>AsyncBridge.Portable</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile14</TargetFrameworkProfile>
@@ -22,14 +22,16 @@
     <DefineConstants>TRACE;DEBUG;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\AsyncBridge.Portable.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\output\lib\portable\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\AsyncBridge.Portable.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -42,13 +44,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="..\AsyncBridge.Net35\Runtime\TargetedPatchingOptOutAttribute.cs">
-      <Link>Runtime\TargetedPatchingOptOutAttribute.cs</Link>
+    <Compile Include="..\AsyncBridge.Net35\**\*.cs" Exclude="..\AsyncBridge.Net35\Properties\SpecificAssemblyInfo.cs">
+      <Link>%(Compile.RecursiveDir)%(Compile.FileName)</Link>
     </Compile>
     <Compile Include="..\AsyncBridge\**\*.cs" Exclude="..\AsyncBridge\Properties\SpecificAssemblyInfo.cs">
       <Link>%(Compile.RecursiveDir)%(Compile.FileName)</Link>
     </Compile>
     <Compile Include="Properties\SpecificAssemblyInfo.cs" />
+    <Compile Include="SerializableAttribute.cs" />
+    <Compile Include="Threading\ExecutionContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\AsyncBridge\AsyncBridgeKey.snk">

@@ -15,4 +15,8 @@
     <copyright>Copyright 2012</copyright>
     <tags>async bridge C# C#5 portable Silverlight .NET40</tags>
   </metadata>
+  <files>
+    <file src="bin\Debug\AsyncBridge.Portable.dll" target="lib" />
+    <file src="bin\Debug\AsyncBridge.Portable.xml" target="lib" />
+  </files>
 </package>

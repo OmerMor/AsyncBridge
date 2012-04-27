@@ -2,8 +2,19 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if NET45
+using TaskEx = System.Threading.Tasks.Task;
+#endif
 
+#if NET45
+namespace ReferenceAsync.Tests
+#elif NET35
+namespace AsyncBridge.Net35.Tests
+#elif ATP
+namespace AsyncTargetingPack.Tests
+#else
 namespace AsyncBridge.Tests
+#endif
 {
     [TestClass]
     public class DelayTest
@@ -11,20 +22,20 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public async Task CheckItDoesReturn()
         {
-            await TaskUtils.Delay(1);
+            await TaskEx.Delay(1);
         }
 
         [TestMethod]
         public async Task TimeSpanVersion()
         {
-            await TaskUtils.Delay(TimeSpan.FromMilliseconds(1));
+            await TaskEx.Delay(TimeSpan.FromMilliseconds(1));
         }
 
         [TestMethod, ExpectedException(typeof (TaskCanceledException))]
         public async Task CancelImmediately()
         {
             var cancellationToken = new CancellationToken(true);
-            await TaskUtils.Delay(1, cancellationToken);
+            await TaskEx.Delay(1, cancellationToken);
         }
 
         [TestMethod]
@@ -35,7 +46,7 @@ namespace AsyncBridge.Tests
             var gcAllTheTime = new Thread(() => { while (keepGcing) GC.Collect(); });
             // ReSharper restore AccessToModifiedClosure
             gcAllTheTime.Start();
-            await TaskUtils.Delay(500);
+            await TaskEx.Delay(500);
             keepGcing = false;
         }
     }
