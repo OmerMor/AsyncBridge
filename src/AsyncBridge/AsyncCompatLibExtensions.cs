@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 // ReSharper disable CheckNamespace
@@ -84,6 +85,141 @@ public static class AsyncCompatLibExtensions
             throw new ArgumentNullException("task");
 
         return new ConfiguredTaskAwaitable(task, continueOnCapturedContext);
+    }
+
+    /// <summary>
+    /// Creates a continuation that executes asynchronously when the target Task completes
+    /// </summary>
+    /// <param name="task">The target Task</param>
+    /// <param name="action">The continuation method to execute</param>
+    /// <param name="state">A state object to pass to the continuation</param>
+    /// <returns>A task representing the continuation status</returns>
+    public static Task ContinueWith(this Task task, Action<Task, object> action, object state)
+    {
+        return task.ContinueWith((innerTask) => action(innerTask, state));
+    }
+
+    /// <summary>
+    /// Creates a continuation that executes asynchronously when the target Task completes
+    /// </summary>
+    /// <typeparam name="TInResult">The type of result from the target task</typeparam>
+    /// <param name="task">The target Task</param>
+    /// <param name="action">The continuation method to execute</param>
+    /// <param name="state">A state object to pass to the continuation</param>
+    /// <returns>A task representing the continuation status</returns>
+    public static Task ContinueWith<TInResult>(this Task<TInResult> task, Action<Task<TInResult>, object> action, object state)
+    {
+        return task.ContinueWith((innerTask) => action(innerTask, state));
+    }
+
+    /// <summary>
+    /// Creates a continuation that executes asynchronously when the target Task completes
+    /// </summary>
+    /// <param name="task">The target Task</param>
+    /// <param name="action">The continuation method to execute</param>
+    /// <param name="state">A state object to pass to the continuation</param>
+    /// <param name="token">A cancellation token to abort the continuation</param>
+    /// <returns>A task representing the continuation status</returns>
+    public static Task ContinueWith(this Task task, Action<Task, object> action, object state, CancellationToken token)
+    {
+        return task.ContinueWith((innerTask) => action(innerTask, state), token, TaskContinuationOptions.None, TaskScheduler.Current);
+    }
+
+    /// <summary>
+    /// Creates a continuation that executes asynchronously when the target Task completes
+    /// </summary>
+    /// <typeparam name="TInResult">The type of result from the target task</typeparam>
+    /// <param name="task">The target Task</param>
+    /// <param name="action">The continuation method to execute</param>
+    /// <param name="state">A state object to pass to the continuation</param>
+    /// <param name="token">A cancellation token to abort the continuation</param>
+    /// <returns>A task representing the continuation status</returns>
+    public static Task ContinueWith<TInResult>(this Task<TInResult> task, Action<Task<TInResult>, object> action, object state, CancellationToken token)
+    {
+        return task.ContinueWith((innerTask) => action(innerTask, state), token, TaskContinuationOptions.None, TaskScheduler.Current);
+    }
+
+    /// <summary>
+    /// Creates a continuation that executes asynchronously when the target Task completes
+    /// </summary>
+    /// <param name="task">The target Task</param>
+    /// <param name="action">The continuation method to execute</param>
+    /// <param name="state">A state object to pass to the continuation</param>
+    /// <param name="token">A cancellation token to abort the continuation</param>
+    /// <param name="taskOptions">A set of task continuation options to apply</param>
+    /// <param name="scheduler">The task scheduler to schedule the continuation</param>
+    /// <returns>A task representing the continuation status</returns>
+    public static Task ContinueWith(this Task task, Action<Task, object> action, object state, CancellationToken token, TaskContinuationOptions taskOptions, TaskScheduler scheduler)
+    {
+        return task.ContinueWith((innerTask) => action(innerTask, state), token, taskOptions, scheduler);
+    }
+
+    /// <summary>
+    /// Creates a continuation that executes asynchronously when the target Task completes
+    /// </summary>
+    /// <typeparam name="TInResult">The type of result from the target task</typeparam>
+    /// <param name="task">The target Task</param>
+    /// <param name="action">The continuation method to execute</param>
+    /// <param name="state">A state object to pass to the continuation</param>
+    /// <param name="token">A cancellation token to abort the continuation</param>
+    /// <param name="taskOptions">A set of task continuation options to apply</param>
+    /// <param name="scheduler">The task scheduler to schedule the continuation</param>
+    /// <returns>A task representing the continuation status</returns>
+    public static Task ContinueWith<TInResult>(this Task<TInResult> task, Action<Task<TInResult>, object> action, object state, CancellationToken token, TaskContinuationOptions taskOptions, TaskScheduler scheduler)
+    {
+        return task.ContinueWith((innerTask) => action(innerTask, state), token, taskOptions, scheduler);
+    }
+
+    /// <summary>
+    /// Creates a continuation that executes asynchronously when the target Task completes
+    /// </summary>
+    /// <param name="task">The target Task</param>
+    /// <param name="action">The continuation method to execute</param>
+    /// <param name="state">A state object to pass to the continuation</param>
+    /// <param name="token">A cancellation token to abort the continuation</param>
+    /// <returns>A task representing the continuation status</returns>
+    public static Task<TResult> ContinueWith<TResult>(this Task task, Func<Task, object, TResult> action, object state, CancellationToken token)
+    {
+        return task.ContinueWith((innerTask) => action(innerTask, state), token, TaskContinuationOptions.None, TaskScheduler.Current);
+    }
+
+    /// <summary>
+    /// Creates a continuation that executes asynchronously when the target Task completes
+    /// </summary>
+    /// <param name="task">The target Task</param>
+    /// <param name="action">The continuation method to execute</param>
+    /// <param name="state">A state object to pass to the continuation</param>
+    /// <param name="token">A cancellation token to abort the continuation</param>
+    /// <returns>A task representing the continuation status</returns>
+    public static Task<TResult> ContinueWith<TResult>(this Task task, Func<Task, object, TResult> action, object state, CancellationToken token, TaskContinuationOptions taskOptions, TaskScheduler scheduler)
+    {
+        return task.ContinueWith((innerTask) => action(innerTask, state), token, taskOptions, scheduler);
+    }
+
+    /// <summary>
+    /// Causes a cancellation token source to cancel after a specified time
+    /// </summary>
+    /// <param name="cancelSource">The cancellation token source to cancel</param>
+    /// <param name="delay">The time to wait before cancellation</param>
+    public static void CancelAfter(this CancellationTokenSource cancelSource, TimeSpan delay)
+    {
+        Timer MyTimer = null;
+
+        MyTimer = new Timer(state =>
+        {
+            MyTimer.Dispose();
+
+            try
+            {
+                if (cancelSource.Token.CanBeCanceled)
+                    cancelSource.Cancel();
+            }
+            catch (ObjectDisposedException) // If the cancellation token has been disposed of, ignore the exception
+            {
+            }
+        }, null, Timeout.Infinite, Timeout.Infinite);
+
+        MyTimer.Change(delay, new TimeSpan(0, 0, 0, 0, -1));
     }
 }
 // ReSharper restore CheckNamespace
