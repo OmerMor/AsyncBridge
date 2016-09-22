@@ -254,17 +254,27 @@ namespace System.Runtime.CompilerServices
         ///   Copies the exception's stack trace so its stack trace isn't overwritten.
         /// </summary>
         /// <param name="exc"> The exception to prepare. </param>
+        [SecuritySafeCritical]
         internal static Exception PrepareExceptionForRethrow(Exception exc)
         {
             if (s_prepForRemoting != null)
             {
                 try
                 {
-                    s_prepForRemoting.Invoke(exc, s_emptyParams);
+#if !PORTABLE
+                    new PermissionSet(Security.Permissions.PermissionState.Unrestricted).Assert();
+#endif
+                    return (Exception)s_prepForRemoting.Invoke(exc, s_emptyParams);
                 }
                 catch
                 {
                 }
+#if !PORTABLE
+                finally
+                {
+                    CodeAccessPermission.RevertAssert();
+                }
+#endif
             }
             return exc;
         }
