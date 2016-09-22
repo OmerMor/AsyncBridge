@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
@@ -79,6 +80,7 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         /// Registers with UnobservedTaskException to suppress exception crashing.
         /// </summary>
+        [SecuritySafeCritical]
         internal static void PreventUnobservedTaskExceptions()
         {
             if (Interlocked.CompareExchange(ref s_preventUnobservedTaskExceptionsInvoked, 1, 0) != 0)
