@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NET35 // This file verifies that async tests work, but MSTest cannot discover async tests on net35
+
+using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if NET45
@@ -9,8 +11,6 @@ using TaskEx = System.Threading.Tasks.Task;
 
 #if NET45
 namespace ReferenceAsync.Tests
-#elif NET35
-namespace AsyncBridge.Net35.Tests
 #elif ATP
 namespace AsyncTargetingPack.Tests
 #else
@@ -40,3 +40,5 @@ namespace AsyncBridge.Tests
         }
     }
 }
+
+#endif

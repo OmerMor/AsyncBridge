@@ -19,20 +19,23 @@ namespace AsyncBridge.Tests
     public class WhenAllTests
     {
         [TestMethod]
-        public async Task GenericIEnumerableWithSomeContents()
+        public void GenericIEnumerableWithSomeContents()
         {
-            var taskCompletionSources = new []
-                                        {
-                                            new TaskCompletionSource<int>(),
-                                            new TaskCompletionSource<int>(),
-                                            new TaskCompletionSource<int>()
-                                        };
-            var whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task));
-            taskCompletionSources[0].SetResult(1);
-            taskCompletionSources[1].SetResult(2);
-            taskCompletionSources[2].SetResult(3);
-            var results = await whenAllTask;
-            CollectionAssert.AreEquivalent(new[] {1, 2, 3}, results.ToList());
+            TestUtils.RunAsync(async () =>
+            {
+                var taskCompletionSources = new[]
+                {
+                    new TaskCompletionSource<int>(),
+                    new TaskCompletionSource<int>(),
+                    new TaskCompletionSource<int>()
+                };
+                var whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task));
+                taskCompletionSources[0].SetResult(1);
+                taskCompletionSources[1].SetResult(2);
+                taskCompletionSources[2].SetResult(3);
+                var results = await whenAllTask;
+                CollectionAssert.AreEquivalent(new[] {1, 2, 3}, results.ToList());
+            });
         }
 
         [TestMethod]
@@ -49,33 +52,39 @@ namespace AsyncBridge.Tests
         }
 
         [TestMethod]
-        public async Task NonGenericVersion()
+        public void NonGenericVersion()
         {
-            var taskCompletionSources = new []
-                                        {
-                                            new TaskCompletionSource<int>(), 
-                                            new TaskCompletionSource<int>()
-                                        };
-            var whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task).Cast<Task>());
-            taskCompletionSources[0].SetResult(1);
-            Assert.IsFalse(whenAllTask.IsCompleted);
-            taskCompletionSources[1].SetResult(1);
-            await whenAllTask;
+            TestUtils.RunAsync(async () =>
+            {
+                var taskCompletionSources = new[]
+                {
+                    new TaskCompletionSource<int>(),
+                    new TaskCompletionSource<int>()
+                };
+                var whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task).Cast<Task>());
+                taskCompletionSources[0].SetResult(1);
+                Assert.IsFalse(whenAllTask.IsCompleted);
+                taskCompletionSources[1].SetResult(1);
+                await whenAllTask;
+            });
         }
 
         [TestMethod]
-        public async Task ArrayVersion()
+        public void ArrayVersion()
         {
-            var taskCompletionSources = new[]
-                                        {
-                                            new TaskCompletionSource<int>(), 
-                                            new TaskCompletionSource<int>()
-                                        };
-            Task whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task).ToArray());
-            taskCompletionSources[0].SetResult(1);
-            Assert.IsFalse(whenAllTask.IsCompleted);
-            taskCompletionSources[1].SetResult(1);
-            await whenAllTask;
+            TestUtils.RunAsync(async () =>
+            {
+                var taskCompletionSources = new[]
+                {
+                    new TaskCompletionSource<int>(),
+                    new TaskCompletionSource<int>()
+                };
+                Task whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task).ToArray());
+                taskCompletionSources[0].SetResult(1);
+                Assert.IsFalse(whenAllTask.IsCompleted);
+                taskCompletionSources[1].SetResult(1);
+                await whenAllTask;
+            });
         }
     }
 }
