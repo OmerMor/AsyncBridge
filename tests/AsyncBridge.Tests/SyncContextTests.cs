@@ -253,6 +253,38 @@ namespace AsyncBridge.Tests
             });
         }
 
+        private sealed class CopyableSynchronizationContext : SynchronizationContext
+        {
+            public override SynchronizationContext CreateCopy()
+            {
+                return new CopyableSynchronizationContext();
+            }
+        }
+
+        [TestMethod]
+        public void TaskRunShouldNotFlowSyncContext()
+        {
+            var copyableContext = new CopyableSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(copyableContext);
+
+            TaskEx.Run(() =>
+            {
+                Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext));
+            }).GetAwaiter().GetResult();
+        }
+
+        [TestMethod]
+        public void ContinueWithShouldNotFlowSyncContext()
+        {
+            var copyableContext = new CopyableSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(copyableContext);
+
+            TaskEx.FromResult<object>(null).ContinueWith(_ =>
+            {
+                Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext));
+            }).GetAwaiter().GetResult();
+        }
+
         /// <summary>
         /// Exercise our AsyncTaskMethodBuilder
         /// </summary>
