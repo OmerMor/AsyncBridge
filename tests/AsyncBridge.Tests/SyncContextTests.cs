@@ -146,6 +146,50 @@ namespace AsyncBridge.Tests
             Assert.AreEqual(6, r);
         }
 
+        private sealed class SpySynchronizationContext : SynchronizationContext
+        {
+            public bool WasUsed { get; private set; }
+
+            public override void Post(SendOrPostCallback d, object state)
+            {
+                WasUsed = true;
+                base.Post(d, state);
+            }
+        }
+
+        [TestMethod]
+#if ATP
+        [Ignore]
+#endif
+        public void ConfigureAwaitFalse()
+        {
+            var spyContext = new SpySynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(spyContext);
+
+            var source = new TaskCompletionSource<object>();
+            var configuredTaskAwaiter = source.Task.ConfigureAwait(false).GetAwaiter();
+
+            using (var waitForFinish = new CountdownEvent(4))
+            {
+                // Register continuations before the task is complete
+                configuredTaskAwaiter.UnsafeOnCompleted(() => waitForFinish.Signal());
+                configuredTaskAwaiter.OnCompleted(() => waitForFinish.Signal());
+
+                // Complete the task
+                source.SetResult(null);
+
+                // Register continuations after the task is complete
+                configuredTaskAwaiter.UnsafeOnCompleted(() => waitForFinish.Signal());
+                configuredTaskAwaiter.OnCompleted(() => waitForFinish.Signal());
+
+                // Make sure all four continuations have finished running
+                waitForFinish.Wait();
+
+                // Check whether the continuations ran via the spy synchronization context
+                Assert.IsFalse(spyContext.WasUsed);
+            }
+        }
+
         [TestMethod, Ignore]
         public async Task NotCapturedSimpleTaskSyncContext()
         {
