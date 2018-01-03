@@ -20,34 +20,46 @@ namespace AsyncBridge.Tests
     public class DelayTest
     {
         [TestMethod]
-        public async Task CheckItDoesReturn()
+        public void CheckItDoesReturn()
         {
-            await TaskEx.Delay(1);
+            TestUtils.RunAsync(async () =>
+            {
+                await TaskEx.Delay(1);
+            });
         }
 
         [TestMethod]
-        public async Task TimeSpanVersion()
+        public void TimeSpanVersion()
         {
-            await TaskEx.Delay(TimeSpan.FromMilliseconds(1));
+            TestUtils.RunAsync(async () =>
+            {
+                await TaskEx.Delay(TimeSpan.FromMilliseconds(1));
+            });
         }
 
         [TestMethod, ExpectedException(typeof (TaskCanceledException))]
-        public async Task CancelImmediately()
+        public void CancelImmediately()
         {
-            var cancellationToken = new CancellationToken(true);
-            await TaskEx.Delay(1, cancellationToken);
+            TestUtils.RunAsync(async () =>
+            {
+                var cancellationToken = new CancellationToken(true);
+                await TaskEx.Delay(1, cancellationToken);
+            });
         }
 
         [TestMethod]
-        public async Task ResiliantToGc()
+        public void ResiliantToGc()
         {
-            var keepGcing = true;
-            // ReSharper disable AccessToModifiedClosure
-            var gcAllTheTime = new Thread(() => { while (keepGcing) GC.Collect(); });
-            // ReSharper restore AccessToModifiedClosure
-            gcAllTheTime.Start();
-            await TaskEx.Delay(500);
-            keepGcing = false;
+            TestUtils.RunAsync(async () =>
+            {
+                var keepGcing = true;
+                // ReSharper disable AccessToModifiedClosure
+                var gcAllTheTime = new Thread(() => { while (keepGcing) GC.Collect(); });
+                // ReSharper restore AccessToModifiedClosure
+                gcAllTheTime.Start();
+                await TaskEx.Delay(500);
+                keepGcing = false;
+            });
         }
     }
 }

@@ -76,74 +76,60 @@ namespace AsyncBridge.Tests
         }
 
         [TestMethod]
-        public async Task YieldSyncContext()
+        public void YieldSyncContext()
         {
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            await TaskEx.Yield();
-            Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+            TestUtils.RunAsync(async () =>
+            {
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                await TaskEx.Yield();
+                Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+            });
         }
 
         [TestMethod]
-        public async Task FromResultSyncContext()
+        public void FromResultSyncContext()
         {
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            int r = await TaskEx.FromResult(4);
-            Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
-            Assert.AreEqual(4, r);
-        }
-
-
-        [TestMethod]
-        public void DelaySyncContext_wrapped()
-        {
-            var t = DelaySyncContext();
-            t.Wait();
-        }
-
-        [TestMethod, Ignore]
-        public void NotCapturedReturningTaskSyncContext_wrapped()
-        {
-            var t = NotCapturedReturningTaskSyncContext();
-            t.Wait();
-        }
-
-        [TestMethod, Ignore]
-        public void NotCapturedSimpleTaskSyncContext_wrapped()
-        {
-            var t = NotCapturedSimpleTaskSyncContext();
-            t.Wait();
-        }
-        [TestMethod]
-        public void CapturedSimpleTaskSyncContext_wrapped()
-        {
-            var t = CapturedSimpleTaskSyncContext();
-            t.Wait();
-        }
-
-
-        [TestMethod]
-        public async Task DelaySyncContext()
-        {
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            await TaskEx.Delay(10);
-            Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+            TestUtils.RunAsync(async () =>
+            {
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                int r = await TaskEx.FromResult(4);
+                Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+                Assert.AreEqual(4, r);
+            });
         }
 
         [TestMethod]
-        public async Task SimpleTaskSyncContext()
+        public void DelaySyncContext()
         {
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            await WaitABit();
-            Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+            TestUtils.RunAsync(async () =>
+            {
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                await TaskEx.Delay(10);
+                Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+            });
         }
 
         [TestMethod]
-        public async Task ReturningTaskSyncContext()
+        public void SimpleTaskSyncContext()
         {
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            int r = await WaitAThing();
-            Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
-            Assert.AreEqual(6, r);
+            TestUtils.RunAsync(async () =>
+            {
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                await WaitABit();
+                Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+            });
+        }
+
+        [TestMethod]
+        public void ReturningTaskSyncContext()
+        {
+            TestUtils.RunAsync(async () =>
+            {
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                int r = await WaitAThing();
+                Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+                Assert.AreEqual(6, r);
+            });
         }
 
         private sealed class SpySynchronizationContext : SynchronizationContext
@@ -191,69 +177,82 @@ namespace AsyncBridge.Tests
         }
 
         [TestMethod, Ignore]
-        public async Task NotCapturedSimpleTaskSyncContext()
+        public void NotCapturedSimpleTaskSyncContext()
         {
-            Write.Line("START");
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            await TaskEx.Run(async () =>
+            TestUtils.RunAsync(async () =>
             {
-                Write.Line("A");
-                SynchronizationContext.SetSynchronizationContext(WickedSynchronizationContext.Instance);
-                Write.Line("B");
-                await WaitABit();
-                Write.Line("C");
-            }).ConfigureAwait(false);
-            Write.Line("END");
-            Assert.AreNotSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
-        }
-        [TestMethod]
-        public async Task CapturedSimpleTaskSyncContext()
-        {
-            Write.Line("START");
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            await TaskEx.Run(async () =>
-            {
-                Write.Line("A");
-                SynchronizationContext.SetSynchronizationContext(WickedSynchronizationContext.Instance);
-                Write.Line("B");
-                await WaitABit();
-                Write.Line("C");
-            }).ConfigureAwait(true);
-            Write.Line("END");
-            Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+                Write.Line("START");
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                await TaskEx.Run(async () =>
+                {
+                    Write.Line("A");
+                    SynchronizationContext.SetSynchronizationContext(WickedSynchronizationContext.Instance);
+                    Write.Line("B");
+                    await WaitABit();
+                    Write.Line("C");
+                }).ConfigureAwait(false);
+                Write.Line("END");
+                Assert.AreNotSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+            });
         }
 
         [TestMethod]
-        public async Task CapturedReturningTaskSyncContext()
+        public void CapturedSimpleTaskSyncContext()
         {
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            int r = await TaskEx.Run(async () =>
+            TestUtils.RunAsync(async () =>
             {
-                SynchronizationContext.SetSynchronizationContext(WickedSynchronizationContext.Instance);
-                return await WaitAThing();
-            }).ConfigureAwait(true);
+                Write.Line("START");
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                await TaskEx.Run(async () =>
+                {
+                    Write.Line("A");
+                    SynchronizationContext.SetSynchronizationContext(WickedSynchronizationContext.Instance);
+                    Write.Line("B");
+                    await WaitABit();
+                    Write.Line("C");
+                }).ConfigureAwait(true);
+                Write.Line("END");
+                Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+            });
+        }
 
-            Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
-            Assert.AreEqual(6, r);
+        [TestMethod]
+        public void CapturedReturningTaskSyncContext()
+        {
+            TestUtils.RunAsync(async () =>
+            {
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                int r = await TaskEx.Run(async () =>
+                {
+                    SynchronizationContext.SetSynchronizationContext(WickedSynchronizationContext.Instance);
+                    return await WaitAThing();
+                }).ConfigureAwait(true);
+
+                Assert.AreSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+                Assert.AreEqual(6, r);
+            });
         }
 
         [TestMethod, Ignore]
-        public async Task NotCapturedReturningTaskSyncContext()
+        public void NotCapturedReturningTaskSyncContext()
         {
-            Write.Line("START");
-            SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
-            int r = await TaskEx.Run(async () =>
+            TestUtils.RunAsync(async () =>
             {
-                Write.Line("A");
-                SynchronizationContext.SetSynchronizationContext(WickedSynchronizationContext.Instance);
-                Write.Line("B");
-                var result = await WaitAThing();
-                Write.Line("C");
-                return result;
-            }).ConfigureAwait(false);
-            Write.Line("END");
-            Assert.AreNotSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
-            Assert.AreEqual(6, r);
+                Write.Line("START");
+                SynchronizationContext.SetSynchronizationContext(MagicSynchronizationContext.Instance);
+                int r = await TaskEx.Run(async () =>
+                {
+                    Write.Line("A");
+                    SynchronizationContext.SetSynchronizationContext(WickedSynchronizationContext.Instance);
+                    Write.Line("B");
+                    var result = await WaitAThing();
+                    Write.Line("C");
+                    return result;
+                }).ConfigureAwait(false);
+                Write.Line("END");
+                Assert.AreNotSame(SynchronizationContext.Current, MagicSynchronizationContext.Instance);
+                Assert.AreEqual(6, r);
+            });
         }
 
         /// <summary>
