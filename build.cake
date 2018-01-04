@@ -7,8 +7,12 @@ var packDir = Directory("pub");
 Task("Clean")
     .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Clean")));
 
-Task("Build")
+Task("Restore")
     .IsDependentOn("Clean")
+    .Does(() => NuGetRestore("."));
+
+Task("Build")
+    .IsDependentOn("Restore")
     .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Build")));
 
 Task("Test")
