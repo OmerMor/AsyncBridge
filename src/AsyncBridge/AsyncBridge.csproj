@@ -59,7 +59,6 @@
     <Compile Include="Threading.Tasks\TaskEx.cs" />
     <Compile Include="Runtime.CompilerServices\YieldAwaitable.cs" />
     <None Include="AsyncBridgeKey.snk" />
-    <None Include="AsyncBridge.nuspec" />
     <None Include="readme.txt" />
     <Compile Include="Runtime.CompilerServices\CallerFilePathAttribute.cs" />
     <Compile Include="Runtime.CompilerServices\CallerLineNumberAttribute.cs" />

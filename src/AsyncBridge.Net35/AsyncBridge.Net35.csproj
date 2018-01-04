@@ -60,7 +60,6 @@
     <None Include="..\AsyncBridge\AsyncBridgeKey.snk">
       <Link>AsyncBridgeKey.snk</Link>
     </None>
-    <None Include="AsyncBridge.Net35.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
