@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://omermor.github.com/AsyncBridge/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageTags>async await C# language support $(AdditionalPackageTags)</PackageTags>
+    <PackageReleaseNotes>https://github.com/OmerMor/AsyncBridge/blob/master/CHANGELOG.md#v030</PackageReleaseNotes>
 
     <AssemblyTitle>C# 5 async/await support for .NET Framework pre-4.5</AssemblyTitle>
     <Description Condition="'$(Description)' == ''">$(AssemblyTitle)
