@@ -1,69 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38E9A844-C7B5-46EF-ABE1-5B9A5590A348}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System</RootNamespace>
-    <AssemblyName>AsyncBridge.Portable</AssemblyName>
+    <TargetFramework>portable-net40+sl5</TargetFramework>
+    <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile14</TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;PORTABLE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\AsyncBridge.Portable.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;PORTABLE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\AsyncBridge.Portable.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
+    <NugetTargetMoniker>.NETPortable,Version=v0.0,Profile=Profile14</NugetTargetMoniker>
+
+    <DefineConstants>$(DefineConstants);PORTABLE</DefineConstants>
+    <RootNamespace>System</RootNamespace>
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\AsyncBridge\AsyncBridgeKey.snk</AssemblyOriginatorKeyFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Reference Include="System.Core" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+
   <ItemGroup>
-    <Compile Include="..\AsyncBridge.Net35\**\*.cs" Exclude="..\AsyncBridge.Net35\Properties\SpecificAssemblyInfo.cs">
-      <Link>%(Compile.RecursiveDir)%(Compile.FileName)</Link>
-    </Compile>
-    <Compile Include="..\AsyncBridge\**\*.cs" Exclude="..\AsyncBridge\Properties\SpecificAssemblyInfo.cs">
-      <Link>%(Compile.RecursiveDir)%(Compile.FileName)</Link>
-    </Compile>
-    <Compile Include="Properties\SpecificAssemblyInfo.cs" />
-    <Compile Include="SerializableAttribute.cs" />
-    <Compile Include="Threading\ExecutionContext.cs" />
+    <Compile Include="..\AsyncBridge\**\*.cs" Exclude="..\AsyncBridge\Properties\SpecificAssemblyInfo.cs" />
+    <Compile Include="..\AsyncBridge.Net35\**\*.cs" Exclude="..\AsyncBridge.Net35\Properties\SpecificAssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\AsyncBridge\AsyncBridgeKey.snk">
-      <Link>AsyncBridgeKey.snk</Link>
-    </None>
-  </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

@@ -52,24 +52,24 @@ Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
     {
-        foreach (var (project, settingsCustomizer) in new (string, Action<NuGetPackSettings>)[]
+        foreach (var (project, target, settingsCustomizer) in new (string, string, Action<NuGetPackSettings>)[]
         {
-            ("AsyncBridge", s =>
+            ("AsyncBridge", "net40-client", s =>
             {
                 s.Tags = s.Tags.Concat(new[] { ".NET40" }).ToList();
             }),
-            ("AsyncBridge.Net35", s =>
+            ("AsyncBridge.Net35", "net35-client", s =>
             {
                 s.Tags = s.Tags.Concat(new[] { ".NET35" }).ToList();
                 s.Dependencies = new[] { new NuSpecDependency { Id = "TaskParallelLibrary", Version = "1.0.2856" } };
             }),
-            ("AsyncBridge.Portable", s =>
+            ("AsyncBridge.Portable", "portable-net40+sl5", s =>
             {
                 s.Tags = s.Tags.Concat(new[] { "portable", "Silverlight", ".NET40" }).ToList();
             }),
         })
         {
-            var binDir = Directory($"src/{project}/bin/{configuration}");
+            var binDir = Directory($"src/{project}/bin/{configuration}/{target}");
             var versionInfo = FileVersionInfo.GetVersionInfo(binDir + File($"{project}.dll"));
 
             EnsureDirectoryExists(packDir);
@@ -84,8 +84,8 @@ Task("Pack")
                 Tags = new[] { "async", "bridge", "C#", "C#5" },
                 Files = new[]
                 {
-                    new NuSpecContent { Source = File($"{project}.dll"), Target = "lib" },
-                    new NuSpecContent { Source = File($"{project}.xml"), Target = "lib" }
+                    new NuSpecContent { Source = $"{project}.dll", Target = $"lib/{target}" },
+                    new NuSpecContent { Source = $"{project}.xml", Target = $"lib/{target}" }
                 },
                 ProjectUrl = new Uri("https://omermor.github.com/AsyncBridge/"),
                 LicenseUrl = new Uri("https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md"),
