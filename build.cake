@@ -9,7 +9,7 @@ Task("Clean")
 
 Task("Restore")
     .IsDependentOn("Clean")
-    .Does(() => NuGetRestore("."));
+    .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Restore")));
 
 Task("Build")
     .IsDependentOn("Restore")
