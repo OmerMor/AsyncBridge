@@ -6,11 +6,19 @@
     <AssemblyName Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</AssemblyName>
     <AssemblyName Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</AssemblyName>
 
+    <Version>0.2.0</Version>
+    <Authors>Daniel Grunwald, Omer Mor, Alex Davies</Authors>
+    <Copyright>Copyright © 2012 Daniel Grunwald</Copyright>
+
+    <Description Condition="'$(TargetFramework)' == 'net40-client'">C# 5 async/await support for .NET Framework 4.0</Description>
+    <Description Condition="'$(TargetFramework)' == 'net35-client'">C# 5 async/await support for .NET Framework 3.5</Description>
+    <Description Condition="'$(TargetFramework)' == 'portable-net40+sl5'">C# 5 async/await support for Silverlight 5 (portable)</Description>
+    <AssemblyTitle>$(Description)</AssemblyTitle>
+
     <DefineConstants Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(DefineConstants);PORTABLE</DefineConstants>
     <RootNamespace>System</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\AsyncBridgeKey.snk</AssemblyOriginatorKeyFile>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
