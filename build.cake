@@ -25,13 +25,14 @@ Task("Test")
     .Does(() =>
     {
         VSTest(
-            from project in new[]
+            from (string name, string framework) project in new[]
             {
-                "AsyncBridge.Net35.Tests",
-                "AsyncBridge.Tests",
-                "AsyncTargetingPack.Tests",
-                "ReferenceAsync.Net45"
-            } select File($"tests/{project}/bin/{configuration}/{project}.dll").Path,
+                ("AsyncBridge.Net35.Tests", "net35"),
+                ("AsyncBridge.Tests", "net40"),
+                ("AsyncTargetingPack.Tests", "net40"),
+                ("ReferenceAsync.Net45", "net45")
+            }
+            select File($"tests/{project.name}/bin/{configuration}/{project.framework}/{project.name}.dll").Path,
             FixToolPath(new VSTestSettings
             {
                 Parallel = true
