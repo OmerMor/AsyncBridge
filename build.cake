@@ -52,7 +52,7 @@ Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
     {
-        foreach (var (project, target, settingsCustomizer) in new (string, string, Action<NuGetPackSettings>)[]
+        foreach (var (packageId, target, settingsCustomizer) in new (string, string, Action<NuGetPackSettings>)[]
         {
             ("AsyncBridge", "net40-client", s =>
             {
@@ -69,13 +69,13 @@ Task("Pack")
             }),
         })
         {
-            var binDir = Directory($"src/{project}/bin/{configuration}/{target}");
-            var versionInfo = FileVersionInfo.GetVersionInfo(binDir + File($"{project}.dll"));
+            var binDir = Directory($"src/AsyncBridge/bin/{configuration}/{target}");
+            var versionInfo = FileVersionInfo.GetVersionInfo(binDir + File($"{packageId}.dll"));
 
             EnsureDirectoryExists(packDir);
             var settings = new NuGetPackSettings
             {
-                Id = project,
+                Id = packageId,
                 Version = versionInfo.ProductVersion,
                 Title = versionInfo.ProductName,
                 Authors = new[] { versionInfo.CompanyName },
@@ -84,8 +84,8 @@ Task("Pack")
                 Tags = new[] { "async", "bridge", "C#", "C#5" },
                 Files = new[]
                 {
-                    new NuSpecContent { Source = $"{project}.dll", Target = $"lib/{target}" },
-                    new NuSpecContent { Source = $"{project}.xml", Target = $"lib/{target}" }
+                    new NuSpecContent { Source = $"{packageId}.dll", Target = $"lib/{target}" },
+                    new NuSpecContent { Source = $"{packageId}.xml", Target = $"lib/{target}" }
                 },
                 ProjectUrl = new Uri("https://omermor.github.com/AsyncBridge/"),
                 LicenseUrl = new Uri("https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md"),

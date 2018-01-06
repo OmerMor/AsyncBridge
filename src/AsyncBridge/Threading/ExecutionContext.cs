@@ -1,4 +1,6 @@
-﻿namespace System.Threading
+﻿#if PORTABLE
+
+namespace System.Threading
 {
     internal class ExecutionContext
     {
@@ -15,3 +17,5 @@
 
     internal delegate void ContextCallback(object state);
 }
+
+#endif

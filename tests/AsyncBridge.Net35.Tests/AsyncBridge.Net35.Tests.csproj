@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AsyncBridge.Net35\AsyncBridge.Net35.csproj" />
+    <ProjectReference Include="..\..\src\AsyncBridge\AsyncBridge.csproj" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
   </ItemGroup>
 
