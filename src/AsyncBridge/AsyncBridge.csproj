@@ -6,7 +6,7 @@
     <AssemblyName Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</AssemblyName>
     <AssemblyName Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</AssemblyName>
 
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>Daniel Grunwald, Omer Mor, Alex Davies</Authors>
     <Copyright>Copyright © 2012 Daniel Grunwald</Copyright>
 
