@@ -10,6 +10,16 @@
     <Authors>Daniel Grunwald, Omer Mor, Alex Davies</Authors>
     <Copyright>Copyright © 2012 Daniel Grunwald</Copyright>
 
+    <PackageId Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</PackageId>
+    <PackageId Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</PackageId>
+    <PackageProjectUrl>https://omermor.github.com/AsyncBridge/</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md</PackageLicenseUrl>
+
+    <PackageTags>async bridge C# C#5</PackageTags>
+    <PackageTags Condition="'$(TargetFramework)' == 'net40-client'">$(PackageTags) .NET40</PackageTags>
+    <PackageTags Condition="'$(TargetFramework)' == 'net35-client'">$(PackageTags) .NET35</PackageTags>
+    <PackageTags Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(PackageTags) portable Silverlight .NET40</PackageTags>
+
     <Description Condition="'$(TargetFramework)' == 'net40-client'">C# 5 async/await support for .NET Framework 4.0</Description>
     <Description Condition="'$(TargetFramework)' == 'net35-client'">C# 5 async/await support for .NET Framework 3.5</Description>
     <Description Condition="'$(TargetFramework)' == 'portable-net40+sl5'">C# 5 async/await support for Silverlight 5 (portable)</Description>
@@ -20,6 +30,9 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\AsyncBridgeKey.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- https://github.com/NuGet/Home/issues/4142 -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <ItemGroup>

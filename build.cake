@@ -52,49 +52,30 @@ Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
     {
-        foreach (var (packageId, target, settingsCustomizer) in new (string, string, Action<NuGetPackSettings>)[]
+        try
         {
-            ("AsyncBridge", "net40-client", s =>
+            foreach (var targetFramework in new[]
             {
-                s.Tags = s.Tags.Concat(new[] { ".NET40" }).ToList();
-            }),
-            ("AsyncBridge.Net35", "net35-client", s =>
+                "net40-client",
+                "net35-client",
+                "portable-net40+sl5"
+            })
             {
-                s.Tags = s.Tags.Concat(new[] { ".NET35" }).ToList();
-                s.Dependencies = new[] { new NuSpecDependency { Id = "TaskParallelLibrary", Version = "1.0.2856" } };
-            }),
-            ("AsyncBridge.Portable", "portable-net40+sl5", s =>
-            {
-                s.Tags = s.Tags.Concat(new[] { "portable", "Silverlight", ".NET40" }).ToList();
-            }),
-        })
-        {
-            var binDir = Directory($"src/AsyncBridge/bin/{configuration}/{target}");
-            var versionInfo = FileVersionInfo.GetVersionInfo(binDir + File($"{packageId}.dll"));
+                // Necessary because otherwise nuspec shows all target frameworks
+                MSBuild("src/AsyncBridge", CreateMSBuildSettings("Restore")
+                    .WithProperty("TargetFramework", targetFramework)
+                    .WithProperty("TargetFrameworks", targetFramework));
 
-            EnsureDirectoryExists(packDir);
-            var settings = new NuGetPackSettings
-            {
-                Id = packageId,
-                Version = versionInfo.ProductVersion,
-                Title = versionInfo.ProductName,
-                Authors = new[] { versionInfo.CompanyName },
-                Description = versionInfo.Comments,
-                Copyright = versionInfo.LegalCopyright,
-                Tags = new[] { "async", "bridge", "C#", "C#5" },
-                Files = new[]
-                {
-                    new NuSpecContent { Source = $"{packageId}.dll", Target = $"lib/{target}" },
-                    new NuSpecContent { Source = $"{packageId}.pdb", Target = $"lib/{target}" },
-                    new NuSpecContent { Source = $"{packageId}.xml", Target = $"lib/{target}" }
-                },
-                ProjectUrl = new Uri("https://omermor.github.com/AsyncBridge/"),
-                LicenseUrl = new Uri("https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md"),
-                BasePath = binDir,
-                OutputDirectory = packDir
-            };
-            settingsCustomizer?.Invoke(settings);
-            NuGetPack(settings);
+                MSBuild("src/AsyncBridge", CreateMSBuildSettings("Pack")
+                    .WithProperty("TargetFramework", targetFramework)
+                    .WithProperty("TargetFrameworks", targetFramework)
+                    .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir)));
+            }
+        }
+        finally
+        {
+            // Don’t leave restore in a weird state
+            MSBuild("src/AsyncBridge", CreateMSBuildSettings("Restore"));
         }
     });
 
