@@ -3,26 +3,15 @@
   <PropertyGroup>
     <TargetFrameworks>net40-client;net35-client;portable-net40+sl5</TargetFrameworks>
 
-    <AssemblyName Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</AssemblyName>
-    <AssemblyName Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</AssemblyName>
-
     <Version>0.3.0</Version>
     <Authors>Daniel Grunwald, Omer Mor, Alex Davies</Authors>
     <Copyright>Copyright © 2012 Daniel Grunwald</Copyright>
 
-    <PackageId Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</PackageId>
-    <PackageId Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</PackageId>
     <PackageProjectUrl>https://omermor.github.com/AsyncBridge/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageTags>async bridge C# C#5 $(AdditionalPackageTags)</PackageTags>
 
-    <PackageTags>async bridge C# C#5</PackageTags>
-    <PackageTags Condition="'$(TargetFramework)' == 'net40-client'">$(PackageTags) .NET40</PackageTags>
-    <PackageTags Condition="'$(TargetFramework)' == 'net35-client'">$(PackageTags) .NET35</PackageTags>
-    <PackageTags Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(PackageTags) portable Silverlight .NET40</PackageTags>
-
-    <Description Condition="'$(TargetFramework)' == 'net40-client'">C# 5 async/await support for .NET Framework 4.0</Description>
-    <Description Condition="'$(TargetFramework)' == 'net35-client'">C# 5 async/await support for .NET Framework 3.5</Description>
-    <Description Condition="'$(TargetFramework)' == 'portable-net40+sl5'">C# 5 async/await support for Silverlight 5 (portable)</Description>
+    <Description Condition="'$(Description)' == ''">C# 5 async/await support for .NET Framework pre-4.5</Description>
     <AssemblyTitle>$(Description)</AssemblyTitle>
 
     <DefineConstants Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(DefineConstants);PORTABLE</DefineConstants>
