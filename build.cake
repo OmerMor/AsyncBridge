@@ -52,24 +52,42 @@ Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
     {
+        // Build unified package
+        MSBuild("src/AsyncBridge", CreateMSBuildSettings("Pack")
+            .WithProperty("AdditionalPackageTags", ".NET35 .NET40 portable Silverlight")
+            .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir)));
+
         try
         {
-            foreach (var targetFramework in new[]
+            foreach (var singleTargetCustomizer in new Action<MSBuildSettings>[]
             {
-                "net40-client",
-                "net35-client",
-                "portable-net40+sl5"
+                s => s
+                    .WithProperty("TargetFramework", "net35-client")
+                    .WithProperty("TargetFrameworks", "net35-client")
+                    .WithProperty("PackageId", "AsyncBridge.Net35")
+                    .WithProperty("Title", "AsyncBridge.Net35 (deprecated)")
+                    .WithProperty("AssemblyName", "AsyncBridge.Net35")
+                    .WithProperty("AdditionalPackageTags", ".NET35"),
+                s => s
+                    .WithProperty("TargetFramework", "portable-net40+sl5")
+                    .WithProperty("TargetFrameworks", "portable-net40+sl5")
+                    .WithProperty("PackageId", "AsyncBridge.Portable")
+                    .WithProperty("Title", "AsyncBridge.Portable (deprecated)")
+                    .WithProperty("AssemblyName", "AsyncBridge.Portable")
+                    .WithProperty("AdditionalPackageTags", "portable Silverlight .NET40")
             })
             {
-                // Necessary because otherwise nuspec shows all target frameworks
-                MSBuild("src/AsyncBridge", CreateMSBuildSettings("Restore")
-                    .WithProperty("TargetFramework", targetFramework)
-                    .WithProperty("TargetFrameworks", targetFramework));
+                // Restore is necessary because otherwise nuspec shows all target frameworks
+                var restoreSettings = CreateMSBuildSettings("Restore");
+                singleTargetCustomizer.Invoke(restoreSettings);
+                MSBuild("src/AsyncBridge", restoreSettings);
 
-                MSBuild("src/AsyncBridge", CreateMSBuildSettings("Pack")
-                    .WithProperty("TargetFramework", targetFramework)
-                    .WithProperty("TargetFrameworks", targetFramework)
-                    .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir)));
+                var packSettings = CreateMSBuildSettings("Pack")
+                    .WithProperty("IsPackingSingleTarget", "true")
+                    .WithProperty("Description", "Deprecated. Use the unified package AsyncBridge instead.")
+                    .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir));
+                singleTargetCustomizer.Invoke(packSettings);
+                MSBuild("src/AsyncBridge", packSettings);
             }
         }
         finally

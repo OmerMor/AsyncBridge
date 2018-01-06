@@ -3,27 +3,17 @@
   <PropertyGroup>
     <TargetFrameworks>net40-client;net35-client;portable-net40+sl5</TargetFrameworks>
 
-    <AssemblyName Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</AssemblyName>
-    <AssemblyName Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</AssemblyName>
-
     <Version>0.3.0</Version>
     <Authors>Daniel Grunwald, Omer Mor, Alex Davies</Authors>
     <Copyright>Copyright © 2012 Daniel Grunwald</Copyright>
 
-    <PackageId Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</PackageId>
-    <PackageId Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</PackageId>
     <PackageProjectUrl>https://omermor.github.com/AsyncBridge/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageTags>async bridge C# C#5 $(AdditionalPackageTags)</PackageTags>
 
-    <PackageTags>async bridge C# C#5</PackageTags>
-    <PackageTags Condition="'$(TargetFramework)' == 'net40-client'">$(PackageTags) .NET40</PackageTags>
-    <PackageTags Condition="'$(TargetFramework)' == 'net35-client'">$(PackageTags) .NET35</PackageTags>
-    <PackageTags Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(PackageTags) portable Silverlight .NET40</PackageTags>
-
-    <Description Condition="'$(TargetFramework)' == 'net40-client'">C# 5 async/await support for .NET Framework 4.0</Description>
-    <Description Condition="'$(TargetFramework)' == 'net35-client'">C# 5 async/await support for .NET Framework 3.5</Description>
-    <Description Condition="'$(TargetFramework)' == 'portable-net40+sl5'">C# 5 async/await support for Silverlight 5 (portable)</Description>
-    <AssemblyTitle>$(Description)</AssemblyTitle>
+    <AssemblyTitle>C# 5 async/await support for .NET Framework pre-4.5</AssemblyTitle>
+    <Description Condition="'$(Description)' == ''">$(AssemblyTitle)
+This package is now unified to include all functionality from AsyncBridge.Net35 and AsyncBridge.Portable.</Description>
 
     <DefineConstants Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(DefineConstants);PORTABLE</DefineConstants>
     <RootNamespace>System</RootNamespace>
@@ -40,6 +30,10 @@
 
     <PackageReference Include="TaskParallelLibrary" Version="1.0.2856" Condition="'$(TargetFramework)' == 'net35-client'" />
     <PackageReference Include="SourceLink.Embed.AllSourceFiles" Version="2.7.4" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsPackingSingleTarget)' == ''">
+    <None Include="_._" Visible="false" Pack="true" PackagePath="lib\net45" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40-client'">
