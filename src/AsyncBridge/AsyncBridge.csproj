@@ -4,12 +4,12 @@
     <TargetFrameworks>net40-client;net35-client;portable-net40+sl5</TargetFrameworks>
 
     <Version>0.3.0</Version>
-    <Authors>Daniel Grunwald, Omer Mor, Alex Davies</Authors>
+    <Authors>Daniel Grunwald, Omer Mor, Alex Davies, jnm2</Authors>
     <Copyright>Copyright © 2012 Daniel Grunwald</Copyright>
 
     <PackageProjectUrl>https://omermor.github.com/AsyncBridge/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageTags>async bridge C# C#5 $(AdditionalPackageTags)</PackageTags>
+    <PackageTags>async await C# language support $(AdditionalPackageTags)</PackageTags>
 
     <AssemblyTitle>C# 5 async/await support for .NET Framework pre-4.5</AssemblyTitle>
     <Description Condition="'$(Description)' == ''">$(AssemblyTitle)

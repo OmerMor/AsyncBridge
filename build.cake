@@ -54,7 +54,7 @@ Task("Pack")
     {
         // Build unified package
         MSBuild("src/AsyncBridge", CreateMSBuildSettings("Pack")
-            .WithProperty("AdditionalPackageTags", ".NET35 .NET40 portable Silverlight")
+            .WithProperty("AdditionalPackageTags", ".NET Framework 3.5 4.0 portable Silverlight net35 net40 sl5")
             .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir)));
 
         try
@@ -67,14 +67,14 @@ Task("Pack")
                     .WithProperty("PackageId", "AsyncBridge.Net35")
                     .WithProperty("Title", "AsyncBridge.Net35 (deprecated)")
                     .WithProperty("AssemblyName", "AsyncBridge.Net35")
-                    .WithProperty("AdditionalPackageTags", ".NET35"),
+                    .WithProperty("AdditionalPackageTags", ".NET Framework 3.5 net35"),
                 s => s
                     .WithProperty("TargetFramework", "portable-net40+sl5")
                     .WithProperty("TargetFrameworks", "portable-net40+sl5")
                     .WithProperty("PackageId", "AsyncBridge.Portable")
                     .WithProperty("Title", "AsyncBridge.Portable (deprecated)")
                     .WithProperty("AssemblyName", "AsyncBridge.Portable")
-                    .WithProperty("AdditionalPackageTags", "portable Silverlight .NET40")
+                    .WithProperty("AdditionalPackageTags", "portable Silverlight sl5")
             })
             {
                 // Restore is necessary because otherwise nuspec shows all target frameworks
