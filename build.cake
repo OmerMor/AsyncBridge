@@ -83,6 +83,7 @@ Task("Pack")
                 MSBuild("src/AsyncBridge", restoreSettings);
 
                 var packSettings = CreateMSBuildSettings("Pack")
+                    .WithProperty("IsPackingSingleTarget", "true")
                     .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir));
                 singleTargetCustomizer.Invoke(packSettings);
                 MSBuild("src/AsyncBridge", packSettings);

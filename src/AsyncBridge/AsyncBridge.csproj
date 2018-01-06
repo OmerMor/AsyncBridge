@@ -31,6 +31,10 @@
     <PackageReference Include="SourceLink.Embed.AllSourceFiles" Version="2.7.4" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(IsPackingSingleTarget)' == ''">
+    <None Include="_._" Visible="false" Pack="true" PackagePath="lib\net45" />
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40-client'">
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
