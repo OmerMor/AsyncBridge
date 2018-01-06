@@ -65,16 +65,16 @@ Task("Pack")
                     .WithProperty("TargetFramework", "net35-client")
                     .WithProperty("TargetFrameworks", "net35-client")
                     .WithProperty("PackageId", "AsyncBridge.Net35")
+                    .WithProperty("Title", "AsyncBridge.Net35 (deprecated)")
                     .WithProperty("AssemblyName", "AsyncBridge.Net35")
-                    .WithProperty("AdditionalPackageTags", ".NET35")
-                    .WithProperty("Description", "C# 5 async/await support for .NET Framework 3.5"),
+                    .WithProperty("AdditionalPackageTags", ".NET35"),
                 s => s
                     .WithProperty("TargetFramework", "portable-net40+sl5")
                     .WithProperty("TargetFrameworks", "portable-net40+sl5")
                     .WithProperty("PackageId", "AsyncBridge.Portable")
+                    .WithProperty("Title", "AsyncBridge.Portable (deprecated)")
                     .WithProperty("AssemblyName", "AsyncBridge.Portable")
                     .WithProperty("AdditionalPackageTags", "portable Silverlight .NET40")
-                    .WithProperty("Description", "C# 5 async/await support for Silverlight 5 (portable)")
             })
             {
                 // Restore is necessary because otherwise nuspec shows all target frameworks
@@ -84,6 +84,7 @@ Task("Pack")
 
                 var packSettings = CreateMSBuildSettings("Pack")
                     .WithProperty("IsPackingSingleTarget", "true")
+                    .WithProperty("Description", "Deprecated. Use the unified package AsyncBridge instead.")
                     .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir));
                 singleTargetCustomizer.Invoke(packSettings);
                 MSBuild("src/AsyncBridge", packSettings);

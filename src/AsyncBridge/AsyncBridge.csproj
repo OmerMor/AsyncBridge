@@ -11,8 +11,9 @@
     <PackageLicenseUrl>https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageTags>async bridge C# C#5 $(AdditionalPackageTags)</PackageTags>
 
-    <Description Condition="'$(Description)' == ''">C# 5 async/await support for .NET Framework pre-4.5</Description>
-    <AssemblyTitle>$(Description)</AssemblyTitle>
+    <AssemblyTitle>C# 5 async/await support for .NET Framework pre-4.5</AssemblyTitle>
+    <Description Condition="'$(Description)' == ''">$(AssemblyTitle)
+This package is now unified to include all functionality from AsyncBridge.Net35 and AsyncBridge.Portable.</Description>
 
     <DefineConstants Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(DefineConstants);PORTABLE</DefineConstants>
     <RootNamespace>System</RootNamespace>
