@@ -85,6 +85,7 @@ Task("Pack")
                 Files = new[]
                 {
                     new NuSpecContent { Source = $"{packageId}.dll", Target = $"lib/{target}" },
+                    new NuSpecContent { Source = $"{packageId}.pdb", Target = $"lib/{target}" },
                     new NuSpecContent { Source = $"{packageId}.xml", Target = $"lib/{target}" }
                 },
                 ProjectUrl = new Uri("https://omermor.github.com/AsyncBridge/"),
