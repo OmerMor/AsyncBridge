@@ -27,7 +27,7 @@ Task("Test")
         VSTest(
             from (string name, string framework) project in new[]
             {
-                ("AsyncBridge.Net35.Tests", "net35"),
+                ("AsyncBridge.Tests", "net35"),
                 ("AsyncBridge.Tests", "net40"),
                 ("AsyncTargetingPack.Tests", "net40"),
                 ("ReferenceAsync.Net45", "net45")
