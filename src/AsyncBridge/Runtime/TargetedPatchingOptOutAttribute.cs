@@ -1,4 +1,6 @@
-﻿namespace System.Runtime
+﻿#if NET35 || PORTABLE
+
+namespace System.Runtime
 {
     /// <summary>
     /// Indicates that the .NET Framework class library method to which this attribute is applied is unlikely to be affected by servicing releases, 
@@ -29,3 +31,5 @@
         }
     }
 }
+
+#endif

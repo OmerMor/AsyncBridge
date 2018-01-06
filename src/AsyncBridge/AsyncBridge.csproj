@@ -1,79 +1,62 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12A1B828-6F9C-4748-8955-3C6B71187714}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks>net40-client;net35-client;portable-net40+sl5</TargetFrameworks>
+
+    <AssemblyName Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</AssemblyName>
+    <AssemblyName Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</AssemblyName>
+
+    <Version>0.2.0</Version>
+    <Authors>Daniel Grunwald, Omer Mor, Alex Davies</Authors>
+    <Copyright>Copyright © 2012 Daniel Grunwald</Copyright>
+
+    <PackageId Condition="'$(TargetFramework)' == 'net35-client'">AsyncBridge.Net35</PackageId>
+    <PackageId Condition="'$(TargetFramework)' == 'portable-net40+sl5'">AsyncBridge.Portable</PackageId>
+    <PackageProjectUrl>https://omermor.github.com/AsyncBridge/</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md</PackageLicenseUrl>
+
+    <PackageTags>async bridge C# C#5</PackageTags>
+    <PackageTags Condition="'$(TargetFramework)' == 'net40-client'">$(PackageTags) .NET40</PackageTags>
+    <PackageTags Condition="'$(TargetFramework)' == 'net35-client'">$(PackageTags) .NET35</PackageTags>
+    <PackageTags Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(PackageTags) portable Silverlight .NET40</PackageTags>
+
+    <Description Condition="'$(TargetFramework)' == 'net40-client'">C# 5 async/await support for .NET Framework 4.0</Description>
+    <Description Condition="'$(TargetFramework)' == 'net35-client'">C# 5 async/await support for .NET Framework 3.5</Description>
+    <Description Condition="'$(TargetFramework)' == 'portable-net40+sl5'">C# 5 async/await support for Silverlight 5 (portable)</Description>
+    <AssemblyTitle>$(Description)</AssemblyTitle>
+
+    <DefineConstants Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(DefineConstants);PORTABLE</DefineConstants>
     <RootNamespace>System</RootNamespace>
-    <AssemblyName>AsyncBridge</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\AsyncBridgeKey.snk</AssemblyOriginatorKeyFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- https://github.com/NuGet/Home/issues/4142 -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Core" Condition="'$(TargetFramework)' == 'portable-net40+sl5'" />
+
+    <PackageReference Include="TaskParallelLibrary" Version="1.0.2856" Condition="'$(TargetFramework)' == 'net35-client'" />
+    <PackageReference Include="SourceLink.Embed.AllSourceFiles" Version="2.7.4" PrivateAssets="all" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net40-client'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\AsyncBridge.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net35-client'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\AsyncBridge.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'portable-net40+sl5'">
+    <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile14</TargetFrameworkProfile>
+    <NugetTargetMoniker>.NETPortable,Version=v0.0,Profile=Profile14</NugetTargetMoniker>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AsyncBridgeKey.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AsyncCompatLibExtensions.cs" />
-    <Compile Include="Properties\SpecificAssemblyInfo.cs" />
-    <Compile Include="Runtime.CompilerServices\AsyncMethodBuilderCore.cs" />
-    <Compile Include="Runtime.CompilerServices\AsyncMethodTaskCache.cs" />
-    <Compile Include="Runtime.CompilerServices\AsyncStateMachineAttribute.cs" />
-    <Compile Include="Runtime.CompilerServices\AsyncTaskMethodBuilder.cs" />
-    <Compile Include="Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
-    <Compile Include="Runtime.CompilerServices\ConfiguredTaskAwaitable.cs" />
-    <Compile Include="Runtime.CompilerServices\IAsyncMethodBuilder.cs" />
-    <Compile Include="Runtime.CompilerServices\IteratorStateMachineAttribute.cs" />
-    <Compile Include="Runtime.CompilerServices\StateMachineAttribute.cs" />
-    <Compile Include="Runtime.CompilerServices\TaskAwaiter.cs" />
-    <Compile Include="Runtime.CompilerServices\VoidTaskResult.cs" />
-    <Compile Include="Threading.Tasks\TaskEx.cs" />
-    <Compile Include="Runtime.CompilerServices\YieldAwaitable.cs" />
-    <None Include="AsyncBridgeKey.snk" />
-    <None Include="readme.txt" />
-    <Compile Include="Runtime.CompilerServices\CallerFilePathAttribute.cs" />
-    <Compile Include="Runtime.CompilerServices\CallerLineNumberAttribute.cs" />
-    <Compile Include="Runtime.CompilerServices\CallerMemberNameAttribute.cs" />
-    <Compile Include="Runtime.CompilerServices\IAsyncStateMachine.cs" />
-    <Compile Include="Runtime.CompilerServices\ICriticalNotifyCompletion.cs" />
-    <Compile Include="Runtime.CompilerServices\INotifyCompletion.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

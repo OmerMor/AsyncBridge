@@ -4,29 +4,35 @@ var configuration = Argument("configuration", "Release");
 
 var packDir = Directory("pub");
 
+MSBuildSettings CreateMSBuildSettings(string target) => new MSBuildSettings()
+    .UseToolVersion(MSBuildToolVersion.VS2017)
+    .SetConfiguration(configuration)
+    .WithTarget(target);
+
 Task("Clean")
-    .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Clean")));
+    .Does(() => MSBuild(".", CreateMSBuildSettings("Clean")));
 
 Task("Restore")
     .IsDependentOn("Clean")
-    .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Restore")));
+    .Does(() => MSBuild(".", CreateMSBuildSettings("Restore")));
 
 Task("Build")
     .IsDependentOn("Restore")
-    .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Build")));
+    .Does(() => MSBuild(".", CreateMSBuildSettings("Build")));
 
 Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
     {
         VSTest(
-            from project in new[]
+            from (string name, string framework) project in new[]
             {
-                "AsyncBridge.Net35.Tests",
-                "AsyncBridge.Tests",
-                "AsyncTargetingPack.Tests",
-                "ReferenceAsync.Net45"
-            } select File($"tests/{project}/bin/{configuration}/{project}.dll").Path,
+                ("AsyncBridge.Tests", "net35"),
+                ("AsyncBridge.Tests", "net40"),
+                ("AsyncTargetingPack.Tests", "net40"),
+                ("ReferenceAsync.Net45", "net45")
+            }
+            select File($"tests/{project.name}/bin/{configuration}/{project.framework}/{project.name}.dll").Path,
             FixToolPath(new VSTestSettings
             {
                 Parallel = true
@@ -46,48 +52,30 @@ Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
     {
-        foreach (var (project, settingsCustomizer) in new (string, Action<NuGetPackSettings>)[]
+        try
         {
-            ("AsyncBridge", s =>
+            foreach (var targetFramework in new[]
             {
-                s.Tags = s.Tags.Concat(new[] { ".NET40" }).ToList();
-            }),
-            ("AsyncBridge.Net35", s =>
+                "net40-client",
+                "net35-client",
+                "portable-net40+sl5"
+            })
             {
-                s.Tags = s.Tags.Concat(new[] { ".NET35" }).ToList();
-                s.Dependencies = new[] { new NuSpecDependency { Id = "TaskParallelLibrary", Version = "1.0.2856" } };
-            }),
-            ("AsyncBridge.Portable", s =>
-            {
-                s.Tags = s.Tags.Concat(new[] { "portable", "Silverlight", ".NET40" }).ToList();
-            }),
-        })
-        {
-            var binDir = Directory($"src/{project}/bin/{configuration}");
-            var versionInfo = FileVersionInfo.GetVersionInfo(binDir + File($"{project}.dll"));
+                // Necessary because otherwise nuspec shows all target frameworks
+                MSBuild("src/AsyncBridge", CreateMSBuildSettings("Restore")
+                    .WithProperty("TargetFramework", targetFramework)
+                    .WithProperty("TargetFrameworks", targetFramework));
 
-            EnsureDirectoryExists(packDir);
-            var settings = new NuGetPackSettings
-            {
-                Id = project,
-                Version = versionInfo.ProductVersion,
-                Title = versionInfo.ProductName,
-                Authors = new[] { versionInfo.CompanyName },
-                Description = versionInfo.Comments,
-                Copyright = versionInfo.LegalCopyright,
-                Tags = new[] { "async", "bridge", "C#", "C#5" },
-                Files = new[]
-                {
-                    new NuSpecContent { Source = File($"{project}.dll"), Target = "lib" },
-                    new NuSpecContent { Source = File($"{project}.xml"), Target = "lib" }
-                },
-                ProjectUrl = new Uri("https://omermor.github.com/AsyncBridge/"),
-                LicenseUrl = new Uri("https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md"),
-                BasePath = binDir,
-                OutputDirectory = packDir
-            };
-            settingsCustomizer?.Invoke(settings);
-            NuGetPack(settings);
+                MSBuild("src/AsyncBridge", CreateMSBuildSettings("Pack")
+                    .WithProperty("TargetFramework", targetFramework)
+                    .WithProperty("TargetFrameworks", targetFramework)
+                    .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir)));
+            }
+        }
+        finally
+        {
+            // Don’t leave restore in a weird state
+            MSBuild("src/AsyncBridge", CreateMSBuildSettings("Restore"));
         }
     });
 
