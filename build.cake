@@ -4,16 +4,21 @@ var configuration = Argument("configuration", "Release");
 
 var packDir = Directory("pub");
 
+MSBuildSettings CreateMSBuildSettings(string target) => new MSBuildSettings()
+    .UseToolVersion(MSBuildToolVersion.VS2017)
+    .SetConfiguration(configuration)
+    .WithTarget(target);
+
 Task("Clean")
-    .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Clean")));
+    .Does(() => MSBuild(".", CreateMSBuildSettings("Clean")));
 
 Task("Restore")
     .IsDependentOn("Clean")
-    .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Restore")));
+    .Does(() => MSBuild(".", CreateMSBuildSettings("Restore")));
 
 Task("Build")
     .IsDependentOn("Restore")
-    .Does(() => MSBuild(".", settings => settings.SetConfiguration(configuration).WithTarget("Build")));
+    .Does(() => MSBuild(".", CreateMSBuildSettings("Build")));
 
 Task("Test")
     .IsDependentOn("Build")
