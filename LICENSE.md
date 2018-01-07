@@ -1,6 +1,5 @@
-The MIT License (MIT)
-
-Copyright (c) 2015 Omer Mor
+Original work copyright © 2012 Daniel Grunwald (https://gist.github.com/dgrunwald/1961087)
+Modifications copyright © 2012–2018 Omer Mor, Alex Davies, Joseph Musser
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
