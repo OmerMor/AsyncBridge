@@ -30,6 +30,11 @@ This package is now unified to include all functionality from AsyncBridge.Net35 
 
     <PackageReference Include="TaskParallelLibrary" Version="1.0.2856" Condition="'$(TargetFramework)' == 'net35-client'" />
     <PackageReference Include="SourceLink.Embed.AllSourceFiles" Version="2.7.4" PrivateAssets="all" />
+    <PackageReference Include="ApiContractGenerator.MSBuild" Version="1.0.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApiContractAssembly Include="$(TargetPath)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsPackingSingleTarget)' == ''">
