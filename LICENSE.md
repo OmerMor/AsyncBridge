@@ -1,4 +1,4 @@
-Original work copyright © 2012 Daniel Grunwald (https://gist.github.com/dgrunwald/1961087)
+Original work copyright © 2012 Daniel Grunwald (https://gist.github.com/dgrunwald/1961087)  
 Modifications copyright © 2012–2018 Omer Mor, Alex Davies, Joseph Musser
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
