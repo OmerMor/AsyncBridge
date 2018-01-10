@@ -9,11 +9,11 @@
 
     <PackageProjectUrl>https://omermor.github.com/AsyncBridge/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/OmerMor/AsyncBridge/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageTags>async await C# language support $(AdditionalPackageTags)</PackageTags>
+    <PackageTags>async await C# language support .NET Framework 3.5 4.0 portable Silverlight net35 net40 sl5</PackageTags>
     <PackageReleaseNotes>https://github.com/OmerMor/AsyncBridge/blob/master/CHANGELOG.md#v031</PackageReleaseNotes>
 
     <AssemblyTitle>C# 5 async/await support for .NET Framework pre-4.5</AssemblyTitle>
-    <Description Condition="'$(Description)' == ''">$(AssemblyTitle)
+    <Description>$(AssemblyTitle)
 This package is now unified to include all functionality from AsyncBridge.Net35 and AsyncBridge.Portable.</Description>
 
     <DefineConstants Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(DefineConstants);PORTABLE</DefineConstants>
@@ -38,7 +38,7 @@ This package is now unified to include all functionality from AsyncBridge.Net35 
     <ApiContractAssembly Include="$(TargetPath)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(IsPackingSingleTarget)' == ''">
+  <ItemGroup>
     <None Include="_._" Visible="false" Pack="true" PackagePath="lib\net45" />
   </ItemGroup>
 
