@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
@@ -256,17 +257,22 @@ namespace System.Runtime.CompilerServices
         /// <param name="exc"> The exception to prepare. </param>
         internal static Exception PrepareExceptionForRethrow(Exception exc)
         {
-            if (s_prepForRemoting != null)
+            try
             {
-                try
-                {
-                    s_prepForRemoting.Invoke(exc, s_emptyParams);
-                }
-                catch
-                {
-                }
+                if (s_prepForRemoting != null)
+                    return InternalPrepareExceptionForRethrow(exc);
             }
-            return exc;
+            catch // Can fail if the method is invalid, or can fail to even execute the method due to requiring SecuritySafeCritical
+            {
+            }
+
+            return new AggregateException(exc); // Fallback - ugly, but no choice
+        }
+
+        [SecuritySafeCritical]
+        private static Exception InternalPrepareExceptionForRethrow(Exception exc)
+        {
+           return (Exception)s_prepForRemoting.Invoke(exc, s_emptyParams);
         }
 
         /// <summary>
