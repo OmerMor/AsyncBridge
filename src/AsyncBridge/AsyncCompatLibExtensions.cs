@@ -150,7 +150,7 @@ public static class AsyncCompatLibExtensions
     /// <returns>A task representing the continuation status</returns>
     public static Task ContinueWith(this Task task, Action<Task, object> action, object state, CancellationToken token, TaskContinuationOptions taskOptions, TaskScheduler scheduler)
     {
-        return task.ContinueWith((innerTask) => action(innerTask, state), token, taskOptions, scheduler);
+        return task.ContinueWith(new ContinueWithState(action, state).ContinueWith, token, taskOptions, scheduler);
     }
 
     /// <summary>
