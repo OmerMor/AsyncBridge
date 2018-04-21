@@ -7,6 +7,26 @@ public static class AsyncCompatLibExtensions
 
     public static System.Runtime.CompilerServices.ConfiguredTaskAwaitable ConfigureAwait(this System.Threading.Tasks.Task task, bool continueOnCapturedContext);
 
+    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> action, object state);
+
+    public static System.Threading.Tasks.Task ContinueWith<TInResult>(this System.Threading.Tasks.Task<TInResult> task, System.Action<System.Threading.Tasks.Task<TInResult>, object> action, object state);
+
+    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> action, object state, System.Threading.CancellationToken token);
+
+    public static System.Threading.Tasks.Task ContinueWith<TInResult>(this System.Threading.Tasks.Task<TInResult> task, System.Action<System.Threading.Tasks.Task<TInResult>, object> action, object state, System.Threading.CancellationToken token);
+
+    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> action, object state, System.Threading.CancellationToken token, System.Threading.Tasks.TaskContinuationOptions taskOptions, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task ContinueWith<TInResult>(this System.Threading.Tasks.Task<TInResult> task, System.Action<System.Threading.Tasks.Task<TInResult>, object> action, object state, System.Threading.CancellationToken token, System.Threading.Tasks.TaskContinuationOptions taskOptions, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> action, object state, System.Threading.CancellationToken token);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> action, object state, System.Threading.CancellationToken token, System.Threading.Tasks.TaskContinuationOptions taskOptions, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TInResult, TResult>(this System.Threading.Tasks.Task<TInResult> task, System.Func<System.Threading.Tasks.Task<TInResult>, object, TResult> action, object state, System.Threading.CancellationToken token);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TInResult, TResult>(this System.Threading.Tasks.Task<TInResult> task, System.Func<System.Threading.Tasks.Task<TInResult>, object, TResult> action, object state, System.Threading.CancellationToken token, System.Threading.Tasks.TaskContinuationOptions taskOptions, System.Threading.Tasks.TaskScheduler scheduler);
+
     public static System.Runtime.CompilerServices.TaskAwaiter GetAwaiter(this System.Threading.Tasks.Task task);
 
     public static System.Runtime.CompilerServices.TaskAwaiter<TResult> GetAwaiter<TResult>(this System.Threading.Tasks.Task<TResult> task);
