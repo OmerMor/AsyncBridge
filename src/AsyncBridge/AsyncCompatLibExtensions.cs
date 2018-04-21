@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 // ReSharper disable CheckNamespace
@@ -84,6 +85,42 @@ public static class AsyncCompatLibExtensions
             throw new ArgumentNullException("task");
 
         return new ConfiguredTaskAwaitable(task, continueOnCapturedContext);
+    }
+
+    /// <summary>
+    /// Causes a cancellation token source to cancel after a specified time
+    /// </summary>
+    /// <param name="cancelSource">The cancellation token source to cancel</param>
+    /// <param name="millisecondsDelay">The time in milliseconds to wait before cancellation</param>
+    public static void CancelAfter(this CancellationTokenSource cancelSource, int millisecondsDelay)
+    {
+        cancelSource.CancelAfter(new TimeSpan(millisecondsDelay * TimeSpan.TicksPerMillisecond));
+    }
+
+    /// <summary>
+    /// Causes a cancellation token source to cancel after a specified time
+    /// </summary>
+    /// <param name="cancelSource">The cancellation token source to cancel</param>
+    /// <param name="delay">The time to wait before cancellation</param>
+    public static void CancelAfter(this CancellationTokenSource cancelSource, TimeSpan delay)
+    {
+        Timer MyTimer = null;
+
+        MyTimer = new Timer(state =>
+        {
+            MyTimer.Dispose();
+
+            try
+            {
+                if (cancelSource.Token.CanBeCanceled)
+                    cancelSource.Cancel();
+            }
+            catch (ObjectDisposedException) // If the cancellation token has been disposed of, ignore the exception
+            {
+            }
+        }, null, Timeout.Infinite, Timeout.Infinite);
+
+        MyTimer.Change(delay, new TimeSpan(0, 0, 0, 0, -1));
     }
 }
 // ReSharper restore CheckNamespace
