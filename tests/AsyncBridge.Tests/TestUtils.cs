@@ -18,5 +18,11 @@ namespace AsyncBridge.Tests
             if (asyncTestMethod == null) throw new ArgumentNullException(nameof(asyncTestMethod));
             asyncTestMethod.Invoke().GetAwaiter().GetResult();
         }
+
+        public static TResult RunAsync<TResult>(Func<Task<TResult>> asyncTestMethod)
+        {
+            if (asyncTestMethod == null) throw new ArgumentNullException(nameof(asyncTestMethod));
+            return asyncTestMethod.Invoke().GetAwaiter().GetResult();
+        }
     }
 }
