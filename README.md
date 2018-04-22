@@ -7,6 +7,6 @@ Deprecated packages:
 [![NuGet](https://img.shields.io/nuget/v/AsyncBridge.Net35.svg)](https://www.nuget.org/packages/AsyncBridge.Net35/) [![Download count](https://img.shields.io/nuget/dt/AsyncBridge.Net35.svg)](https://www.nuget.org/packages/AsyncBridge.Net35/) <sup>(AsyncBridge.Net35)</sup>  
 [![NuGet](https://img.shields.io/nuget/v/AsyncBridge.Portable.svg)](https://www.nuget.org/packages/AsyncBridge.Portable/) [![Download count](https://img.shields.io/nuget/dt/AsyncBridge.Portable.svg)](https://www.nuget.org/packages/AsyncBridge.Portable/) <sup>(AsyncBridge.Portable)</sup>
 
-Based on [gist](https://gist.github.com/1961087) by Daniel Grunwald (from SharpDevelop).
+Based on a [gist](https://gist.github.com/1961087) by [Daniel Grunwald](https://github.com/dgrunwald). Thanks to [Alex Davies](https://github.com/alexdavies74) for the [idea](http://www.simple-talk.com/community/blogs/alex/archive/2012/04/08/107197.aspx)! See also [LICENSE.md](LICENSE.md).
 
-Thanks goes to Alex Davies for the [idea](http://www.simple-talk.com/community/blogs/alex/archive/2012/04/08/107197.aspx).
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/OmerMor/AsyncBridge?svg=true)](https://ci.appveyor.com/project/jnm2/asyncbridge)
