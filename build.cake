@@ -1,13 +1,26 @@
+#load lib.cake
 using System.Diagnostics;
 
 var configuration = Argument("configuration", "Release");
 
 var packDir = Directory("pub");
 
+if (!TryReadFromCsproj("src/AsyncBridge/AsyncBridge.csproj", out var version))
+    throw new Exception("Failed to read version.");
+
+var ciSettings = TryDetectCISettings();
+
+if (ciSettings != null)
+{
+    version = ChangeVersionSuffix(version, GetCISuffix(ciSettings.Value));
+    AppVeyor.UpdateBuildVersion(version);
+}
+
 MSBuildSettings CreateMSBuildSettings(string target) => new MSBuildSettings()
     .UseToolVersion(MSBuildToolVersion.VS2017)
     .SetConfiguration(configuration)
-    .WithTarget(target);
+    .WithTarget(target)
+    .WithProperty("Version", version);
 
 Task("Clean")
     .Does(() => MSBuild(".", CreateMSBuildSettings("Clean")));
@@ -54,6 +67,11 @@ Task("Pack")
     {
         MSBuild("src/AsyncBridge", CreateMSBuildSettings("Pack")
             .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir)));
+
+        if (ciSettings?.Branch == "master")
+        {
+            AppVeyor.UploadArtifact(packDir.Path.CombineWithFilePath($"AsyncBridge.{version}.nupkg"));
+        }
     });
 
 RunTarget(Argument("target", "Test"));
