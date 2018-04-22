@@ -1,0 +1,10 @@
+version: '{build}'
+image: Visual Studio 2017
+
+test: off
+
+build_script:
+- ps: .\build.ps1 -t pack
+
+# For PRs, skip the branch run and only run against the virtual PR merge.
+skip_branch_with_pr: true
