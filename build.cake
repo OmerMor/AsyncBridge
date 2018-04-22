@@ -45,6 +45,21 @@ Task("Test")
         #tool OpenCover
         OpenCover(RunTests, "opencover.xml", new OpenCoverSettings()
             .WithFilter("+[AsyncBridge]*"));
+
+        if (AppVeyor.IsRunningOnAppVeyor)
+        {
+            #tool Codecov
+            #addin Cake.Codecov
+            Codecov(new CodecovSettings
+            {
+                Files = new[] { "opencover.xml" },
+                EnvironmentVariables = new Dictionary<string, string>
+                {
+                    // https://github.com/cake-contrib/Cake.Codecov#known-issues
+                    ["APPVEYOR_BUILD_VERSION"] = version
+                }
+            });
+        }
     });
 
 private void RunTests(ICakeContext testToolContext)
