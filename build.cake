@@ -19,6 +19,7 @@ if (ciSettings != null)
 MSBuildSettings CreateMSBuildSettings(string target) => new MSBuildSettings()
     .UseToolVersion(MSBuildToolVersion.VS2017)
     .SetConfiguration(configuration)
+    .SetVerbosity(Verbosity.Minimal)
     .WithTarget(target)
     .WithProperty("Version", version);
 
@@ -31,42 +32,56 @@ Task("Restore")
 
 Task("Build")
     .IsDependentOn("Restore")
-    .Does(() => MSBuild(".", CreateMSBuildSettings("Build")));
+    .Does(() =>
+    {
+        MSBuild(".", CreateMSBuildSettings("Build")
+            .WithProperty("DebugType", "pdbonly")); // Needed for OpenCover
+    });
 
 Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        VSTest(
-            from (string name, string framework) project in new[]
-            {
-                ("AsyncBridge.Tests", "net35"),
-                ("AsyncBridge.Tests", "net40"),
-                ("AsyncTargetingPack.Tests", "net40"),
-                ("ReferenceAsync.Net45", "net45")
-            }
-            select File($"tests/{project.name}/bin/{configuration}/{project.framework}/{project.name}.dll").Path,
-            FixToolPath(new VSTestSettings
-            {
-                Parallel = true
-            }));
-
-        VSTestSettings FixToolPath(VSTestSettings settings)
-        {
-            #tool vswhere
-            settings.ToolPath =
-                VSWhereLatest(new VSWhereLatestSettings { Requires = "Microsoft.VisualStudio.PackageGroup.TestTools.Core" })
-                .CombineWithFilePath(File(@"Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"));
-            return settings;
-        }
+        #tool OpenCover
+        OpenCover(RunTests, "opencover.xml", new OpenCoverSettings()
+            .WithFilter("+[AsyncBridge]*"));
     });
+
+private void RunTests(ICakeContext testToolContext)
+{
+    testToolContext.VSTest(
+        from (string name, string framework) project in new[]
+        {
+            ("AsyncBridge.Tests", "net35"),
+            ("AsyncBridge.Tests", "net40"),
+            ("AsyncTargetingPack.Tests", "net40"),
+            ("ReferenceAsync.Net45", "net45")
+        }
+        select File($"tests/{project.name}/bin/{configuration}/{project.framework}/{project.name}.dll").Path,
+        FixToolPath(new VSTestSettings
+        {
+            Parallel = true
+        }));
+
+    VSTestSettings FixToolPath(VSTestSettings settings)
+    {
+        #tool vswhere
+        settings.ToolPath =
+            VSWhereLatest(new VSWhereLatestSettings { Requires = "Microsoft.VisualStudio.PackageGroup.TestTools.Core" })
+            .CombineWithFilePath(File(@"Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"));
+        return settings;
+    }
+}
 
 Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
     {
-        MSBuild("src/AsyncBridge", CreateMSBuildSettings("Pack")
-            .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir)));
+        MSBuild(
+            "src/AsyncBridge",
+            CreateMSBuildSettings("Rebuild") // Rebuilds the shipped assemblies as needed to create portable PDBs
+                .WithTarget("Pack")          // since the OpenCover forces the Build target to build with Windows PDBs.
+                .WithProperty("PackageOutputPath", System.IO.Path.GetFullPath(packDir)));
 
         if (ciSettings?.Branch == "master")
         {
