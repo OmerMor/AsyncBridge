@@ -9,4 +9,4 @@ Deprecated packages:
 
 Based on a [gist](https://gist.github.com/1961087) by [Daniel Grunwald](https://github.com/dgrunwald). Thanks to [Alex Davies](https://github.com/alexdavies74) for the [idea](http://www.simple-talk.com/community/blogs/alex/archive/2012/04/08/107197.aspx)! See also [LICENSE.md](LICENSE.md).
 
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/OmerMor/AsyncBridge?svg=true)](https://ci.appveyor.com/project/jnm2/asyncbridge)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/OmerMor/AsyncBridge?branch=master&svg=true)](https://ci.appveyor.com/project/jnm2/asyncbridge)
