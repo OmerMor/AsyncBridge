@@ -56,8 +56,22 @@ Task("Test")
                 EnvironmentVariables = new Dictionary<string, string>
                 {
                     // https://github.com/cake-contrib/Cake.Codecov#known-issues
-                    ["APPVEYOR_BUILD_VERSION"] = version
-                }
+                    ["APPVEYOR_BUILD_VERSION"] = version,
+
+                    // Can’t see any way to get codecov.io to get the build URL right besides specifying it manually.
+                    // https://twitter.com/jnm236/status/988191635782733825
+                    // https://docs.codecov.io/reference#upload
+                    // https://github.com/codecov/codecov-exe/blob/e631d74555dcf89c3de9ea83884610e2a2375482/Source/Codecov/Services/ContinuousIntegrationServers/Appveyor.cs#L51
+                    ["CI_BUILD_URL"] = $"https://ci.appveyor.com/project/"
+                        + EnvironmentVariable("APPVEYOR_ACCOUNT_NAME") + "/" + EnvironmentVariable("APPVEYOR_PROJECT_SLUG") + "/build/" + version
+                },
+
+                // https://twitter.com/jnm236/status/988192423049342977
+                // Codecov.io defaults to displaying the name from &build, which defaults to %APPVEYOR_JOB_ID% e.g. ‘r3f42taes5j98dgw’:
+                // https://github.com/codecov/codecov-exe/blob/e631d74555dcf89c3de9ea83884610e2a2375482/Source/Codecov/Services/ContinuousIntegrationServers/Appveyor.cs#L32
+                // Any change to &build that I’ve tried, including switching a single letter, causes Codecov.exe to give "[Fatal] Failed to upload the report."
+                // So, setting &name instead.
+                Name = version
             });
         }
     });
