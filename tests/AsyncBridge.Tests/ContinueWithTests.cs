@@ -25,7 +25,7 @@ namespace AsyncBridge.Tests
         public void Action()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => GotState = (bool)state, true));
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true));
             Assert.IsTrue(GotState);
         }
 
@@ -39,7 +39,7 @@ namespace AsyncBridge.Tests
         public void ActionToken()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => GotState = (bool)state, true, CancellationToken.None));
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true, CancellationToken.None));
             Assert.IsTrue(GotState);
         }
 
@@ -53,7 +53,7 @@ namespace AsyncBridge.Tests
         public void ActionOptions()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => GotState = (bool)state, true, TaskContinuationOptions.None));
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true, TaskContinuationOptions.None));
             Assert.IsTrue(GotState);
         }
 
@@ -67,7 +67,7 @@ namespace AsyncBridge.Tests
         public void ActionScheduler()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => GotState = (bool)state, true, TaskScheduler.Current));
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true, TaskScheduler.Current));
             Assert.IsTrue(GotState);
         }
 
@@ -81,7 +81,7 @@ namespace AsyncBridge.Tests
         public void ActionTokenOptionsScheduler()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => GotState = (bool)state, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
             Assert.IsTrue(GotState);
         }
 
@@ -95,7 +95,7 @@ namespace AsyncBridge.Tests
         public void ActionResult()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => GotState = (bool)state, true));
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true));
             Assert.IsTrue(GotState);
         }
 
@@ -109,7 +109,7 @@ namespace AsyncBridge.Tests
         public void ActionResultToken()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => GotState = (bool)state, true, CancellationToken.None));
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true, CancellationToken.None));
             Assert.IsTrue(GotState);
         }
 
@@ -123,7 +123,7 @@ namespace AsyncBridge.Tests
         public void ActionResultOptions()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => GotState = (bool)state, true, TaskContinuationOptions.None));
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true, TaskContinuationOptions.None));
             Assert.IsTrue(GotState);
         }
 
@@ -137,7 +137,7 @@ namespace AsyncBridge.Tests
         public void ActionResultScheduler()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => GotState = (bool)state, true, TaskScheduler.Current));
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true, TaskScheduler.Current));
             Assert.IsTrue(GotState);
         }
 
@@ -151,7 +151,7 @@ namespace AsyncBridge.Tests
         public void ActionResultTokenOptionsScheduler()
         {
             var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => GotState = (bool)state, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
             Assert.IsTrue(GotState);
         }
 
