@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Linq;
 
@@ -7,7 +7,7 @@ namespace System.Threading.Tasks
     /// <summary>
     /// Provides methods for creating and manipulating tasks.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// TaskEx is a placeholder.
     /// </remarks>
@@ -16,18 +16,18 @@ namespace System.Threading.Tasks
         /// <summary>
         /// An already completed task.
         /// </summary>
-        private static Task s_preCompletedTask = FromResult(false);
+        private static readonly Task PreCompletedTask = FromResult(false);
         /// <summary>
         /// An already canceled task.
         /// </summary>
-        private static Task s_preCanceledTask = ((Func<Task>)(() =>
+        private static readonly Task PreCanceledTask = ((Func<Task>)(() =>
         {
             var tcs = new TaskCompletionSource<bool>();
             tcs.TrySetCanceled();
             return (Task)tcs.Task;
         }))();
 
-        private const string ArgumentOutOfRange_TimeoutNonNegativeOrMinusOne = "The timeout must be non-negative or -1, and it must be less than or equal to Int32.MaxValue.";
+        private const string ArgumentOutOfRangeTimeoutNonNegativeOrMinusOne = "The timeout must be non-negative or -1, and it must be less than or equal to Int32.MaxValue.";
 
         static TaskEx()
         {
@@ -178,8 +178,8 @@ namespace System.Threading.Tasks
         {
             var timeoutMs = (long)dueTime.TotalMilliseconds;
             if (timeoutMs < Timeout.Infinite || timeoutMs > int.MaxValue)
-                throw new ArgumentOutOfRangeException("dueTime", ArgumentOutOfRange_TimeoutNonNegativeOrMinusOne);
-            
+                throw new ArgumentOutOfRangeException("dueTime", ArgumentOutOfRangeTimeoutNonNegativeOrMinusOne);
+
             return Delay((int)timeoutMs, cancellationToken);
         }
 
@@ -195,11 +195,11 @@ namespace System.Threading.Tasks
         public static Task Delay(int dueTime, CancellationToken cancellationToken)
         {
             if (dueTime < -1)
-                throw new ArgumentOutOfRangeException("dueTime", ArgumentOutOfRange_TimeoutNonNegativeOrMinusOne);
+                throw new ArgumentOutOfRangeException("dueTime", ArgumentOutOfRangeTimeoutNonNegativeOrMinusOne);
             if (cancellationToken.IsCancellationRequested)
-                return s_preCanceledTask;
+                return PreCanceledTask;
             if (dueTime == 0)
-                return s_preCompletedTask;
+                return PreCompletedTask;
             var tcs = new TaskCompletionSource<bool>();
             var ctr = new CancellationTokenRegistration();
 
@@ -231,12 +231,12 @@ namespace System.Threading.Tasks
         /// <returns>
         /// A Task that represents the completion of all of the provided tasks.
         /// </returns>
-        /// 
+        ///
         /// <remarks>
         /// If any of the provided Tasks faults, the returned Task will also fault, and its Exception will contain information
         ///             about all of the faulted tasks.  If no Tasks fault but one or more Tasks is canceled, the returned
         ///             Task will also be canceled.
-        /// 
+        ///
         /// </remarks>
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="tasks"/> argument is null.</exception><exception cref="T:System.ArgumentException">The <paramref name="tasks"/> argument contains a null reference.</exception>
         public static Task WhenAll(params Task[] tasks)
@@ -251,12 +251,12 @@ namespace System.Threading.Tasks
         /// <returns>
         /// A Task that represents the completion of all of the provided tasks.
         /// </returns>
-        /// 
+        ///
         /// <remarks>
         /// If any of the provided Tasks faults, the returned Task will also fault, and its Exception will contain information
         ///             about all of the faulted tasks.  If no Tasks fault but one or more Tasks is canceled, the returned
         ///             Task will also be canceled.
-        /// 
+        ///
         /// </remarks>
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="tasks"/> argument is null.</exception><exception cref="T:System.ArgumentException">The <paramref name="tasks"/> argument contains a null reference.</exception>
         public static Task<TResult[]> WhenAll<TResult>(params Task<TResult>[] tasks)
@@ -271,12 +271,12 @@ namespace System.Threading.Tasks
         /// <returns>
         /// A Task that represents the completion of all of the provided tasks.
         /// </returns>
-        /// 
+        ///
         /// <remarks>
         /// If any of the provided Tasks faults, the returned Task will also fault, and its Exception will contain information
         ///             about all of the faulted tasks.  If no Tasks fault but one or more Tasks is canceled, the returned
         ///             Task will also be canceled.
-        /// 
+        ///
         /// </remarks>
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="tasks"/> argument is null.</exception><exception cref="T:System.ArgumentException">The <paramref name="tasks"/> argument contains a null reference.</exception>
         public static Task WhenAll(IEnumerable<Task> tasks)
@@ -291,12 +291,12 @@ namespace System.Threading.Tasks
         /// <returns>
         /// A Task that represents the completion of all of the provided tasks.
         /// </returns>
-        /// 
+        ///
         /// <remarks>
         /// If any of the provided Tasks faults, the returned Task will also fault, and its Exception will contain information
         ///             about all of the faulted tasks.  If no Tasks fault but one or more Tasks is canceled, the returned
         ///             Task will also be canceled.
-        /// 
+        ///
         /// </remarks>
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="tasks"/> argument is null.</exception><exception cref="T:System.ArgumentException">The <paramref name="tasks"/> argument contains a null reference.</exception>
         public static Task<TResult[]> WhenAll<TResult>(IEnumerable<Task<TResult>> tasks)
@@ -354,9 +354,9 @@ namespace System.Threading.Tasks
         /// <param name="tasks">The Tasks to be monitored.</param>
         /// <returns>
         /// A Task that represents the completion of any of the provided Tasks.  The completed Task is this Task's result.
-        /// 
+        ///
         /// </returns>
-        /// 
+        ///
         /// <remarks>
         /// Any Tasks that fault will need to have their exceptions observed elsewhere.
         /// </remarks>
@@ -372,9 +372,9 @@ namespace System.Threading.Tasks
         /// <param name="tasks">The Tasks to be monitored.</param>
         /// <returns>
         /// A Task that represents the completion of any of the provided Tasks.  The completed Task is this Task's result.
-        /// 
+        ///
         /// </returns>
-        /// 
+        ///
         /// <remarks>
         /// Any Tasks that fault will need to have their exceptions observed elsewhere.
         /// </remarks>
@@ -394,9 +394,9 @@ namespace System.Threading.Tasks
         /// <param name="tasks">The Tasks to be monitored.</param>
         /// <returns>
         /// A Task that represents the completion of any of the provided Tasks.  The completed Task is this Task's result.
-        /// 
+        ///
         /// </returns>
-        /// 
+        ///
         /// <remarks>
         /// Any Tasks that fault will need to have their exceptions observed elsewhere.
         /// </remarks>
@@ -412,9 +412,9 @@ namespace System.Threading.Tasks
         /// <param name="tasks">The Tasks to be monitored.</param>
         /// <returns>
         /// A Task that represents the completion of any of the provided Tasks.  The completed Task is this Task's result.
-        /// 
+        ///
         /// </returns>
-        /// 
+        ///
         /// <remarks>
         /// Any Tasks that fault will need to have their exceptions observed elsewhere.
         /// </remarks>
@@ -445,12 +445,12 @@ namespace System.Threading.Tasks
         /// <summary>
         /// Creates an awaitable that asynchronously yields back to the current context when awaited.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// A context that, when awaited, will asynchronously transition back into the current context.
         ///             If SynchronizationContext.Current is non-null, that is treated as the current context.
         ///             Otherwise, TaskScheduler.Current is treated as the current context.
-        /// 
+        ///
         /// </returns>
         public static YieldAwaitable Yield()
         {

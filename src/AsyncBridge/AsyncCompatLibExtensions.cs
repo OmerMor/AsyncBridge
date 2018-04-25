@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 /// <summary>
 /// Provides extension methods for threading-related types.
 /// </summary>
-/// 
+///
 /// <summary>
 /// Asynchronous wrappers for .NET Framework operations.
 /// </summary>
-/// 
+///
 /// <summary>
 /// Provides extension methods for threading-related types.
 /// </summary>
-/// 
+///
 /// <remarks>
 /// AsyncCtpThreadingExtensions is a placeholder.
 /// </remarks>
@@ -32,7 +32,7 @@ public static class AsyncCompatLibExtensions
     {
         if (task == null)
             throw new ArgumentNullException("task");
-        
+
         return new TaskAwaiter(task);
     }
 
@@ -48,7 +48,7 @@ public static class AsyncCompatLibExtensions
     {
         if (task == null)
             throw new ArgumentNullException("task");
-        
+
         return new TaskAwaiter<TResult>(task);
     }
 

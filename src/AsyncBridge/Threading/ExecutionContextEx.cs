@@ -1,4 +1,4 @@
-﻿#if NET35 || PORTABLE
+#if NET35 || PORTABLE
 
 using System;
 using System.Collections.Generic;

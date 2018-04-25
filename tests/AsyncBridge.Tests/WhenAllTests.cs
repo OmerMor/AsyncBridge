@@ -43,7 +43,7 @@ namespace AsyncBridge.Tests
         {
             var taskCompletionSources = new []
                                         {
-                                            new TaskCompletionSource<int>(), 
+                                            new TaskCompletionSource<int>(),
                                             new TaskCompletionSource<int>()
                                         };
             var whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task));

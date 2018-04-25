@@ -8,36 +8,36 @@ namespace System.Runtime.CompilerServices
     /// <summary>
     /// Provides a builder for asynchronous methods that return void.
     ///             This type is intended for compiler use only.
-    /// 
+    ///
     /// </summary>
     public struct AsyncVoidMethodBuilder : IAsyncMethodBuilder
     {
         /// <summary>
         /// The synchronization context associated with this operation.
         /// </summary>
-        private readonly SynchronizationContext m_synchronizationContext;
+        private readonly SynchronizationContext synchronizationContext;
         /// <summary>
         /// State related to the IAsyncStateMachine.
         /// </summary>
-        private AsyncMethodBuilderCore m_coreState;
+        private AsyncMethodBuilderCore coreState;
         /// <summary>
         /// An object used by the debugger to uniquely identify this builder.  Lazily initialized.
         /// </summary>
-        private object m_objectIdForDebugger;
+        private object objectIdForDebugger;
         /// <summary>
         /// Non-zero if PreventUnobservedTaskExceptions has already been invoked.
         /// </summary>
-        private static int s_preventUnobservedTaskExceptionsInvoked;
+        private static int preventUnobservedTaskExceptionsInvoked;
 
         /// <summary>
         /// Gets an object that may be used to uniquely identify this builder to the debugger.
-        /// 
+        ///
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// This property lazily instantiates the ID in a non-thread-safe manner.
         ///             It must only be used by the debugger and only in a single-threaded manner.
-        /// 
+        ///
         /// </remarks>
 // ReSharper disable UnusedMember.Local
         private object ObjectIdForDebugger
@@ -45,7 +45,7 @@ namespace System.Runtime.CompilerServices
         {
             get
             {
-                return m_objectIdForDebugger ?? (m_objectIdForDebugger = new object());
+                return objectIdForDebugger ?? (objectIdForDebugger = new object());
             }
         }
 
@@ -69,11 +69,11 @@ namespace System.Runtime.CompilerServices
         /// <param name="synchronizationContext">The synchronizationContext associated with this operation. This may be null.</param>
         private AsyncVoidMethodBuilder(SynchronizationContext synchronizationContext)
         {
-            m_synchronizationContext = synchronizationContext;
+            this.synchronizationContext = synchronizationContext;
             if (synchronizationContext != null)
                 synchronizationContext.OperationStarted();
-            m_coreState = new AsyncMethodBuilderCore();
-            m_objectIdForDebugger = null;
+            coreState = new AsyncMethodBuilderCore();
+            objectIdForDebugger = null;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace System.Runtime.CompilerServices
         /// </summary>
         internal static void PreventUnobservedTaskExceptions()
         {
-            if (Interlocked.CompareExchange(ref s_preventUnobservedTaskExceptionsInvoked, 1, 0) != 0)
+            if (Interlocked.CompareExchange(ref preventUnobservedTaskExceptionsInvoked, 1, 0) != 0)
                 return;
             TaskScheduler.UnobservedTaskException += (EventHandler<UnobservedTaskExceptionEventArgs>)((s, e) => e.SetObserved());
         }
@@ -89,7 +89,7 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         /// Initializes a new <see cref="T:System.Runtime.CompilerServices.AsyncVoidMethodBuilder"/>.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The initialized <see cref="T:System.Runtime.CompilerServices.AsyncVoidMethodBuilder"/>.
         /// </returns>
@@ -105,7 +105,7 @@ namespace System.Runtime.CompilerServices
         [DebuggerStepThrough]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
         {
-            m_coreState.Start(ref stateMachine);
+            coreState.Start(ref stateMachine);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace System.Runtime.CompilerServices
         /// <param name="stateMachine">The heap-allocated state machine object.</param><exception cref="T:System.ArgumentNullException">The <paramref name="stateMachine"/> argument was null (Nothing in Visual Basic).</exception><exception cref="T:System.InvalidOperationException">The builder is incorrectly initialized.</exception>
         public void SetStateMachine(IAsyncStateMachine stateMachine)
         {
-            m_coreState.SetStateMachine(stateMachine);
+            coreState.SetStateMachine(stateMachine);
         }
 
         void IAsyncMethodBuilder.PreBoxInitialization()
@@ -123,7 +123,7 @@ namespace System.Runtime.CompilerServices
 
         /// <summary>
         /// Schedules the specified state machine to be pushed forward when the specified awaiter completes.
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TAwaiter">Specifies the type of the awaiter.</typeparam><typeparam name="TStateMachine">Specifies the type of the state machine.</typeparam><param name="awaiter">The awaiter.</param><param name="stateMachine">The state machine.</param>
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
@@ -132,7 +132,7 @@ namespace System.Runtime.CompilerServices
         {
             try
             {
-                var completionAction = m_coreState.GetCompletionAction(ref this, ref stateMachine);
+                var completionAction = coreState.GetCompletionAction(ref this, ref stateMachine);
                 awaiter.OnCompleted(completionAction);
             }
             catch (Exception ex)
@@ -143,7 +143,7 @@ namespace System.Runtime.CompilerServices
 
         /// <summary>
         /// Schedules the specified state machine to be pushed forward when the specified awaiter completes.
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TAwaiter">Specifies the type of the awaiter.</typeparam><typeparam name="TStateMachine">Specifies the type of the state machine.</typeparam><param name="awaiter">The awaiter.</param><param name="stateMachine">The state machine.</param>
         [SecuritySafeCritical]
@@ -153,7 +153,7 @@ namespace System.Runtime.CompilerServices
         {
             try
             {
-                var completionAction = m_coreState.GetCompletionAction(ref this, ref stateMachine);
+                var completionAction = coreState.GetCompletionAction(ref this, ref stateMachine);
                 awaiter.UnsafeOnCompleted(completionAction);
             }
             catch (Exception ex)
@@ -167,7 +167,7 @@ namespace System.Runtime.CompilerServices
         /// </summary>
         public void SetResult()
         {
-            if (m_synchronizationContext == null)
+            if (synchronizationContext == null)
                 return;
             NotifySynchronizationContextOfCompletion();
         }
@@ -180,11 +180,11 @@ namespace System.Runtime.CompilerServices
         {
             if (exception == null)
                 throw new ArgumentNullException("exception");
-            if (m_synchronizationContext != null)
+            if (synchronizationContext != null)
             {
                 try
                 {
-                    AsyncMethodBuilderCore.ThrowAsync(exception, m_synchronizationContext);
+                    AsyncMethodBuilderCore.ThrowAsync(exception, synchronizationContext);
                 }
                 finally
                 {
@@ -202,7 +202,7 @@ namespace System.Runtime.CompilerServices
         {
             try
             {
-                m_synchronizationContext.OperationCompleted();
+                synchronizationContext.OperationCompleted();
             }
             catch (Exception ex)
             {
