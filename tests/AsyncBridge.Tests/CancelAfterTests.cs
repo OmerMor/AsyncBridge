@@ -46,5 +46,40 @@ namespace AsyncBridge.Tests
                 await TaskEx.Delay(100);
             });
         }
+#if !ATP // Changing the CancelAfter time is not supported by the Async Targeting Pack
+        [TestMethod]
+        public void CancelChange()
+        {
+            TestUtils.RunAsync(async () =>
+            {
+                using (var Source = new CancellationTokenSource())
+                {
+                    Source.CancelAfter(50);
+                    Source.CancelAfter(1000);
+
+                    await TaskEx.Delay(250);
+
+                    Assert.IsFalse(Source.IsCancellationRequested);
+                }
+            });
+        }
+
+        [TestMethod]
+        public void CancelRemove()
+        {
+            TestUtils.RunAsync(async () =>
+            {
+                using (var Source = new CancellationTokenSource())
+                {
+                    Source.CancelAfter(50);
+                    Source.CancelAfter(Timeout.Infinite);
+
+                    await TaskEx.Delay(250);
+
+                    Assert.IsFalse(Source.IsCancellationRequested);
+                }
+            });
+        }
+#endif
     }
 }
