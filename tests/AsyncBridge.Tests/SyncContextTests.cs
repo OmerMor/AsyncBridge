@@ -21,10 +21,10 @@ namespace AsyncBridge.Tests
     {
         public static void Line(string line)
         {
-            Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + ":" + getContext() + ": " + line);
+            Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + ":" + GetContext() + ": " + line);
         }
 
-        private static string getContext()
+        private static string GetContext()
         {
             var context = SynchronizationContext.Current;
             return context == null ? "null" : context.GetType().Name;

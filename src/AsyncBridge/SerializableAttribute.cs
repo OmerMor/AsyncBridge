@@ -1,4 +1,4 @@
-﻿#if PORTABLE
+#if PORTABLE
 
 namespace System
 {

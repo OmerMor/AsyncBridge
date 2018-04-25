@@ -16,27 +16,27 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         ///   A MethodInfo for the Exception.PrepForRemoting method.
         /// </summary>
-        private static readonly MethodInfo s_prepForRemoting = GetPrepForRemotingMethodInfo();
+        private static readonly MethodInfo PrepForRemoting = GetPrepForRemotingMethodInfo();
 
         /// <summary>
         ///   An empty array to use with MethodInfo.Invoke.
         /// </summary>
-        private static readonly object[] s_emptyParams = new object[0];
+        private static readonly object[] EmptyParams = new object[0];
 
         /// <summary>
         ///   The default value to use for continueOnCapturedContext.
         /// </summary>
-        internal const bool CONTINUE_ON_CAPTURED_CONTEXT_DEFAULT = true;
+        internal const bool ContinueOnCapturedContextDefault = true;
 
         /// <summary>
         ///   Error message for GetAwaiter.
         /// </summary>
-        private const string InvalidOperationException_TaskNotCompleted = "The task has not yet completed.";
+        private const string InvalidOperationExceptionTaskNotCompleted = "The task has not yet completed.";
 
         /// <summary>
         ///   The task being awaited.
         /// </summary>
-        private readonly Task m_task;
+        private readonly Task task;
 
         /// <summary>
         ///   Gets whether the task being awaited is completed.
@@ -47,7 +47,7 @@ namespace System.Runtime.CompilerServices
         /// <exception cref="NullReferenceException">The awaiter was not properly initialized.</exception>
         public bool IsCompleted
         {
-            get { return m_task.IsCompleted; }
+            get { return task.IsCompleted; }
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace System.Runtime.CompilerServices
         /// <param name="task"> The <see cref="Task" /> to be awaited. </param>
         internal TaskAwaiter(Task task)
         {
-            m_task = task;
+            this.task = task;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace System.Runtime.CompilerServices
         /// </remarks>
         public void OnCompleted(Action continuation)
         {
-            OnCompletedInternal(m_task, continuation, true);
+            OnCompletedInternal(task, continuation, true);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace System.Runtime.CompilerServices
         [SecurityCritical]
         public void UnsafeOnCompleted(Action continuation)
         {
-            OnCompletedInternal(m_task, continuation, true);
+            OnCompletedInternal(task, continuation, true);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace System.Runtime.CompilerServices
         /// <exception cref="Exception">The task completed in a Faulted state.</exception>
         public void GetResult()
         {
-            ValidateEnd(m_task);
+            ValidateEnd(task);
         }
 
         /// <summary>
@@ -256,11 +256,11 @@ namespace System.Runtime.CompilerServices
         /// <param name="exc"> The exception to prepare. </param>
         internal static Exception PrepareExceptionForRethrow(Exception exc)
         {
-            if (s_prepForRemoting != null)
+            if (PrepForRemoting != null)
             {
                 try
                 {
-                    s_prepForRemoting.Invoke(exc, s_emptyParams);
+                    PrepForRemoting.Invoke(exc, EmptyParams);
                 }
                 catch
                 {
@@ -297,7 +297,7 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         ///   The task being awaited.
         /// </summary>
-        private readonly Task<TResult> m_task;
+        private readonly Task<TResult> task;
 
         /// <summary>
         ///   Gets whether the task being awaited is completed.
@@ -308,7 +308,7 @@ namespace System.Runtime.CompilerServices
         /// <exception cref="NullReferenceException">The awaiter was not properly initialized.</exception>
         public bool IsCompleted
         {
-            get { return m_task.IsCompleted; }
+            get { return task.IsCompleted; }
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace System.Runtime.CompilerServices
         /// <param name="task"> The <see cref="Task{TResult}" /> to be awaited. </param>
         internal TaskAwaiter(Task<TResult> task)
         {
-            m_task = task;
+            this.task = task;
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace System.Runtime.CompilerServices
         /// </remarks>
         public void OnCompleted(Action continuation)
         {
-            TaskAwaiter.OnCompletedInternal(m_task, continuation, true);
+            TaskAwaiter.OnCompletedInternal(task, continuation, true);
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace System.Runtime.CompilerServices
         [SecurityCritical]
         public void UnsafeOnCompleted(Action continuation)
         {
-            TaskAwaiter.OnCompletedInternal(m_task, continuation, true);
+            TaskAwaiter.OnCompletedInternal(task, continuation, true);
         }
 
         /// <summary>
@@ -364,8 +364,8 @@ namespace System.Runtime.CompilerServices
         /// <exception cref="Exception">The task completed in a Faulted state.</exception>
         public TResult GetResult()
         {
-            TaskAwaiter.ValidateEnd(m_task);
-            return m_task.Result;
+            TaskAwaiter.ValidateEnd(task);
+            return task.Result;
         }
     }
 }
