@@ -168,29 +168,28 @@ public static class AsyncCompatLibExtensions
         if (cancelSource.IsCancellationRequested)
             return;
 
-        Timer MyTimer = null;
+        Timer myTimer = null;
 
         // CTS claims it's thread-safe for all methods, so we should be the same.
         // If someone calls CancelAfter concurrently for the same CTS, we won't explode or cause a memory leak
-        do
+        while (!_cancelTimers.TryGetTimer(cancelSource, out myTimer))
         {
-            if (_cancelTimers.TryGetTimer(cancelSource, out var CurrentTimer))
-            {
-                if (MyTimer != null)
-                    MyTimer.Dispose();
-
-                MyTimer = CurrentTimer;
-                break; // Reset the existing timer to the new delay
-            }
-
             // An active timer doesn't hold a strong reference to itself, so adding the CTS as state won't hold it alive
-            MyTimer = new Timer(OnCancelAfterTimer, cancelSource, Timeout.Infinite, Timeout.Infinite);
+            myTimer = new Timer(OnCancelAfterTimer, cancelSource, Timeout.Infinite, Timeout.Infinite);
 
-        } while (!_cancelTimers.TryAddTimer(cancelSource, MyTimer));
+            if (_cancelTimers.TryAddTimer(cancelSource, myTimer))
+                break;
+
+            // TryAddTimer can only fail if a Timer was created concurrently. Since we never remove them, TryGetTimer is guaranteed to succeed
+            // Thus, we can dispose of the new Timer we just created and loop back.
+            // If a thread abort or other exception occurs here, we leave the orphan timer to be GC'ed
+            myTimer.Dispose();
+        }
 
         try
         {
-            MyTimer.Change(delay, _timeoutInfinite);
+            // Either set the duration on the new timer, or reset the duration on an existing timer
+            myTimer.Change(delay, _timeoutInfinite);
         }
         catch (ObjectDisposedException)
         {
@@ -199,16 +198,16 @@ public static class AsyncCompatLibExtensions
 
     private static void OnCancelAfterTimer(object state)
     {
-        var CancelSource = (CancellationTokenSource)state;
+        var cancelSource = (CancellationTokenSource)state;
 
-        if (!_cancelTimers.TryRemoveTimer(CancelSource, out var MyTimer))
+        if (!_cancelTimers.TryRemoveTimer(cancelSource, out var oldTimer))
             return;
 
-        MyTimer.Dispose();
+        oldTimer.Dispose();
 
         try
         {
-            CancelSource.Cancel();
+            cancelSource.Cancel();
         }
         catch (ObjectDisposedException) // If the cancellation token has been disposed of, ignore the exception
         {
@@ -260,10 +259,10 @@ public static class AsyncCompatLibExtensions
         cancelSource.Token.Register((state) => { }, timer);
 
         // Cleanup any dead CTS->Timer links
-        foreach (var Key in _cancelTimers.Keys)
+        foreach (var key in _cancelTimers.Keys)
         {
-            if (!Key.CTS.IsAlive)
-                _cancelTimers.TryRemove(Key, out _);
+            if (!key.CTS.IsAlive)
+                _cancelTimers.TryRemove(key, out _);
         }
 
         return true;
@@ -271,26 +270,26 @@ public static class AsyncCompatLibExtensions
 
     private static bool TryGetTimer(this ConcurrentDictionary<WeakCTS, WeakReference> table, CancellationTokenSource cancelSource, out Timer timer)
     {
-        if (!table.TryGetValue(cancelSource, out var MyReference))
+        if (!table.TryGetValue(cancelSource, out var weakReference))
         {
             timer = null;
             return false;
         }
 
-        timer = (Timer)MyReference.Target;
+        timer = (Timer)weakReference.Target;
 
         return timer != null; // Could return false if the CTS was cancelled concurrently and our timer triggered
     }
 
     private static bool TryRemoveTimer(this ConcurrentDictionary<WeakCTS, WeakReference> table, CancellationTokenSource cancelSource, out Timer timer)
     {
-        if (!table.TryRemove(cancelSource, out var MyReference))
+        if (!table.TryRemove(cancelSource, out var weakReference))
         {
             timer = null;
             return false;
         }
 
-        timer = (Timer)MyReference.Target;
+        timer = (Timer)weakReference.Target;
 
         return timer != null; // Should always return true, but to be safe we check
     }
