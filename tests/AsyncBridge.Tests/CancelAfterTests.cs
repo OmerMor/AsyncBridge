@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,11 +25,11 @@ namespace AsyncBridge.Tests
         {
             TestUtils.RunAsync(async () =>
             {
-                using (var Source = new CancellationTokenSource())
+                using (var cancelSource = new CancellationTokenSource())
                 {
-                    Source.CancelAfter(10);
+                    cancelSource.CancelAfter(10);
 
-                    await TaskEx.Delay(100, Source.Token);
+                    await TaskEx.Delay(100, cancelSource.Token);
                 }
             });
         }
@@ -38,9 +39,9 @@ namespace AsyncBridge.Tests
         {
             TestUtils.RunAsync(async () =>
             {
-                using (var Source = new CancellationTokenSource())
+                using (var cancelSource = new CancellationTokenSource())
                 {
-                    Source.CancelAfter(50);
+                    cancelSource.CancelAfter(50);
                 }
 
                 await TaskEx.Delay(100);
@@ -52,14 +53,14 @@ namespace AsyncBridge.Tests
         {
             TestUtils.RunAsync(async () =>
             {
-                using (var Source = new CancellationTokenSource())
+                using (var cancelSource = new CancellationTokenSource())
                 {
-                    Source.CancelAfter(50);
-                    Source.CancelAfter(1000);
+                    cancelSource.CancelAfter(50);
+                    cancelSource.CancelAfter(1000);
 
                     await TaskEx.Delay(250);
 
-                    Assert.IsFalse(Source.IsCancellationRequested);
+                    Assert.IsFalse(cancelSource.IsCancellationRequested);
                 }
             });
         }
@@ -69,14 +70,76 @@ namespace AsyncBridge.Tests
         {
             TestUtils.RunAsync(async () =>
             {
-                using (var Source = new CancellationTokenSource())
+                using (var cancelSource = new CancellationTokenSource())
                 {
-                    Source.CancelAfter(50);
-                    Source.CancelAfter(Timeout.Infinite);
+                    cancelSource.CancelAfter(50);
+                    cancelSource.CancelAfter(Timeout.Infinite);
 
                     await TaskEx.Delay(250);
 
-                    Assert.IsFalse(Source.IsCancellationRequested);
+                    Assert.IsFalse(cancelSource.IsCancellationRequested);
+                }
+            });
+        }
+
+        [TestMethod]
+        public void CancelConcurrentNew()
+        {
+            TestUtils.RunAsync(async () =>
+            {
+                using (var cancelSource = new CancellationTokenSource())
+                {
+                    var continueSource = new TaskCompletionSource<bool>();
+
+                    // Spawn ten threads to create an immediate timer
+                    var cancelTasks = Enumerable.Range(0, 10).Select(async (index) =>
+                    {
+                        await continueSource.Task;
+
+                        cancelSource.CancelAfter(0);
+                    });
+                
+                    // Queue them all to run at once
+                    continueSource.SetResult(true);
+
+                    await TaskEx.WhenAll(cancelTasks);
+
+                    var spin = new SpinWait();
+
+                    while (!cancelSource.IsCancellationRequested)
+                        spin.SpinOnce();
+                }
+            });
+        }
+        [TestMethod]
+        public void CancelConcurrentExisting()
+        {
+            TestUtils.RunAsync(async () =>
+            {
+                using (var cancelSource = new CancellationTokenSource())
+                {
+                    // Create the timer first
+                    cancelSource.CancelAfter(Timeout.Infinite);
+
+                    var continueSource = new TaskCompletionSource<bool>();
+
+                    // Spawn ten threads to set the timer to immediate
+                    var cancelTasks = Enumerable.Range(0, 10).Select(async (index) =>
+                    {
+                        await continueSource.Task;
+
+                        cancelSource.CancelAfter(0);
+                    });
+
+                    // Queue them all to run at once
+                    continueSource.SetResult(true);
+
+                    await TaskEx.WhenAll(cancelTasks);
+
+                    var spin = new SpinWait();
+
+                    while (!cancelSource.IsCancellationRequested)
+                        spin.SpinOnce();
                 }
             });
         }

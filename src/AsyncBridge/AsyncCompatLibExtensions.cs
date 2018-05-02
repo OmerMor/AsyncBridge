@@ -177,12 +177,14 @@ public static class AsyncCompatLibExtensions
             // An active timer doesn't hold a strong reference to itself, so adding the CTS as state won't hold it alive
             myTimer = new Timer(OnCancelAfterTimer, cancelSource, Timeout.Infinite, Timeout.Infinite);
 
+            // There's a tiny chance we may add a new Timer to a cancelled CTS, if the callback is running concurrently.
+            // If so, the extra Timer execution will be a NOP (and probably be GC'ed before it even runs).
             if (_cancelTimers.TryAddTimer(cancelSource, myTimer))
                 break;
 
-            // TryAddTimer can only fail if a Timer was created concurrently. Since we never remove them, TryGetTimer is guaranteed to succeed
-            // Thus, we can dispose of the new Timer we just created and loop back.
-            // If a thread abort or other exception occurs here, we leave the orphan timer to be GC'ed
+            // TryAddTimer can only fail if a Timer was created concurrently.
+            // Dispose of the new Timer we just created, and loop back to change the new one.
+            // Of course, in this case it's indeterminate which delay will be the final one, but that's the risk you take calling this on multiple threads.
             myTimer.Dispose();
         }
 
@@ -256,6 +258,7 @@ public static class AsyncCompatLibExtensions
 
         // Since we use weak-references to the Timer, we need to ensure it doesn't get garbage collected until the CTS does.
         // The CancellationToken registration works - we just stick it in the state property, and it'll hold a strong reference for us.
+        // There's a chance this can throw ObjectDisposedException if someone disposes of our CTS. We'll just leave the orphan Timer to be GC'ed
         cancelSource.Token.Register((state) => { }, timer);
 
         // Cleanup any dead CTS->Timer links
@@ -291,7 +294,8 @@ public static class AsyncCompatLibExtensions
 
         timer = (Timer)weakReference.Target;
 
-        return timer != null; // Should always return true, but to be safe we check
+        // Will always return true, since this is only called from the Timer callback, which will have a strong reference to the Timer and the CTS
+        return timer != null;
     }
 #else
     private static bool TryAddTimer(this ConditionalWeakTable<CancellationTokenSource, Timer> table, CancellationTokenSource cancelSource, Timer timer)
