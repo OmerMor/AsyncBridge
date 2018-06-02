@@ -137,11 +137,11 @@ namespace System.Runtime.CompilerServices
         public CallerMemberNameAttribute();
     }
 
-    public struct ConfiguredTaskAwaitable
+    public readonly struct ConfiguredTaskAwaitable
     {
         public ConfiguredTaskAwaitable.ConfiguredTaskAwaiter GetAwaiter();
 
-        public struct ConfiguredTaskAwaiter
+        public readonly struct ConfiguredTaskAwaiter
         {
             public bool IsCompleted { get; }
 
@@ -154,11 +154,11 @@ namespace System.Runtime.CompilerServices
         }
     }
 
-    public struct ConfiguredTaskAwaitable<TResult>
+    public readonly struct ConfiguredTaskAwaitable<TResult>
     {
         public ConfiguredTaskAwaitable<TResult>.ConfiguredTaskAwaiter GetAwaiter();
 
-        public struct ConfiguredTaskAwaiter
+        public readonly struct ConfiguredTaskAwaiter
         {
             public bool IsCompleted { get; }
 
@@ -203,7 +203,7 @@ namespace System.Runtime.CompilerServices
         public StateMachineAttribute(System.Type stateMachineType);
     }
 
-    public struct TaskAwaiter
+    public readonly struct TaskAwaiter
     {
         public bool IsCompleted { get; }
 
@@ -215,7 +215,7 @@ namespace System.Runtime.CompilerServices
         public void UnsafeOnCompleted(System.Action continuation);
     }
 
-    public struct TaskAwaiter<TResult>
+    public readonly struct TaskAwaiter<TResult>
     {
         public bool IsCompleted { get; }
 
@@ -242,6 +242,86 @@ namespace System.Runtime.CompilerServices
             [System.Security.SecurityCritical]
             public void UnsafeOnCompleted(System.Action continuation);
         }
+    }
+}
+namespace System.Runtime.ExceptionServices
+{
+    public sealed class ExceptionDispatchInfo
+    {
+        public System.Exception SourceException { get; }
+
+        public static ExceptionDispatchInfo Capture(System.Exception source);
+
+        public static void Throw(System.Exception source);
+
+        public void Throw();
+    }
+}
+namespace System.Threading
+{
+    public static class Volatile
+    {
+        public static bool Read(ref bool location);
+
+        [System.CLSCompliant(false)]
+        public static sbyte Read(ref sbyte location);
+
+        public static byte Read(ref byte location);
+
+        public static short Read(ref short location);
+
+        [System.CLSCompliant(false)]
+        public static ushort Read(ref ushort location);
+
+        public static int Read(ref int location);
+
+        [System.CLSCompliant(false)]
+        public static uint Read(ref uint location);
+
+        public static long Read(ref long location);
+
+        [System.CLSCompliant(false)]
+        public static ulong Read(ref ulong location);
+
+        public static System.IntPtr Read(ref System.IntPtr location);
+
+        [System.CLSCompliant(false)]
+        public static System.UIntPtr Read(ref System.UIntPtr location);
+
+        public static float Read(ref float location);
+
+        public static T Read<T>(ref T location) where T : class;
+
+        public static void Write(ref bool location, bool value);
+
+        [System.CLSCompliant(false)]
+        public static void Write(ref sbyte location, sbyte value);
+
+        public static void Write(ref byte location, byte value);
+
+        public static void Write(ref short location, short value);
+
+        [System.CLSCompliant(false)]
+        public static void Write(ref ushort location, ushort value);
+
+        public static void Write(ref int location, int value);
+
+        [System.CLSCompliant(false)]
+        public static void Write(ref uint location, uint value);
+
+        public static void Write(ref long location, long value);
+
+        [System.CLSCompliant(false)]
+        public static void Write(ref ulong location, ulong value);
+
+        public static void Write(ref System.IntPtr location, System.IntPtr value);
+
+        [System.CLSCompliant(false)]
+        public static void Write(ref System.UIntPtr location, System.UIntPtr value);
+
+        public static void Write(ref float location, float value);
+
+        public static void Write<T>(ref T location, T value) where T : class;
     }
 }
 namespace System.Threading.Tasks

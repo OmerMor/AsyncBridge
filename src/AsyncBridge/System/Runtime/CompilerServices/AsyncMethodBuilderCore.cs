@@ -1,4 +1,6 @@
+#if NET40 || PORTABLE
 using System.Diagnostics;
+using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Threading;
 
@@ -82,10 +84,7 @@ namespace System.Runtime.CompilerServices
             {
                 try
                 {
-                    targetContext.Post(state =>
-                    {
-                        throw TaskAwaiter.PrepareExceptionForRethrow((Exception)state);
-                    }, exception);
+                    targetContext.Post(state => ExceptionDispatchInfo.Throw((Exception)state), exception);
                     return;
                 }
                 catch (Exception ex)
@@ -93,10 +92,7 @@ namespace System.Runtime.CompilerServices
                     exception = new AggregateException(new[] { exception, ex });
                 }
             }
-            ThreadPool.QueueUserWorkItem(state =>
-            {
-                throw TaskAwaiter.PrepareExceptionForRethrow((Exception)state);
-            }, exception);
+            ThreadPool.QueueUserWorkItem(state => ExceptionDispatchInfo.Throw((Exception)state), exception);
         }
 
         /// <summary>
@@ -149,9 +145,7 @@ namespace System.Runtime.CompilerServices
                 }
                 finally
                 {
-#if !NET35
                     context.Dispose();
-#endif
                 }
             }
 
@@ -167,3 +161,4 @@ namespace System.Runtime.CompilerServices
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if NET40 || PORTABLE
 using System.Threading.Tasks;
 
 namespace System.Runtime.CompilerServices
@@ -140,3 +141,4 @@ namespace System.Runtime.CompilerServices
         }
     }
 }
+#endif

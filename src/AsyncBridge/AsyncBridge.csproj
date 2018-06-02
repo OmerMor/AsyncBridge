@@ -16,7 +16,9 @@
     <Description>$(AssemblyTitle)
 This package is now unified to include all functionality from AsyncBridge.Net35 and AsyncBridge.Portable.</Description>
 
+    <LangVersion>Latest</LangVersion>
     <DefineConstants Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(DefineConstants);PORTABLE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RootNamespace></RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\AsyncBridgeKey.snk</AssemblyOriginatorKeyFile>
@@ -29,7 +31,6 @@ This package is now unified to include all functionality from AsyncBridge.Net35 
   <ItemGroup>
     <Reference Include="System.Core" Condition="'$(TargetFramework)' == 'portable-net40+sl5'" />
 
-    <PackageReference Include="TaskParallelLibrary" Version="1.0.2856" Condition="'$(TargetFramework)' == 'net35-client'" />
     <PackageReference Include="SourceLink.Embed.AllSourceFiles" Version="2.7.4" PrivateAssets="all" />
     <PackageReference Include="ApiContractGenerator.MSBuild" Version="1.0.0" PrivateAssets="all" />
   </ItemGroup>

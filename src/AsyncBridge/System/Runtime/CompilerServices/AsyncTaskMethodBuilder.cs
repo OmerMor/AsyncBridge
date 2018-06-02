@@ -1,4 +1,6 @@
+#if NET40 || PORTABLE
 using System.Diagnostics;
+
 using System.Security;
 using System.Threading.Tasks;
 
@@ -419,3 +421,4 @@ namespace System.Runtime.CompilerServices
         }
     }
 }
+#endif

@@ -2,7 +2,7 @@
 
 namespace System.Threading
 {
-    internal class ExecutionContext
+    internal class ExecutionContext : IDisposable
     {
         internal static ExecutionContext Capture()
         {
@@ -12,6 +12,10 @@ namespace System.Threading
         internal static void Run(ExecutionContext executionContext, ContextCallback callback, object state)
         {
             callback(state);
+        }
+
+        public void Dispose()
+        {
         }
     }
 
