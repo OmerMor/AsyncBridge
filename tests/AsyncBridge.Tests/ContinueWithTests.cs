@@ -24,9 +24,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void Action()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { gotState = (bool)state; }, true));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -38,9 +38,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionToken()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true, CancellationToken.None));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { gotState = (bool)state; }, true, CancellationToken.None));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -52,9 +52,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionOptions()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true, TaskContinuationOptions.None));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { gotState = (bool)state; }, true, TaskContinuationOptions.None));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -66,9 +66,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionScheduler()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true, TaskScheduler.Current));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { gotState = (bool)state; }, true, TaskScheduler.Current));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -80,9 +80,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionTokenOptionsScheduler()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { GotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { gotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -94,9 +94,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionResult()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { gotState = (bool)state; }, true));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -108,9 +108,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionResultToken()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true, CancellationToken.None));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { gotState = (bool)state; }, true, CancellationToken.None));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -122,9 +122,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionResultOptions()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true, TaskContinuationOptions.None));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { gotState = (bool)state; }, true, TaskContinuationOptions.None));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -136,9 +136,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionResultScheduler()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true, TaskScheduler.Current));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { gotState = (bool)state; }, true, TaskScheduler.Current));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -150,9 +150,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void ActionResultTokenOptionsScheduler()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { GotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { gotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -164,9 +164,9 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void Func()
         {
-            var GotState = false;
-            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return GotState = (bool)state; }, true));
-            Assert.IsTrue(GotState);
+            var gotState = false;
+            TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return gotState = (bool)state; }, true));
+            Assert.IsTrue(gotState);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -178,10 +178,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncToken()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return GotState = (bool)state; }, true, CancellationToken.None));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return gotState = (bool)state; }, true, CancellationToken.None));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -193,10 +193,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncOptions()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return GotState = (bool)state; }, true, TaskContinuationOptions.None));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return gotState = (bool)state; }, true, TaskContinuationOptions.None));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -208,10 +208,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncScheduler()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return GotState = (bool)state; }, true, TaskScheduler.Current));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return gotState = (bool)state; }, true, TaskScheduler.Current));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -223,10 +223,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncTokenOptionsScheduler()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return GotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => { }).ContinueWith((task, state) => { return gotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -238,10 +238,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncResult()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return GotState = (bool)state; }, true));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return gotState = (bool)state; }, true));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -253,10 +253,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncResultToken()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return GotState = (bool)state; }, true, CancellationToken.None));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return gotState = (bool)state; }, true, CancellationToken.None));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -268,10 +268,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncResultOptions()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return GotState = (bool)state; }, true, TaskContinuationOptions.None));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return gotState = (bool)state; }, true, TaskContinuationOptions.None));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -283,10 +283,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncResultScheduler()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return GotState = (bool)state; }, true, TaskScheduler.Current));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return gotState = (bool)state; }, true, TaskScheduler.Current));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -298,10 +298,10 @@ namespace AsyncBridge.Tests
         [TestMethod]
         public void FuncResultTokenOptionsScheduler()
         {
-            var GotState = false;
-            var GotResult = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return GotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
-            Assert.IsTrue(GotState);
-            Assert.IsTrue(GotResult);
+            var gotState = false;
+            var result = TestUtils.RunAsync(() => TaskEx.Run(() => true).ContinueWith((task, state) => { return gotState = (bool)state; }, true, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current));
+            Assert.IsTrue(gotState);
+            Assert.IsTrue(result);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
