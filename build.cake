@@ -40,7 +40,7 @@ Task("Test")
     .Does(() =>
     {
         #tool OpenCover
-        OpenCover(RunTests, "opencover.xml", new OpenCoverSettings()
+        OpenCover(RunTests, "opencover.xml", new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
             .WithFilter("+[AsyncBridge]*"));
 
         if (AppVeyor.IsRunningOnAppVeyor)
