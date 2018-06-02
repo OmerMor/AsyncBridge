@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net35</TargetFrameworks>
+    <TargetFrameworks>net40;net35;net20</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +12,7 @@
   <PropertyGroup>
     <TargetFrameworkVersion Condition="'$(TargetFramework)' == 'net40'">v4.0</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition="'$(TargetFramework)' == 'net35'">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(TargetFramework)' == 'net20'">v2.0</TargetFrameworkVersion>
     <AssemblySearchPaths>
       $(AssemblySearchPaths);
       {AssemblyFoldersFromConfig:$(MSBuildToolsPath32)\AssemblyFolders.config,$(TargetFrameworkVersion)}

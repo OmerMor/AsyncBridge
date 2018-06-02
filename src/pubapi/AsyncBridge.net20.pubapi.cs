@@ -1,58 +1,16 @@
 // Name:       AsyncBridge
 // Public key: ACQAAASAAACUAAAABgIAAAAkAABSU0ExAAQAAAEAAQCLFl3K4YXiNrRI+T6dQfJ73C164NxT1pBidQ9sJZMSKVrEBhi53LnGTBdJZj0s83kCjfQ8tdBvxM4IDe7zH3TxhJDdo40tiZ4ZFOwnDv00373pftuR6JDZ3J3AIeWuhsFhxaofTb5UDfwsMW6M8ypuaTJpFG6v9EaSKJ9hajJPoA==
 
-public static class AsyncCompatLibExtensions
-{
-    public static System.Runtime.CompilerServices.ConfiguredTaskAwaitable<TResult> ConfigureAwait<TResult>(this System.Threading.Tasks.Task<TResult> task, bool continueOnCapturedContext);
-
-    public static System.Runtime.CompilerServices.ConfiguredTaskAwaitable ConfigureAwait(this System.Threading.Tasks.Task task, bool continueOnCapturedContext);
-
-    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state);
-
-    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken);
-
-    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions);
-
-    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.Tasks.TaskScheduler scheduler);
-
-    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler);
-
-    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state);
-
-    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken);
-
-    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions);
-
-    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.Tasks.TaskScheduler scheduler);
-
-    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler);
-
-    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state);
-
-    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken);
-
-    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions);
-
-    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.Tasks.TaskScheduler scheduler);
-
-    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler);
-
-    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state);
-
-    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken);
-
-    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions);
-
-    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.Tasks.TaskScheduler scheduler);
-
-    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler);
-
-    public static System.Runtime.CompilerServices.TaskAwaiter GetAwaiter(this System.Threading.Tasks.Task task);
-
-    public static System.Runtime.CompilerServices.TaskAwaiter<TResult> GetAwaiter<TResult>(this System.Threading.Tasks.Task<TResult> task);
-}
 namespace System
 {
+    public delegate void Action();
+
+    public delegate void Action<in T1, in T2>(T1 arg1, T2 arg2);
+
+    public delegate void Action<in T1, in T2, in T3>(T1 arg1, T2 arg2, T3 arg3);
+
+    public delegate void Action<in T1, in T2, in T3, in T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
+
     [System.Diagnostics.DebuggerDisplay("Count = {InnerExceptionCount}")]
     public class AggregateException : Exception
     {
@@ -86,6 +44,16 @@ namespace System
 
         public override string ToString();
     }
+
+    public delegate TResult Func<out TResult>();
+
+    public delegate TResult Func<in T, out TResult>(T arg);
+
+    public delegate TResult Func<in T1, in T2, out TResult>(T1 arg1, T2 arg2);
+
+    public delegate TResult Func<in T1, in T2, in T3, out TResult>(T1 arg1, T2 arg2, T3 arg3);
+
+    public delegate TResult Func<in T1, in T2, in T3, in T4, out TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
 
     public delegate TResult Func<in T1, in T2, in T3, in T4, in T5, out TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
 }
@@ -434,6 +402,17 @@ namespace System.Threading
         public static T EnsureInitialized<T>(ref T target, ref bool initialized, ref object syncLock, System.Func<T> valueFactory);
 
         public static T EnsureInitialized<T>(ref T target, ref object syncLock, System.Func<T> valueFactory) where T : class;
+    }
+
+    public class LockRecursionException : System.Exception
+    {
+        public LockRecursionException();
+
+        public LockRecursionException(string message);
+
+        public LockRecursionException(string message, System.Exception innerException);
+
+        protected LockRecursionException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);
     }
 
     [System.Diagnostics.DebuggerDisplay("Set = {IsSet}")]
@@ -916,53 +895,6 @@ namespace System.Threading.Tasks
         DenyChildAttach = 8,
         HideScheduler = 16,
         RunContinuationsAsynchronously = 64
-    }
-
-    public static class TaskEx
-    {
-        public static Task Delay(int dueTime);
-
-        public static Task Delay(System.TimeSpan dueTime);
-
-        public static Task Delay(System.TimeSpan dueTime, System.Threading.CancellationToken cancellationToken);
-
-        public static Task Delay(int dueTime, System.Threading.CancellationToken cancellationToken);
-
-        public static Task<TResult> FromResult<TResult>(TResult result);
-
-        public static Task Run(System.Action action);
-
-        public static Task Run(System.Action action, System.Threading.CancellationToken cancellationToken);
-
-        public static Task<TResult> Run<TResult>(System.Func<TResult> function);
-
-        public static Task<TResult> Run<TResult>(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken);
-
-        public static Task Run(System.Func<Task> function);
-
-        public static Task Run(System.Func<Task> function, System.Threading.CancellationToken cancellationToken);
-
-        public static Task<TResult> Run<TResult>(System.Func<Task<TResult>> function);
-
-        public static Task<TResult> Run<TResult>(System.Func<Task<TResult>> function, System.Threading.CancellationToken cancellationToken);
-
-        public static Task WhenAll(params Task[] tasks);
-
-        public static Task<TResult[]> WhenAll<TResult>(params Task<TResult>[] tasks);
-
-        public static Task WhenAll(System.Collections.Generic.IEnumerable<Task> tasks);
-
-        public static Task<TResult[]> WhenAll<TResult>(System.Collections.Generic.IEnumerable<Task<TResult>> tasks);
-
-        public static Task<Task> WhenAny(params Task[] tasks);
-
-        public static Task<Task> WhenAny(System.Collections.Generic.IEnumerable<Task> tasks);
-
-        public static Task<Task<TResult>> WhenAny<TResult>(params Task<TResult>[] tasks);
-
-        public static Task<Task<TResult>> WhenAny<TResult>(System.Collections.Generic.IEnumerable<Task<TResult>> tasks);
-
-        public static System.Runtime.CompilerServices.YieldAwaitable Yield();
     }
 
     public static class TaskExtensions

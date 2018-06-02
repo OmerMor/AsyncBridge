@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#if NET45
+#if !NET40
 using TaskEx = System.Threading.Tasks.Task;
 #endif
 

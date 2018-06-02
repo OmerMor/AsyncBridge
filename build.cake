@@ -78,6 +78,7 @@ private void RunTests(ICakeContext testToolContext)
     testToolContext.VSTest(
         from (string name, string framework) project in new[]
         {
+            ("AsyncBridge.Tests", "net20"),
             ("AsyncBridge.Tests", "net35"),
             ("AsyncBridge.Tests", "net40"),
             ("AsyncTargetingPack.Tests", "net40"),

@@ -1,7 +1,7 @@
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#if NET45
+#if !NET40
 using TaskEx = System.Threading.Tasks.Task;
 #endif
 
@@ -27,7 +27,7 @@ namespace AsyncBridge.Tests
                     new TaskCompletionSource<int>(),
                     new TaskCompletionSource<int>()
                 };
-                var whenAnyTask = TaskEx.WhenAny(taskCompletionSources.Select(tcs => tcs.Task).ToArray());
+                var whenAnyTask = TaskEx.WhenAny(Array.ConvertAll(taskCompletionSources, tcs => tcs.Task));
                 taskCompletionSources[1].SetResult(2);
                 var result = await whenAnyTask;
                 Assert.AreEqual(2, await result);
@@ -44,7 +44,7 @@ namespace AsyncBridge.Tests
                     new TaskCompletionSource<int>(),
                     new TaskCompletionSource<int>()
                 };
-                var whenAnyTask = TaskEx.WhenAny(taskCompletionSources.Select(tcs => tcs.Task));
+                var whenAnyTask = TaskEx.WhenAny(Array.ConvertAll(taskCompletionSources, tcs => tcs.Task));
                 taskCompletionSources[1].SetResult(2);
                 var result = await whenAnyTask;
                 Assert.AreEqual(2, await result);
@@ -61,7 +61,7 @@ namespace AsyncBridge.Tests
                     new TaskCompletionSource<int>(),
                     new TaskCompletionSource<int>()
                 };
-                var whenAnyTask = TaskEx.WhenAny(taskCompletionSources.Select(tcs => tcs.Task).Cast<Task>());
+                var whenAnyTask = TaskEx.WhenAny(Array.ConvertAll(taskCompletionSources, tcs => (Task)tcs.Task));
                 Assert.IsFalse(whenAnyTask.IsCompleted);
                 taskCompletionSources[1].SetResult(2);
                 await await whenAnyTask;

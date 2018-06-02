@@ -1,4 +1,4 @@
-#if NET35 || PORTABLE
+#if NET20 || NET35 || PORTABLE
 
 namespace System.Runtime
 {

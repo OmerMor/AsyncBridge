@@ -1,7 +1,7 @@
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#if NET45
+#if !NET40
 using TaskEx = System.Threading.Tasks.Task;
 #endif
 
@@ -27,12 +27,12 @@ namespace AsyncBridge.Tests
                     new TaskCompletionSource<int>(),
                     new TaskCompletionSource<int>()
                 };
-                var whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task));
+                var whenAllTask = TaskEx.WhenAll(Array.ConvertAll(taskCompletionSources, tcs => tcs.Task));
                 taskCompletionSources[0].SetResult(1);
                 taskCompletionSources[1].SetResult(2);
                 taskCompletionSources[2].SetResult(3);
                 var results = await whenAllTask;
-                CollectionAssert.AreEquivalent(new[] {1, 2, 3}, results.ToList());
+                CollectionAssert.AreEquivalent(new[] { 1, 2, 3 }, results);
             });
         }
 
@@ -44,7 +44,7 @@ namespace AsyncBridge.Tests
                                             new TaskCompletionSource<int>(),
                                             new TaskCompletionSource<int>()
                                         };
-            var whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task));
+            var whenAllTask = TaskEx.WhenAll(Array.ConvertAll(taskCompletionSources, tcs => tcs.Task));
             taskCompletionSources[0].SetResult(1);
             Assert.IsFalse(whenAllTask.IsCompleted);
         }
@@ -59,7 +59,7 @@ namespace AsyncBridge.Tests
                     new TaskCompletionSource<int>(),
                     new TaskCompletionSource<int>()
                 };
-                var whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task).Cast<Task>());
+                var whenAllTask = TaskEx.WhenAll(Array.ConvertAll(taskCompletionSources, tcs => (Task)tcs.Task));
                 taskCompletionSources[0].SetResult(1);
                 Assert.IsFalse(whenAllTask.IsCompleted);
                 taskCompletionSources[1].SetResult(1);
@@ -77,7 +77,7 @@ namespace AsyncBridge.Tests
                     new TaskCompletionSource<int>(),
                     new TaskCompletionSource<int>()
                 };
-                Task whenAllTask = TaskEx.WhenAll(taskCompletionSources.Select(tcs => tcs.Task).ToArray());
+                Task whenAllTask = TaskEx.WhenAll(Array.ConvertAll(taskCompletionSources, tcs => tcs.Task));
                 taskCompletionSources[0].SetResult(1);
                 Assert.IsFalse(whenAllTask.IsCompleted);
                 taskCompletionSources[1].SetResult(1);

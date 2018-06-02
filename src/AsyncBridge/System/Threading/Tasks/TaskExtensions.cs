@@ -1,7 +1,7 @@
 // https://github.com/dotnet/coreclr/blob/v2.1.0/src/mscorlib/shared/System/Threading/Tasks/TaskExtensions.cs
 // Original work under MIT license, Copyright (c) .NET Foundation and Contributors https://github.com/dotnet/coreclr/blob/v2.1.0/LICENSE.TXT
 
-#if NET35
+#if NET20 || NET35
 namespace System.Threading.Tasks
 {
     /// <summary>Provides a set of static methods for working with specific kinds of <see cref="Task"/> instances.</summary>

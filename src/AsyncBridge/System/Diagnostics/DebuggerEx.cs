@@ -4,7 +4,7 @@ namespace System.Diagnostics
 {
     internal static class DebuggerEx
     {
-#if NET35 || PORTABLE
+#if NET20 || NET35 || PORTABLE
         private static readonly Action NotifyOfCrossThreadDependencyAction = (Action)typeof(Debugger)
 #if PORTABLE
             .GetMethod("NotifyOfCrossThreadDependency", new Type[0])

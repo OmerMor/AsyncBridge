@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net40-client;net35-client;portable-net40+sl5</TargetFrameworks>
+    <TargetFrameworks>net40-client;net35-client;portable-net40+sl5;net20</TargetFrameworks>
 
     <Version>0.3.2</Version>
     <Authors>Daniel Grunwald, Omer Mor, Alex Davies, jnm2</Authors>

@@ -1,7 +1,7 @@
 // https://github.com/dotnet/coreclr/blob/v2.1.0/src/mscorlib/shared/System/Threading/SpinWait.cs
 // Original work under MIT license, Copyright (c) .NET Foundation and Contributors https://github.com/dotnet/coreclr/blob/v2.1.0/LICENSE.TXT
 
-#if NET35
+#if NET20 || NET35
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.

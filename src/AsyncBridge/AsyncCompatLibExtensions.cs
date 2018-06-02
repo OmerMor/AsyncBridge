@@ -1,3 +1,4 @@
+#if !NET20
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -856,4 +857,4 @@ public static class AsyncCompatLibExtensions
         }
     }
 }
-// ReSharper restore CheckNamespace
+#endif

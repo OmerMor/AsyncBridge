@@ -5,7 +5,7 @@ namespace System
 {
     internal static class OperationCanceledExceptionExtensions
     {
-#if NET35
+#if NET20 || NET35
         public static CancellationToken GetCancellationToken(this OperationCanceledException exception)
         {
             return default;

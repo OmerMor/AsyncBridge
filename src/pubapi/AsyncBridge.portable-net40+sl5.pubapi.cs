@@ -227,11 +227,11 @@ namespace System.Runtime.CompilerServices
         public void UnsafeOnCompleted(System.Action continuation);
     }
 
-    public struct YieldAwaitable
+    public readonly struct YieldAwaitable
     {
         public YieldAwaitable.YieldAwaiter GetAwaiter();
 
-        public struct YieldAwaiter
+        public readonly struct YieldAwaiter
         {
             public bool IsCompleted { get; }
 
