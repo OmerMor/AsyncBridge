@@ -53,9 +53,18 @@ namespace AsyncBridge.Tests
             TestUtils.RunAsync(async () =>
             {
                 var keepGcing = true;
-                // ReSharper disable AccessToModifiedClosure
-                var gcAllTheTime = new Thread(() => { while (keepGcing) GC.Collect(); });
-                // ReSharper restore AccessToModifiedClosure
+
+                var gcAllTheTime = new Thread(() =>
+                {
+                    // ReSharper disable AccessToModifiedClosure
+                    while (keepGcing)
+                    // ReSharper restore AccessToModifiedClosure
+                    {
+                        GC.Collect();
+                        Thread.Sleep(1);
+                    }
+                });
+
                 gcAllTheTime.Start();
                 await TaskEx.Delay(500);
                 keepGcing = false;
