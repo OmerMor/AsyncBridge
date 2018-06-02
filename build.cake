@@ -23,18 +23,15 @@ MSBuildSettings CreateMSBuildSettings(string target) => new MSBuildSettings()
     .WithTarget(target)
     .WithProperty("Version", version);
 
-Task("Clean")
-    .Does(() => MSBuild(".", CreateMSBuildSettings("Clean")));
 
-Task("Restore")
-    .IsDependentOn("Clean")
-    .Does(() => MSBuild(".", CreateMSBuildSettings("Restore")));
+Task("Clean").Does(() => DefaultClean());
 
 Task("Build")
-    .IsDependentOn("Restore")
+    .IsDependentOn("Clean")
     .Does(() =>
     {
         MSBuild(".", CreateMSBuildSettings("Build")
+            .WithRestore()
             .WithProperty("DebugType", "pdbonly")); // Needed for OpenCover
     });
 
