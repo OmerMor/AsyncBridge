@@ -377,6 +377,52 @@ namespace System.Threading
         protected virtual void Dispose(bool disposing);
     }
 
+    [System.Diagnostics.DebuggerDisplay("Initial Count={InitialCount}, Current Count={CurrentCount}")]
+    public class CountdownEvent : System.IDisposable
+    {
+        public int CurrentCount { get; }
+
+        public int InitialCount { get; }
+
+        public bool IsSet { get; }
+
+        public WaitHandle WaitHandle { get; }
+
+        public CountdownEvent(int initialCount);
+
+        public void AddCount();
+
+        public void AddCount(int signalCount);
+
+        public void Dispose();
+
+        protected virtual void Dispose(bool disposing);
+
+        public void Reset();
+
+        public void Reset(int count);
+
+        public bool Signal();
+
+        public bool Signal(int signalCount);
+
+        public bool TryAddCount();
+
+        public bool TryAddCount(int signalCount);
+
+        public void Wait();
+
+        public void Wait(CancellationToken cancellationToken);
+
+        public bool Wait(System.TimeSpan timeout);
+
+        public bool Wait(System.TimeSpan timeout, CancellationToken cancellationToken);
+
+        public bool Wait(int millisecondsTimeout);
+
+        public bool Wait(int millisecondsTimeout, CancellationToken cancellationToken);
+    }
+
     public static class LazyInitializer
     {
         public static T EnsureInitialized<T>(ref T target) where T : class;

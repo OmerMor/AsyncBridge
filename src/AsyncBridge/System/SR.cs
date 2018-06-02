@@ -46,6 +46,9 @@ namespace System
         public static string Arg_TypeNotSupported;
         public static string Argument_OverlapAlignmentMismatch;
         public static string AggregateException_InnerException;
+        public static string CountdownEvent_Decrement_BelowZero;
+        public static string CountdownEvent_Increment_AlreadyMax;
+        public static string CountdownEvent_Increment_AlreadyZero;
 
         internal static string GetResourceString(string resourceString)
         {
