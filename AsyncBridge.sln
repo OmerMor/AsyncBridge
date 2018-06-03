@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncTargetingPack.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferenceAsync.Net45", "tests\ReferenceAsync.Net45\ReferenceAsync.Net45.csproj", "{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{1C52BCBF-A0AA-463C-AA3A-67FE5D8B9292}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateStringResources", "utils\UpdateStringResources\UpdateStringResources.csproj", "{6DA8347B-3C00-42EC-9ABA-624A102E7906}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,10 @@ Global
 		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DA8347B-3C00-42EC-9ABA-624A102E7906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA8347B-3C00-42EC-9ABA-624A102E7906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DA8347B-3C00-42EC-9ABA-624A102E7906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DA8347B-3C00-42EC-9ABA-624A102E7906}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +54,7 @@ Global
 		{67AF19E0-08F0-4E5A-A05B-83818C4359B6} = {0E3D69B7-00E8-410B-A1D7-6152419AB8D8}
 		{D0A9D7E7-DD63-43A8-9891-74E58CC80C8E} = {0E3D69B7-00E8-410B-A1D7-6152419AB8D8}
 		{B530FAF1-97FF-4E2B-8827-C53F7E4FC245} = {0E3D69B7-00E8-410B-A1D7-6152419AB8D8}
+		{6DA8347B-3C00-42EC-9ABA-624A102E7906} = {1C52BCBF-A0AA-463C-AA3A-67FE5D8B9292}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33315AFF-AD63-4881-97C4-4F5B3036BBF8}
