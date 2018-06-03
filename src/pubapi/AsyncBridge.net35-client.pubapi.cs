@@ -918,53 +918,6 @@ namespace System.Threading.Tasks
         RunContinuationsAsynchronously = 64
     }
 
-    public static class TaskEx
-    {
-        public static Task Delay(int dueTime);
-
-        public static Task Delay(System.TimeSpan dueTime);
-
-        public static Task Delay(System.TimeSpan dueTime, System.Threading.CancellationToken cancellationToken);
-
-        public static Task Delay(int dueTime, System.Threading.CancellationToken cancellationToken);
-
-        public static Task<TResult> FromResult<TResult>(TResult result);
-
-        public static Task Run(System.Action action);
-
-        public static Task Run(System.Action action, System.Threading.CancellationToken cancellationToken);
-
-        public static Task<TResult> Run<TResult>(System.Func<TResult> function);
-
-        public static Task<TResult> Run<TResult>(System.Func<TResult> function, System.Threading.CancellationToken cancellationToken);
-
-        public static Task Run(System.Func<Task> function);
-
-        public static Task Run(System.Func<Task> function, System.Threading.CancellationToken cancellationToken);
-
-        public static Task<TResult> Run<TResult>(System.Func<Task<TResult>> function);
-
-        public static Task<TResult> Run<TResult>(System.Func<Task<TResult>> function, System.Threading.CancellationToken cancellationToken);
-
-        public static Task WhenAll(params Task[] tasks);
-
-        public static Task<TResult[]> WhenAll<TResult>(params Task<TResult>[] tasks);
-
-        public static Task WhenAll(System.Collections.Generic.IEnumerable<Task> tasks);
-
-        public static Task<TResult[]> WhenAll<TResult>(System.Collections.Generic.IEnumerable<Task<TResult>> tasks);
-
-        public static Task<Task> WhenAny(params Task[] tasks);
-
-        public static Task<Task> WhenAny(System.Collections.Generic.IEnumerable<Task> tasks);
-
-        public static Task<Task<TResult>> WhenAny<TResult>(params Task<TResult>[] tasks);
-
-        public static Task<Task<TResult>> WhenAny<TResult>(System.Collections.Generic.IEnumerable<Task<TResult>> tasks);
-
-        public static System.Runtime.CompilerServices.YieldAwaitable Yield();
-    }
-
     public static class TaskExtensions
     {
         public static Task Unwrap(this Task<Task> task);

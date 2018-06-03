@@ -330,15 +330,30 @@ namespace System.Threading
 }
 namespace System.Threading.Tasks
 {
+    public static class TaskCompletionSourceExtensions
+    {
+        public static bool TrySetCanceled<TResult>(this TaskCompletionSource<TResult> taskCompletionSource, System.Threading.CancellationToken cancellationToken);
+    }
+
     public static class TaskEx
     {
-        public static Task Delay(int dueTime);
+        public static Task CompletedTask { get; }
 
-        public static Task Delay(System.TimeSpan dueTime);
+        public static Task Delay(System.TimeSpan delay);
 
-        public static Task Delay(System.TimeSpan dueTime, System.Threading.CancellationToken cancellationToken);
+        public static Task Delay(System.TimeSpan delay, System.Threading.CancellationToken cancellationToken);
 
-        public static Task Delay(int dueTime, System.Threading.CancellationToken cancellationToken);
+        public static Task Delay(int millisecondsDelay);
+
+        public static Task Delay(int millisecondsDelay, System.Threading.CancellationToken cancellationToken);
+
+        public static Task FromCanceled(System.Threading.CancellationToken cancellationToken);
+
+        public static Task<TResult> FromCanceled<TResult>(System.Threading.CancellationToken cancellationToken);
+
+        public static Task FromException(System.Exception exception);
+
+        public static Task<TResult> FromException<TResult>(System.Exception exception);
 
         public static Task<TResult> FromResult<TResult>(TResult result);
 
@@ -358,13 +373,13 @@ namespace System.Threading.Tasks
 
         public static Task<TResult> Run<TResult>(System.Func<Task<TResult>> function, System.Threading.CancellationToken cancellationToken);
 
-        public static Task WhenAll(params Task[] tasks);
-
-        public static Task<TResult[]> WhenAll<TResult>(params Task<TResult>[] tasks);
-
         public static Task WhenAll(System.Collections.Generic.IEnumerable<Task> tasks);
 
+        public static Task WhenAll(params Task[] tasks);
+
         public static Task<TResult[]> WhenAll<TResult>(System.Collections.Generic.IEnumerable<Task<TResult>> tasks);
+
+        public static Task<TResult[]> WhenAll<TResult>(params Task<TResult>[] tasks);
 
         public static Task<Task> WhenAny(params Task[] tasks);
 
