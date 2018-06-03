@@ -312,7 +312,7 @@ namespace System.Threading
 
         // Throws an OCE; separated out to enable better inlining of ThrowIfCancellationRequested
         private void ThrowOperationCanceledException() =>
-            throw OperationCanceledExceptionExtensions.CreateOperationCanceledException(this);
+            throw InternalAsyncBridgeExtensions.CreateOperationCanceledException(this);
     }
 }
 #endif
