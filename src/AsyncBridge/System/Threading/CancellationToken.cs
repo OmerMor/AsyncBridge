@@ -3,6 +3,8 @@
 
 #if NET20 || NET35
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Security;
 
 namespace System.Threading
 {
@@ -26,6 +28,7 @@ namespace System.Threading
     /// All members of this struct are thread-safe and may be used concurrently from multiple threads.
     /// </para>
     /// </remarks>
+    [ComVisible(false)]
     [DebuggerDisplay("IsCancellationRequested = {IsCancellationRequested}")]
     public readonly struct CancellationToken
     {
@@ -225,6 +228,7 @@ namespace System.Threading
             Register(callback, state, useSyncContext: false, useExecutionContext: false);
 
         // the real work..
+        [SecuritySafeCritical]
         private CancellationTokenRegistration Register(Action<object> callback, object state, bool useSyncContext, bool useExecutionContext)
         {
             if (callback == null)

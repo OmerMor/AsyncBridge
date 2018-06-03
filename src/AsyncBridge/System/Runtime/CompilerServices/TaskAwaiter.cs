@@ -83,6 +83,7 @@ namespace System.Runtime.CompilerServices
         /// <exception cref="System.ArgumentNullException">The <paramref name="continuation"/> argument is null (Nothing in Visual Basic).</exception>
         /// <exception cref="System.InvalidOperationException">The awaiter was not properly initialized.</exception>
         /// <remarks>This method is intended for compiler user rather than use directly in code.</remarks>
+        [SecuritySafeCritical]
         public void OnCompleted(Action continuation)
         {
             OnCompletedInternal(m_task, continuation, continueOnCapturedContext: true, flowExecutionContext: true);
@@ -222,6 +223,7 @@ namespace System.Runtime.CompilerServices
         /// <exception cref="System.ArgumentNullException">The <paramref name="continuation"/> argument is null (Nothing in Visual Basic).</exception>
         /// <exception cref="System.NullReferenceException">The awaiter was not properly initialized.</exception>
         /// <remarks>This method is intended for compiler user rather than use directly in code.</remarks>
+        [SecurityCritical]
         internal static void OnCompletedInternal(Task task, Action continuation, bool continueOnCapturedContext, bool flowExecutionContext)
         {
             if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -291,6 +293,7 @@ namespace System.Runtime.CompilerServices
         /// <exception cref="System.ArgumentNullException">The <paramref name="continuation"/> argument is null (Nothing in Visual Basic).</exception>
         /// <exception cref="System.NullReferenceException">The awaiter was not properly initialized.</exception>
         /// <remarks>This method is intended for compiler user rather than use directly in code.</remarks>
+        [SecuritySafeCritical]
         public void OnCompleted(Action continuation)
         {
             TaskAwaiter.OnCompletedInternal(m_task, continuation, continueOnCapturedContext: true, flowExecutionContext: true);
@@ -400,6 +403,7 @@ namespace System.Runtime.CompilerServices
             /// <exception cref="System.ArgumentNullException">The <paramref name="continuation"/> argument is null (Nothing in Visual Basic).</exception>
             /// <exception cref="System.NullReferenceException">The awaiter was not properly initialized.</exception>
             /// <remarks>This method is intended for compiler user rather than use directly in code.</remarks>
+            [SecuritySafeCritical]
             public void OnCompleted(Action continuation)
             {
                 TaskAwaiter.OnCompletedInternal(m_task, continuation, m_continueOnCapturedContext, flowExecutionContext: true);
@@ -489,6 +493,7 @@ namespace System.Runtime.CompilerServices
             /// <exception cref="System.ArgumentNullException">The <paramref name="continuation"/> argument is null (Nothing in Visual Basic).</exception>
             /// <exception cref="System.NullReferenceException">The awaiter was not properly initialized.</exception>
             /// <remarks>This method is intended for compiler user rather than use directly in code.</remarks>
+            [SecuritySafeCritical]
             public void OnCompleted(Action continuation)
             {
                 TaskAwaiter.OnCompletedInternal(m_task, continuation, m_continueOnCapturedContext, flowExecutionContext: true);

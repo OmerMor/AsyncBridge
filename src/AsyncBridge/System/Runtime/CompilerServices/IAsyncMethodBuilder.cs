@@ -1,3 +1,4 @@
+#if NET40 || PORTABLE
 namespace System.Runtime.CompilerServices
 {
     /// <summary>
@@ -8,3 +9,4 @@ namespace System.Runtime.CompilerServices
         void PreBoxInitialization();
     }
 }
+#endif

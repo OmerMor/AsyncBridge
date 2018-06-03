@@ -38,6 +38,7 @@ namespace System.Threading
     /// completed.
     /// </para>
     /// </remarks>
+    [ComVisible(false)]
     [DebuggerDisplay("Current Count = {m_currentCount}")]
     public class SemaphoreSlim : IDisposable
     {
@@ -92,6 +93,7 @@ namespace System.Threading
             internal TaskNode Prev, Next;
             internal TaskNode() : base() { }
 
+            [SecurityCritical]
             public void ExecuteWorkItem()
             {
                 bool setSuccessfully = TrySetResult(true);
@@ -877,6 +879,7 @@ namespace System.Threading
         /// Queues a waiter task to the ThreadPool. We use this small helper method so that
         /// the larger Release(count) method does not need to be SecuritySafeCritical.
         /// </summary>
+        [SecuritySafeCritical] // for ThreadPool.UnsafeQueueCustomWorkItem
         private static void QueueWaiterTask(TaskNode waiterTask)
         {
             ThreadPool.UnsafeQueueUserWorkItem(state => ((TaskNode)state).ExecuteWorkItem(), waiterTask);

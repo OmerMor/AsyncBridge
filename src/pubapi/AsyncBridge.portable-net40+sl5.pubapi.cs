@@ -128,6 +128,7 @@ namespace System.Runtime.CompilerServices
 
             public void GetResult();
 
+            [System.Security.SecuritySafeCritical]
             public void OnCompleted(System.Action continuation);
 
             [System.Security.SecurityCritical]
@@ -145,6 +146,7 @@ namespace System.Runtime.CompilerServices
 
             public TResult GetResult();
 
+            [System.Security.SecuritySafeCritical]
             public void OnCompleted(System.Action continuation);
 
             [System.Security.SecurityCritical]
@@ -190,6 +192,7 @@ namespace System.Runtime.CompilerServices
 
         public void GetResult();
 
+        [System.Security.SecuritySafeCritical]
         public void OnCompleted(System.Action continuation);
 
         [System.Security.SecurityCritical]
@@ -202,6 +205,7 @@ namespace System.Runtime.CompilerServices
 
         public TResult GetResult();
 
+        [System.Security.SecuritySafeCritical]
         public void OnCompleted(System.Action continuation);
 
         [System.Security.SecurityCritical]
@@ -218,6 +222,7 @@ namespace System.Runtime.CompilerServices
 
             public void GetResult();
 
+            [System.Security.SecuritySafeCritical]
             public void OnCompleted(System.Action continuation);
 
             [System.Security.SecurityCritical]
@@ -262,6 +267,7 @@ namespace System.Threading
         public static long Read(ref long location);
 
         [System.CLSCompliant(false)]
+        [System.Security.SecuritySafeCritical]
         public static ulong Read(ref ulong location);
 
         public static System.IntPtr Read(ref System.IntPtr location);
@@ -271,6 +277,10 @@ namespace System.Threading
 
         public static float Read(ref float location);
 
+        [System.Security.SecuritySafeCritical]
+        public static double Read(ref double location);
+
+        [System.Security.SecuritySafeCritical]
         public static T Read<T>(ref T location) where T : class;
 
         public static void Write(ref bool location, bool value);
@@ -293,6 +303,7 @@ namespace System.Threading
         public static void Write(ref long location, long value);
 
         [System.CLSCompliant(false)]
+        [System.Security.SecuritySafeCritical]
         public static void Write(ref ulong location, ulong value);
 
         public static void Write(ref System.IntPtr location, System.IntPtr value);
@@ -302,6 +313,10 @@ namespace System.Threading
 
         public static void Write(ref float location, float value);
 
+        [System.Security.SecuritySafeCritical]
+        public static void Write(ref double location, double value);
+
+        [System.Security.SecuritySafeCritical]
         public static void Write<T>(ref T location, T value) where T : class;
     }
 }

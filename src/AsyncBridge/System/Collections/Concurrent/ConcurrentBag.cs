@@ -4,6 +4,7 @@
 #if NET20 || NET35
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace System.Collections.Concurrent
@@ -27,6 +28,7 @@ namespace System.Collections.Concurrent
     /// concurrently from multiple threads.
     /// </para>
     /// </remarks>
+    [ComVisible(false)]
     [DebuggerTypeProxy(typeof(IProducerConsumerCollectionDebugView<>))]
     [DebuggerDisplay("Count = {Count}")]
     public class ConcurrentBag<T> : IProducerConsumerCollection<T>

@@ -4,6 +4,8 @@
 #if NET20 || NET35
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Security;
 
 namespace System.Threading
 {
@@ -20,6 +22,7 @@ namespace System.Threading
     /// concurrently from multiple threads.
     /// </para>
     /// </remarks>
+    [ComVisible(false)]
     public class CancellationTokenSource : IDisposable
     {
         /// <summary>A <see cref="CancellationTokenSource"/> that's already canceled.</summary>
@@ -913,6 +916,10 @@ namespace System.Threading
                 Partition = partition;
             }
 
+            // Cached callback delegate that's lazily initialized due to ContextCallback being SecurityCritical
+            [SecurityCritical]
+            private static ContextCallback s_executionContextCallback;
+
             public void Clear()
             {
                 Id = 0;
@@ -922,21 +929,34 @@ namespace System.Threading
                 SynchronizationContext = null;
             }
 
+            [SecuritySafeCritical]
             public void ExecuteCallback()
             {
                 ExecutionContext context = ExecutionContext;
                 if (context != null)
                 {
-                    ExecutionContext.Run(context, s =>
-                    {
-                        CallbackNode n = (CallbackNode)s;
-                        n.Callback(n.CallbackState);
-                    }, this);
+                    // Lazily initialize the callback delegate; benign ----
+                    var callback = s_executionContextCallback;
+                    if (callback == null) s_executionContextCallback = callback = new ContextCallback(ExecutionContextCallback);
+
+                    ExecutionContext.Run(
+                        context,
+                        callback,
+                        this);
                 }
                 else
                 {
                     Callback(CallbackState);
                 }
+            }
+
+            // the worker method to actually run the callback
+            // The signature is such that it can be used as a 'ContextCallback'
+            [SecurityCritical]
+            private static void ExecutionContextCallback(object s)
+            {
+                CallbackNode n = (CallbackNode)s;
+                n.Callback(n.CallbackState);
             }
         }
     }

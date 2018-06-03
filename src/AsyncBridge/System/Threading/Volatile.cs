@@ -5,6 +5,8 @@
 //
 // > The VM will replace this with a more efficient implementation.
 
+using System.Security;
+
 namespace System.Threading
 {
     //
@@ -106,6 +108,7 @@ namespace System.Threading
         }
 
         [CLSCompliant(false)]
+        [SecuritySafeCritical] // contains unsafe code
         public static ulong Read(ref ulong location)
         {
             unsafe
@@ -152,9 +155,25 @@ namespace System.Threading
             return value;
         }
 
-#if !PORTABLE
+#if PORTABLE
+        [SecuritySafeCritical] // contains unsafe code
+#endif
         public static double Read(ref double location)
         {
+#if PORTABLE
+            unsafe
+            {
+                //
+                // There is no overload of Interlocked.Exchange that accepts a double.  So we have
+                // to do some pointer tricks to pass our arguments to the overload that takes a long.
+                //
+                fixed (double* pLocation = &location)
+                {
+                    var value = Interlocked.CompareExchange(ref *(long*)pLocation, 0, 0);
+                    return *(double*)value;
+                }
+            }
+#else
             //
             // On 32-bit machines, we use this implementation, since an ordinary volatile read
             // would not be atomic.
@@ -162,9 +181,10 @@ namespace System.Threading
             // On 64-bit machines, the VM will replace this with a more efficient implementation.
             //
             return Interlocked.CompareExchange(ref location, 0, 0);
-        }
 #endif
+        }
 
+        [SecuritySafeCritical] //the intrinsic implementation of this method contains unverifiable code
         public static T Read<T>(ref T location) where T : class
         {
             // 
@@ -256,6 +276,7 @@ namespace System.Threading
         }
 
         [CLSCompliant(false)]
+        [SecuritySafeCritical] // contains unsafe code
         public static void Write(ref ulong location, ulong value)
         {
             //
@@ -305,7 +326,9 @@ namespace System.Threading
             location = value;
         }
 
-#if !PORTABLE
+#if PORTABLE
+        [SecuritySafeCritical] // contains unsafe code
+#endif
         public static void Write(ref double location, double value)
         {
             //
@@ -314,10 +337,24 @@ namespace System.Threading
             //
             // On 64-bit machines, the VM will replace this with a more efficient implementation.
             //
+#if PORTABLE
+            unsafe
+            {
+                //
+                // There is no overload of Interlocked.Exchange that accepts a ulong.  So we have
+                // to do some pointer tricks to pass our arguments to the overload that takes a long.
+                //
+                fixed (double* pLocation = &location)
+                {
+                    Interlocked.Exchange(ref *(long*)pLocation, *(long*)&value);
+                }
+            }
+#else
             Interlocked.Exchange(ref location, value);
-        }
 #endif
+        }
 
+        [SecuritySafeCritical] //the intrinsic implementation of this method contains unverifiable code
         public static void Write<T>(ref T location, T value) where T : class
         {
             // 

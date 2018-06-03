@@ -12,6 +12,7 @@
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security;
 
@@ -64,6 +65,7 @@ namespace System.Threading
         /// </summary>
         /// <param name="info">The object that holds the serialized object data.</param>
         /// <param name="context">The contextual information about the source or destination.</param>
+        [SecurityCritical]
         protected BarrierPostPhaseException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -87,6 +89,7 @@ namespace System.Threading
     /// completed.
     /// </para>
     /// </remarks>
+    [ComVisible(false)]
     [DebuggerDisplay("Participant Count={ParticipantCount},Participants Remaining={ParticipantsRemaining}")]
     public class Barrier : IDisposable
     {
@@ -132,6 +135,7 @@ namespace System.Threading
         private ExecutionContext _ownerThreadContext;
 
         // The EC callback that invokes the post phase action
+        [SecurityCritical]
         private static ContextCallback s_invokePostPhaseAction;
 
         // Post phase action after each phase
@@ -750,6 +754,7 @@ namespace System.Threading
         /// last arrival thread
         /// </summary>
         /// <param name="observedSense">The current phase sense</param>
+        [SecurityCritical]
         private void FinishPhase(bool observedSense)
         {
             // Execute the PHA in try/finally block to reset the variables back in case of it threw an exception
@@ -799,6 +804,7 @@ namespace System.Threading
         /// Helper method to call the post phase action
         /// </summary>
         /// <param name="obj"></param>
+        [SecurityCritical]
         private static void InvokePostPhaseAction(object obj)
         {
             var thisBarrier = (Barrier)obj;

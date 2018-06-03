@@ -13,6 +13,7 @@
 
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Security;
 
 namespace System.Threading.Tasks
 {
@@ -38,6 +39,7 @@ namespace System.Threading.Tasks
         /// Schedules a task to the ThreadPool.
         /// </summary>
         /// <param name="task">The task to schedule.</param>
+        [SecurityCritical]
         protected internal override void QueueTask(Task task)
         {
             if ((task.Options & TaskCreationOptions.LongRunning) != 0)
@@ -68,6 +70,7 @@ namespace System.Threading.Tasks
         /// IMPORTANT NOTE: TryExecuteTaskInline will NOT throw task exceptions itself. Any wait code path using this function needs
         /// to account for exceptions that need to be propagated, and throw themselves accordingly.
         /// </summary>
+        [SecurityCritical]
         protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
         {
             // If the task was previously scheduled, and we can't pop it, then return false.
@@ -79,11 +82,13 @@ namespace System.Threading.Tasks
             return true;
         }
 
+        [SecurityCritical]
         protected internal override bool TryDequeue(Task task)
         {
             return Queue.TryRemove(task, out _);
         }
 
+        [SecurityCritical]
         protected override IEnumerable<Task> GetScheduledTasks()
         {
             return Queue.Keys;

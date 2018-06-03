@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Security;
 
 // Disable the "reference to volatile field not treated as volatile" error.
 #pragma warning disable 0420
@@ -1056,7 +1057,8 @@ namespace System.Threading.Tasks
 
         //
         // Internal version of RunSynchronously that allows not waiting for completion.
-        // 
+        //
+        [SecuritySafeCritical] // Needed for QueueTask
         internal void InternalRunSynchronously(TaskScheduler scheduler, bool waitForCompletion)
         {
             Debug.Assert(scheduler != null, "Task.InternalRunSynchronously(): null TaskScheduler");
@@ -1707,6 +1709,7 @@ namespace System.Threading.Tasks
         /// underneath us.  If false, TASK_STATE_STARTED bit is OR-ed right in.  This
         /// allows us to streamline things a bit for StartNew(), where competing cancellations
         /// are not a problem.</param>
+        [SecuritySafeCritical] // Needed for QueueTask
         internal void ScheduleAndStart(bool needsProtection)
         {
             Debug.Assert(m_taskScheduler != null, "expected a task scheduler to have been selected");
@@ -2283,6 +2286,7 @@ namespace System.Threading.Tasks
         /// <summary>
         /// Outermost entry function to execute this task. Handles all aspects of executing a task on the caller thread.
         /// </summary>
+        [SecuritySafeCritical]
         internal bool ExecuteEntry()
         {
             // Do atomic state transition from queued to invoked. If we observe a task that's already invoked,
@@ -2310,6 +2314,7 @@ namespace System.Threading.Tasks
             return true;
         }
 
+        [SecuritySafeCritical]
         internal void ExecuteEntryUnsafe() // used instead of ExecuteEntry() when we don't have to worry about double-execution prevent
         {
             // Remember that we started running the task delegate.
@@ -2338,6 +2343,7 @@ namespace System.Threading.Tasks
         }
 
         // A trick so we can refer to the TLS slot with a byref.
+        [SecurityCritical]
         private void ExecuteWithThreadLocal(ref Task currentTaskSlot)
         {
             // Remember the current task so we can restore it after running, and then
@@ -2359,6 +2365,10 @@ namespace System.Threading.Tasks
                     else
                     {
                         // Invoke it under the captured ExecutionContext
+
+                        // Lazily initialize the callback delegate; benign ----
+                        var callback = s_ecCallback;
+                        if (callback == null) s_ecCallback = callback = new ContextCallback(ExecutionContextCallback);
 
                         // AsyncBridge note: since the synchronization context captured and restored with the execution context
                         // in .NET Framework but not .NET Core, emulate what .NET Framework does here:
@@ -2388,13 +2398,17 @@ namespace System.Threading.Tasks
             }
         }
 
-        // See AsyncBridge note in ExecuteWithThreadLocal
-        private static readonly ContextCallback s_ecCallback = state =>
+        [SecurityCritical]
+        private static ContextCallback s_ecCallback;
+
+        [SecurityCritical]
+        private static void ExecutionContextCallback(object state)
         {
+            // See AsyncBridge note in ExecuteWithThreadLocal
             var tuple = (Tuple<Task, SynchronizationContext>)state;
             SynchronizationContext.SetSynchronizationContext(tuple.Item2);
             tuple.Item1.InnerInvoke();
-        };
+        }
 
         /// <summary>
         /// The actual code which invokes the body of the task. This can be overridden in derived types.
@@ -2478,6 +2492,7 @@ namespace System.Threading.Tasks
         /// </param>
         /// <param name="flowExecutionContext">Whether to flow ExecutionContext across the await.</param>
         /// <exception cref="System.InvalidOperationException">The awaiter was not properly initialized.</exception>
+        [SecurityCritical]
         internal void SetContinuationForAwait(
             Action continuationAction, bool continueOnCapturedContext, bool flowExecutionContext)
         {
@@ -2927,6 +2942,7 @@ namespace System.Threading.Tasks
         /// For custom schedulers we also attempt an atomic state transition.
         /// </param>
         /// <returns>true if the task was successfully canceled; otherwise, false.</returns>
+        [SecuritySafeCritical]
         internal bool InternalCancel(bool bCancelNonExecutingOnly)
         {
             Debug.Assert((Options & (TaskCreationOptions)InternalTaskOptions.PromiseTask) == 0, "Task.InternalCancel() did not expect promise-style task");
@@ -3121,6 +3137,7 @@ namespace System.Threading.Tasks
         /// <summary>
         /// Runs all of the continuations, as appropriate.
         /// </summary>
+        [SecuritySafeCritical] // for AwaitTaskContinuation.RunOrScheduleAction
         internal void FinishContinuations()
         {
             // Atomically store the fact that this task is completing.  From this point on, the adding of continuations will
@@ -6022,6 +6039,7 @@ namespace System.Threading.Tasks
             m_completingTask = completingTask;
         }
 
+        [SecurityCritical]
         public void ExecuteWorkItem()
         {
             m_action.Invoke(m_completingTask);
@@ -6242,6 +6260,7 @@ namespace System.Threading.Tasks
         /// Each call to TryBeginInliningScope() that returns true must be matched with a 
         /// call to EndInliningScope() regardless of whether inlining actually took place.
         /// </summary>
+        [SecuritySafeCritical]
         internal bool TryBeginInliningScope()
         {
             // If we're still under the 'safe' limit we'll just skip the stack probe to save p/invoke calls
@@ -6392,6 +6411,7 @@ namespace System.Threading.Tasks
         }
 
         // Calls InvokeCore asynchronously.
+        [SecuritySafeCritical]
         private void InvokeCoreAsync(Task completingTask)
         {
             // Queue a call to Invoke.  If we're so deep on the stack that we're at risk of overflowing,

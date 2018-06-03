@@ -50,6 +50,7 @@ namespace System.Threading
     /// concurrently.
     /// </para>
     /// </remarks>
+    [ComVisible(false)]
     [DebuggerTypeProxy(typeof(SystemThreading_SpinLockDebugView))]
     [DebuggerDisplay("IsHeld = {IsHeld}")]
     public struct SpinLock

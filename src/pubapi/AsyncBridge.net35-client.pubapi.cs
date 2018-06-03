@@ -24,12 +24,14 @@ namespace System
 
         public AggregateException(string message, params Exception[] innerExceptions);
 
+        [System.Security.SecurityCritical]
         protected AggregateException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);
 
         public AggregateException Flatten();
 
         public override Exception GetBaseException();
 
+        [System.Security.SecurityCritical]
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);
 
         public void Handle(Func<Exception, bool> predicate);
@@ -39,6 +41,7 @@ namespace System
 
     public delegate TResult Func<in T1, in T2, in T3, in T4, in T5, out TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerTypeProxy(typeof(LazyDebugView<>))]
     [System.Diagnostics.DebuggerDisplay("ThreadSafetyMode={Mode}, IsValueCreated={IsValueCreated}, IsValueFaulted={IsValueFaulted}, Value={ValueForDebugDisplay}")]
     public class Lazy<T>
@@ -67,6 +70,7 @@ namespace System
 }
 namespace System.Collections.Concurrent
 {
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerTypeProxy(typeof(BlockingCollectionDebugView<>))]
     [System.Diagnostics.DebuggerDisplay("Count = {Count}, Type = {_collection}")]
     public class BlockingCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection, System.IDisposable
@@ -150,6 +154,7 @@ namespace System.Collections.Concurrent
         public bool TryTake(out T item, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken);
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerTypeProxy(typeof(IProducerConsumerCollectionDebugView<>))]
     [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
     public class ConcurrentBag<T> : IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection
@@ -177,6 +182,7 @@ namespace System.Collections.Concurrent
         public bool TryTake(out T result);
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerTypeProxy(typeof(IDictionaryDebugView<,>))]
     [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
     public class ConcurrentDictionary<TKey, TValue> : System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.ICollection
@@ -234,6 +240,7 @@ namespace System.Collections.Concurrent
         public bool TryUpdate(TKey key, TValue newValue, TValue comparisonValue);
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
     [System.Diagnostics.DebuggerTypeProxy(typeof(IProducerConsumerCollectionDebugView<>))]
     public class ConcurrentQueue<T> : IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection
@@ -379,6 +386,7 @@ namespace System.Runtime.CompilerServices
 
         public void SetStateMachine(IAsyncStateMachine stateMachine);
 
+        [System.Security.SecuritySafeCritical]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine;
     }
 
@@ -399,6 +407,7 @@ namespace System.Runtime.CompilerServices
 
         public void SetStateMachine(IAsyncStateMachine stateMachine);
 
+        [System.Security.SecuritySafeCritical]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine;
     }
 
@@ -417,6 +426,7 @@ namespace System.Runtime.CompilerServices
 
         public void SetStateMachine(IAsyncStateMachine stateMachine);
 
+        [System.Security.SecuritySafeCritical]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine;
     }
 
@@ -430,6 +440,7 @@ namespace System.Runtime.CompilerServices
 
             public void GetResult();
 
+            [System.Security.SecuritySafeCritical]
             public void OnCompleted(System.Action continuation);
 
             [System.Security.SecurityCritical]
@@ -447,6 +458,7 @@ namespace System.Runtime.CompilerServices
 
             public TResult GetResult();
 
+            [System.Security.SecuritySafeCritical]
             public void OnCompleted(System.Action continuation);
 
             [System.Security.SecurityCritical]
@@ -492,6 +504,7 @@ namespace System.Runtime.CompilerServices
 
         public void GetResult();
 
+        [System.Security.SecuritySafeCritical]
         public void OnCompleted(System.Action continuation);
 
         [System.Security.SecurityCritical]
@@ -504,6 +517,7 @@ namespace System.Runtime.CompilerServices
 
         public TResult GetResult();
 
+        [System.Security.SecuritySafeCritical]
         public void OnCompleted(System.Action continuation);
 
         [System.Security.SecurityCritical]
@@ -520,6 +534,7 @@ namespace System.Runtime.CompilerServices
 
             public void GetResult();
 
+            [System.Security.SecuritySafeCritical]
             public void OnCompleted(System.Action continuation);
 
             [System.Security.SecurityCritical]
@@ -542,6 +557,7 @@ namespace System.Runtime.ExceptionServices
 }
 namespace System.Threading
 {
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerDisplay("Participant Count={ParticipantCount},Participants Remaining={ParticipantsRemaining}")]
     public class Barrier : System.IDisposable
     {
@@ -590,9 +606,11 @@ namespace System.Threading
 
         public BarrierPostPhaseException(string message, System.Exception innerException);
 
+        [System.Security.SecurityCritical]
         protected BarrierPostPhaseException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerDisplay("IsCancellationRequested = {IsCancellationRequested}")]
     public readonly struct CancellationToken
     {
@@ -644,6 +662,7 @@ namespace System.Threading
         public static bool operator !=(CancellationTokenRegistration left, CancellationTokenRegistration right);
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     public class CancellationTokenSource : System.IDisposable
     {
         public bool IsCancellationRequested { get; }
@@ -673,6 +692,7 @@ namespace System.Threading
         protected virtual void Dispose(bool disposing);
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerDisplay("Initial Count={InitialCount}, Current Count={CurrentCount}")]
     public class CountdownEvent : System.IDisposable
     {
@@ -739,6 +759,7 @@ namespace System.Threading
         ExecutionAndPublication = 2
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerDisplay("Set = {IsSet}")]
     public class ManualResetEventSlim : System.IDisposable
     {
@@ -775,6 +796,7 @@ namespace System.Threading
         public bool Wait(int millisecondsTimeout, CancellationToken cancellationToken);
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerDisplay("Current Count = {m_currentCount}")]
     public class SemaphoreSlim : System.IDisposable
     {
@@ -819,6 +841,7 @@ namespace System.Threading
         public System.Threading.Tasks.Task<bool> WaitAsync(int millisecondsTimeout, CancellationToken cancellationToken);
     }
 
+    [System.Runtime.InteropServices.ComVisible(false)]
     [System.Diagnostics.DebuggerTypeProxy(typeof(SpinLock.SystemThreading_SpinLockDebugView))]
     [System.Diagnostics.DebuggerDisplay("IsHeld = {IsHeld}")]
     public struct SpinLock
@@ -911,6 +934,7 @@ namespace System.Threading
         public static long Read(ref long location);
 
         [System.CLSCompliant(false)]
+        [System.Security.SecuritySafeCritical]
         public static ulong Read(ref ulong location);
 
         public static System.IntPtr Read(ref System.IntPtr location);
@@ -922,6 +946,7 @@ namespace System.Threading
 
         public static double Read(ref double location);
 
+        [System.Security.SecuritySafeCritical]
         public static T Read<T>(ref T location) where T : class;
 
         public static void Write(ref bool location, bool value);
@@ -944,6 +969,7 @@ namespace System.Threading
         public static void Write(ref long location, long value);
 
         [System.CLSCompliant(false)]
+        [System.Security.SecuritySafeCritical]
         public static void Write(ref ulong location, ulong value);
 
         public static void Write(ref System.IntPtr location, System.IntPtr value);
@@ -955,6 +981,7 @@ namespace System.Threading
 
         public static void Write(ref double location, double value);
 
+        [System.Security.SecuritySafeCritical]
         public static void Write<T>(ref T location, T value) where T : class;
     }
 }
@@ -1675,14 +1702,19 @@ namespace System.Threading.Tasks
 
         protected TaskScheduler();
 
+        [System.Security.SecurityCritical]
         protected abstract System.Collections.Generic.IEnumerable<Task> GetScheduledTasks();
 
+        [System.Security.SecurityCritical]
         protected abstract void QueueTask(Task task);
 
+        [System.Security.SecurityCritical]
         protected virtual bool TryDequeue(Task task);
 
+        [System.Security.SecurityCritical]
         protected bool TryExecuteTask(Task task);
 
+        [System.Security.SecurityCritical]
         protected abstract bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued);
     }
 
