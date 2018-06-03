@@ -116,27 +116,6 @@ namespace System.Runtime.CompilerServices
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine;
     }
 
-    [System.AttributeUsage(System.AttributeTargets.Parameter, Inherited = false)]
-    public sealed class CallerFilePathAttribute : System.Attribute
-    {
-        [System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-        public CallerFilePathAttribute();
-    }
-
-    [System.AttributeUsage(System.AttributeTargets.Parameter, Inherited = false)]
-    public sealed class CallerLineNumberAttribute : System.Attribute
-    {
-        [System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-        public CallerLineNumberAttribute();
-    }
-
-    [System.AttributeUsage(System.AttributeTargets.Parameter, Inherited = false)]
-    public sealed class CallerMemberNameAttribute : System.Attribute
-    {
-        [System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-        public CallerMemberNameAttribute();
-    }
-
     public readonly struct ConfiguredTaskAwaitable
     {
         public ConfiguredTaskAwaitable.ConfiguredTaskAwaiter GetAwaiter();
