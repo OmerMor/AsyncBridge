@@ -4,15 +4,21 @@ using System.Threading;
 
 internal static partial class InternalAsyncBridgeExtensions
 {
+
+    public static OperationCanceledException CreateOperationCanceledException(CancellationToken cancellationToken)
+    {
+        return CreateOperationCanceledException(SR.OperationCanceled, cancellationToken);
+    }
+
 #if NET20 || NET35
     public static CancellationToken GetCancellationToken(this OperationCanceledException exception)
     {
         return default;
     }
 
-    public static OperationCanceledException CreateOperationCanceledException(CancellationToken cancellationToken)
+    public static OperationCanceledException CreateOperationCanceledException(string message, CancellationToken cancellationToken)
     {
-        return new OperationCanceledException(SR.OperationCanceled);
+        return new OperationCanceledException(message);
     }
 #elif PORTABLE
     private static readonly Func<OperationCanceledException, CancellationToken> CancellationTokenGetter = (Func<OperationCanceledException, CancellationToken>)
@@ -30,11 +36,11 @@ internal static partial class InternalAsyncBridgeExtensions
         typeof(OperationCanceledException)
             .GetConstructor(new[] { typeof(string), typeof(CancellationToken) });
 
-    public static OperationCanceledException CreateOperationCanceledException(CancellationToken cancellationToken)
+    public static OperationCanceledException CreateOperationCanceledException(string message, CancellationToken cancellationToken)
     {
         if (CancellationTokenConstructor != null)
         {
-            return (OperationCanceledException)CancellationTokenConstructor?.Invoke(new object[] {SR.OperationCanceled, cancellationToken});
+            return (OperationCanceledException)CancellationTokenConstructor?.Invoke(new object[] { message, cancellationToken });
         }
 
         return new OperationCanceledException(SR.OperationCanceled);
@@ -45,9 +51,9 @@ internal static partial class InternalAsyncBridgeExtensions
         return exception.CancellationToken;
     }
 
-    public static OperationCanceledException CreateOperationCanceledException(CancellationToken cancellationToken)
+    public static OperationCanceledException CreateOperationCanceledException(string message, CancellationToken cancellationToken)
     {
-        return new OperationCanceledException(SR.OperationCanceled, cancellationToken);
+        return new OperationCanceledException(message, cancellationToken);
     }
 #endif
 }

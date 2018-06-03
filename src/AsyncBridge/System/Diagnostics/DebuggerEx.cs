@@ -7,7 +7,7 @@ namespace System.Diagnostics
 #if NET20 || NET35 || PORTABLE
         private static readonly Action NotifyOfCrossThreadDependencyAction = (Action)typeof(Debugger)
 #if PORTABLE
-            .GetMethod("NotifyOfCrossThreadDependency", new Type[0])
+            .GetMethod("NotifyOfCrossThreadDependency", ArrayEx.Empty<Type>())
 #else
             .GetMethod("NotifyOfCrossThreadDependency", BindingFlags.Public | BindingFlags.Static, null, Type.EmptyTypes, null)
 #endif

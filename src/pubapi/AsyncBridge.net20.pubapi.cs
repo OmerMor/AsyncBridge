@@ -56,6 +56,322 @@ namespace System
     public delegate TResult Func<in T1, in T2, in T3, in T4, out TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
 
     public delegate TResult Func<in T1, in T2, in T3, in T4, in T5, out TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
+
+    [System.Diagnostics.DebuggerTypeProxy(typeof(LazyDebugView<>))]
+    [System.Diagnostics.DebuggerDisplay("ThreadSafetyMode={Mode}, IsValueCreated={IsValueCreated}, IsValueFaulted={IsValueFaulted}, Value={ValueForDebugDisplay}")]
+    public class Lazy<T>
+    {
+        public bool IsValueCreated { get; }
+
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        public T Value { get; }
+
+        public Lazy();
+
+        public Lazy(T value);
+
+        public Lazy(Func<T> valueFactory);
+
+        public Lazy(bool isThreadSafe);
+
+        public Lazy(System.Threading.LazyThreadSafetyMode mode);
+
+        public Lazy(Func<T> valueFactory, bool isThreadSafe);
+
+        public Lazy(Func<T> valueFactory, System.Threading.LazyThreadSafetyMode mode);
+
+        public override string ToString();
+    }
+}
+namespace System.Collections.Concurrent
+{
+    [System.Diagnostics.DebuggerTypeProxy(typeof(BlockingCollectionDebugView<>))]
+    [System.Diagnostics.DebuggerDisplay("Count = {Count}, Type = {_collection}")]
+    public class BlockingCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection, System.IDisposable
+    {
+        public int BoundedCapacity { get; }
+
+        public int Count { get; }
+
+        public bool IsAddingCompleted { get; }
+
+        public bool IsCompleted { get; }
+
+        public static int AddToAny(BlockingCollection<T>[] collections, T item);
+
+        public static int AddToAny(BlockingCollection<T>[] collections, T item, System.Threading.CancellationToken cancellationToken);
+
+        public static int TakeFromAny(BlockingCollection<T>[] collections, out T item);
+
+        public static int TakeFromAny(BlockingCollection<T>[] collections, out T item, System.Threading.CancellationToken cancellationToken);
+
+        public static int TryAddToAny(BlockingCollection<T>[] collections, T item);
+
+        public static int TryAddToAny(BlockingCollection<T>[] collections, T item, System.TimeSpan timeout);
+
+        public static int TryAddToAny(BlockingCollection<T>[] collections, T item, int millisecondsTimeout);
+
+        public static int TryAddToAny(BlockingCollection<T>[] collections, T item, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken);
+
+        public static int TryTakeFromAny(BlockingCollection<T>[] collections, out T item);
+
+        public static int TryTakeFromAny(BlockingCollection<T>[] collections, out T item, System.TimeSpan timeout);
+
+        public static int TryTakeFromAny(BlockingCollection<T>[] collections, out T item, int millisecondsTimeout);
+
+        public static int TryTakeFromAny(BlockingCollection<T>[] collections, out T item, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken);
+
+        public BlockingCollection();
+
+        public BlockingCollection(int boundedCapacity);
+
+        public BlockingCollection(IProducerConsumerCollection<T> collection, int boundedCapacity);
+
+        public BlockingCollection(IProducerConsumerCollection<T> collection);
+
+        public void Add(T item);
+
+        public void Add(T item, System.Threading.CancellationToken cancellationToken);
+
+        public void CompleteAdding();
+
+        public void CopyTo(T[] array, int index);
+
+        public void Dispose();
+
+        protected virtual void Dispose(bool disposing);
+
+        public System.Collections.Generic.IEnumerable<T> GetConsumingEnumerable();
+
+        public System.Collections.Generic.IEnumerable<T> GetConsumingEnumerable(System.Threading.CancellationToken cancellationToken);
+
+        public T Take();
+
+        public T Take(System.Threading.CancellationToken cancellationToken);
+
+        public T[] ToArray();
+
+        public bool TryAdd(T item);
+
+        public bool TryAdd(T item, System.TimeSpan timeout);
+
+        public bool TryAdd(T item, int millisecondsTimeout);
+
+        public bool TryAdd(T item, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken);
+
+        public bool TryTake(out T item);
+
+        public bool TryTake(out T item, System.TimeSpan timeout);
+
+        public bool TryTake(out T item, int millisecondsTimeout);
+
+        public bool TryTake(out T item, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken);
+    }
+
+    [System.Diagnostics.DebuggerTypeProxy(typeof(IProducerConsumerCollectionDebugView<>))]
+    [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
+    public class ConcurrentBag<T> : IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection
+    {
+        public int Count { get; }
+
+        public bool IsEmpty { get; }
+
+        public ConcurrentBag();
+
+        public ConcurrentBag(System.Collections.Generic.IEnumerable<T> collection);
+
+        public void Add(T item);
+
+        public void Clear();
+
+        public void CopyTo(T[] array, int index);
+
+        public System.Collections.Generic.IEnumerator<T> GetEnumerator();
+
+        public T[] ToArray();
+
+        public bool TryPeek(out T result);
+
+        public bool TryTake(out T result);
+    }
+
+    [System.Diagnostics.DebuggerTypeProxy(typeof(IDictionaryDebugView<,>))]
+    [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
+    public class ConcurrentDictionary<TKey, TValue> : System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.ICollection
+    {
+        public int Count { get; }
+
+        public bool IsEmpty { get; }
+
+        public TValue this[TKey key] { get; set; }
+
+        public System.Collections.Generic.ICollection<TKey> Keys { get; }
+
+        public System.Collections.Generic.ICollection<TValue> Values { get; }
+
+        public ConcurrentDictionary();
+
+        public ConcurrentDictionary(int concurrencyLevel, int capacity);
+
+        public ConcurrentDictionary(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> collection);
+
+        public ConcurrentDictionary(System.Collections.Generic.IEqualityComparer<TKey> comparer);
+
+        public ConcurrentDictionary(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> collection, System.Collections.Generic.IEqualityComparer<TKey> comparer);
+
+        public ConcurrentDictionary(int concurrencyLevel, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> collection, System.Collections.Generic.IEqualityComparer<TKey> comparer);
+
+        public ConcurrentDictionary(int concurrencyLevel, int capacity, System.Collections.Generic.IEqualityComparer<TKey> comparer);
+
+        public TValue AddOrUpdate<TArg>(TKey key, System.Func<TKey, TArg, TValue> addValueFactory, System.Func<TKey, TValue, TArg, TValue> updateValueFactory, TArg factoryArgument);
+
+        public TValue AddOrUpdate(TKey key, System.Func<TKey, TValue> addValueFactory, System.Func<TKey, TValue, TValue> updateValueFactory);
+
+        public TValue AddOrUpdate(TKey key, TValue addValue, System.Func<TKey, TValue, TValue> updateValueFactory);
+
+        public void Clear();
+
+        public bool ContainsKey(TKey key);
+
+        public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> GetEnumerator();
+
+        public TValue GetOrAdd(TKey key, System.Func<TKey, TValue> valueFactory);
+
+        public TValue GetOrAdd<TArg>(TKey key, System.Func<TKey, TArg, TValue> valueFactory, TArg factoryArgument);
+
+        public TValue GetOrAdd(TKey key, TValue value);
+
+        public System.Collections.Generic.KeyValuePair<TKey, TValue>[] ToArray();
+
+        public bool TryAdd(TKey key, TValue value);
+
+        public bool TryGetValue(TKey key, out TValue value);
+
+        public bool TryRemove(TKey key, out TValue value);
+
+        public bool TryUpdate(TKey key, TValue newValue, TValue comparisonValue);
+    }
+
+    [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
+    [System.Diagnostics.DebuggerTypeProxy(typeof(IProducerConsumerCollectionDebugView<>))]
+    public class ConcurrentQueue<T> : IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection
+    {
+        public int Count { get; }
+
+        public bool IsEmpty { get; }
+
+        public ConcurrentQueue();
+
+        public ConcurrentQueue(System.Collections.Generic.IEnumerable<T> collection);
+
+        public void Clear();
+
+        public void CopyTo(T[] array, int index);
+
+        public void Enqueue(T item);
+
+        public System.Collections.Generic.IEnumerator<T> GetEnumerator();
+
+        public T[] ToArray();
+
+        public bool TryDequeue(out T result);
+
+        public bool TryPeek(out T result);
+    }
+
+    [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
+    [System.Diagnostics.DebuggerTypeProxy(typeof(IProducerConsumerCollectionDebugView<>))]
+    public class ConcurrentStack<T> : IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection
+    {
+        public int Count { get; }
+
+        public bool IsEmpty { get; }
+
+        public ConcurrentStack();
+
+        public ConcurrentStack(System.Collections.Generic.IEnumerable<T> collection);
+
+        public void Clear();
+
+        public void CopyTo(T[] array, int index);
+
+        public System.Collections.Generic.IEnumerator<T> GetEnumerator();
+
+        public void Push(T item);
+
+        public void PushRange(T[] items);
+
+        public void PushRange(T[] items, int startIndex, int count);
+
+        public T[] ToArray();
+
+        public bool TryPeek(out T result);
+
+        public bool TryPop(out T result);
+
+        public int TryPopRange(T[] items);
+
+        public int TryPopRange(T[] items, int startIndex, int count);
+    }
+
+    [System.Flags]
+    public enum EnumerablePartitionerOptions : int
+    {
+        None = 0,
+        NoBuffering = 1
+    }
+
+    public interface IProducerConsumerCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection
+    {
+        void CopyTo(T[] array, int index);
+
+        T[] ToArray();
+
+        bool TryAdd(T item);
+
+        bool TryTake(out T item);
+    }
+
+    public abstract class OrderablePartitioner<TSource> : Partitioner<TSource>
+    {
+        public bool KeysNormalized { get; }
+
+        public bool KeysOrderedAcrossPartitions { get; }
+
+        public bool KeysOrderedInEachPartition { get; }
+
+        protected OrderablePartitioner(bool keysOrderedInEachPartition, bool keysOrderedAcrossPartitions, bool keysNormalized);
+
+        public override System.Collections.Generic.IEnumerable<TSource> GetDynamicPartitions();
+
+        public virtual System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<long, TSource>> GetOrderableDynamicPartitions();
+
+        public abstract System.Collections.Generic.IList<System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<long, TSource>>> GetOrderablePartitions(int partitionCount);
+
+        public override System.Collections.Generic.IList<System.Collections.Generic.IEnumerator<TSource>> GetPartitions(int partitionCount);
+    }
+
+    public static class Partitioner
+    {
+        public static OrderablePartitioner<TSource> Create<TSource>(System.Collections.Generic.IList<TSource> list, bool loadBalance);
+
+        public static OrderablePartitioner<TSource> Create<TSource>(TSource[] array, bool loadBalance);
+
+        public static OrderablePartitioner<TSource> Create<TSource>(System.Collections.Generic.IEnumerable<TSource> source);
+
+        public static OrderablePartitioner<TSource> Create<TSource>(System.Collections.Generic.IEnumerable<TSource> source, EnumerablePartitionerOptions partitionerOptions);
+    }
+
+    public abstract class Partitioner<TSource>
+    {
+        public virtual bool SupportsDynamicPartitions { get; }
+
+        protected Partitioner();
+
+        public virtual System.Collections.Generic.IEnumerable<TSource> GetDynamicPartitions();
+
+        public abstract System.Collections.Generic.IList<System.Collections.Generic.IEnumerator<TSource>> GetPartitions(int partitionCount);
+    }
 }
 namespace System.Runtime.CompilerServices
 {
@@ -244,6 +560,57 @@ namespace System.Runtime.ExceptionServices
 }
 namespace System.Threading
 {
+    [System.Diagnostics.DebuggerDisplay("Participant Count={ParticipantCount},Participants Remaining={ParticipantsRemaining}")]
+    public class Barrier : System.IDisposable
+    {
+        public long CurrentPhaseNumber { get; }
+
+        public int ParticipantCount { get; }
+
+        public int ParticipantsRemaining { get; }
+
+        public Barrier(int participantCount);
+
+        public Barrier(int participantCount, System.Action<Barrier> postPhaseAction);
+
+        public long AddParticipant();
+
+        public long AddParticipants(int participantCount);
+
+        public void Dispose();
+
+        protected virtual void Dispose(bool disposing);
+
+        public void RemoveParticipant();
+
+        public void RemoveParticipants(int participantCount);
+
+        public void SignalAndWait();
+
+        public void SignalAndWait(CancellationToken cancellationToken);
+
+        public bool SignalAndWait(System.TimeSpan timeout);
+
+        public bool SignalAndWait(System.TimeSpan timeout, CancellationToken cancellationToken);
+
+        public bool SignalAndWait(int millisecondsTimeout);
+
+        public bool SignalAndWait(int millisecondsTimeout, CancellationToken cancellationToken);
+    }
+
+    public class BarrierPostPhaseException : System.Exception
+    {
+        public BarrierPostPhaseException();
+
+        public BarrierPostPhaseException(System.Exception innerException);
+
+        public BarrierPostPhaseException(string message);
+
+        public BarrierPostPhaseException(string message, System.Exception innerException);
+
+        protected BarrierPostPhaseException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);
+    }
+
     [System.Diagnostics.DebuggerDisplay("IsCancellationRequested = {IsCancellationRequested}")]
     public readonly struct CancellationToken
     {
@@ -383,6 +750,13 @@ namespace System.Threading
         public static T EnsureInitialized<T>(ref T target, ref object syncLock, System.Func<T> valueFactory) where T : class;
     }
 
+    public enum LazyThreadSafetyMode : int
+    {
+        None = 0,
+        PublicationOnly = 1,
+        ExecutionAndPublication = 2
+    }
+
     public class LockRecursionException : System.Exception
     {
         public LockRecursionException();
@@ -430,6 +804,50 @@ namespace System.Threading
         public bool Wait(int millisecondsTimeout, CancellationToken cancellationToken);
     }
 
+    [System.Diagnostics.DebuggerDisplay("Current Count = {m_currentCount}")]
+    public class SemaphoreSlim : System.IDisposable
+    {
+        public WaitHandle AvailableWaitHandle { get; }
+
+        public int CurrentCount { get; }
+
+        public SemaphoreSlim(int initialCount);
+
+        public SemaphoreSlim(int initialCount, int maxCount);
+
+        public void Dispose();
+
+        protected virtual void Dispose(bool disposing);
+
+        public int Release();
+
+        public int Release(int releaseCount);
+
+        public void Wait();
+
+        public void Wait(CancellationToken cancellationToken);
+
+        public bool Wait(System.TimeSpan timeout);
+
+        public bool Wait(System.TimeSpan timeout, CancellationToken cancellationToken);
+
+        public bool Wait(int millisecondsTimeout);
+
+        public bool Wait(int millisecondsTimeout, CancellationToken cancellationToken);
+
+        public System.Threading.Tasks.Task WaitAsync();
+
+        public System.Threading.Tasks.Task WaitAsync(CancellationToken cancellationToken);
+
+        public System.Threading.Tasks.Task<bool> WaitAsync(int millisecondsTimeout);
+
+        public System.Threading.Tasks.Task<bool> WaitAsync(System.TimeSpan timeout);
+
+        public System.Threading.Tasks.Task<bool> WaitAsync(System.TimeSpan timeout, CancellationToken cancellationToken);
+
+        public System.Threading.Tasks.Task<bool> WaitAsync(int millisecondsTimeout, CancellationToken cancellationToken);
+    }
+
     [System.Diagnostics.DebuggerTypeProxy(typeof(SpinLock.SystemThreading_SpinLockDebugView))]
     [System.Diagnostics.DebuggerDisplay("IsHeld = {IsHeld}")]
     public struct SpinLock
@@ -470,6 +888,34 @@ namespace System.Threading
         public void Reset();
 
         public void SpinOnce();
+    }
+
+    [System.Diagnostics.DebuggerTypeProxy(typeof(SystemThreading_ThreadLocalDebugView<>))]
+    [System.Diagnostics.DebuggerDisplay("IsValueCreated={IsValueCreated}, Value={ValueForDebugDisplay}, Count={ValuesCountForDebugDisplay}")]
+    public class ThreadLocal<T> : System.IDisposable
+    {
+        public bool IsValueCreated { get; }
+
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        public T Value { get; set; }
+
+        public System.Collections.Generic.IList<T> Values { get; }
+
+        public ThreadLocal();
+
+        public ThreadLocal(bool trackAllValues);
+
+        public ThreadLocal(System.Func<T> valueFactory);
+
+        public ThreadLocal(System.Func<T> valueFactory, bool trackAllValues);
+
+        public void Dispose();
+
+        protected virtual void Dispose(bool disposing);
+
+        protected override void Finalize();
+
+        public override string ToString();
     }
 
     public static class Volatile
@@ -543,6 +989,111 @@ namespace System.Threading
 }
 namespace System.Threading.Tasks
 {
+    public static class Parallel
+    {
+        public static ParallelLoopResult For(int fromInclusive, int toExclusive, System.Action<int> body);
+
+        public static ParallelLoopResult For(long fromInclusive, long toExclusive, System.Action<long> body);
+
+        public static ParallelLoopResult For(int fromInclusive, int toExclusive, ParallelOptions parallelOptions, System.Action<int> body);
+
+        public static ParallelLoopResult For(long fromInclusive, long toExclusive, ParallelOptions parallelOptions, System.Action<long> body);
+
+        public static ParallelLoopResult For(int fromInclusive, int toExclusive, System.Action<int, ParallelLoopState> body);
+
+        public static ParallelLoopResult For(long fromInclusive, long toExclusive, System.Action<long, ParallelLoopState> body);
+
+        public static ParallelLoopResult For(int fromInclusive, int toExclusive, ParallelOptions parallelOptions, System.Action<int, ParallelLoopState> body);
+
+        public static ParallelLoopResult For(long fromInclusive, long toExclusive, ParallelOptions parallelOptions, System.Action<long, ParallelLoopState> body);
+
+        public static ParallelLoopResult For<TLocal>(int fromInclusive, int toExclusive, System.Func<TLocal> localInit, System.Func<int, ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult For<TLocal>(long fromInclusive, long toExclusive, System.Func<TLocal> localInit, System.Func<long, ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult For<TLocal>(int fromInclusive, int toExclusive, ParallelOptions parallelOptions, System.Func<TLocal> localInit, System.Func<int, ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult For<TLocal>(long fromInclusive, long toExclusive, ParallelOptions parallelOptions, System.Func<TLocal> localInit, System.Func<long, ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Generic.IEnumerable<TSource> source, System.Action<TSource> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Generic.IEnumerable<TSource> source, ParallelOptions parallelOptions, System.Action<TSource> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Generic.IEnumerable<TSource> source, System.Action<TSource, ParallelLoopState> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Generic.IEnumerable<TSource> source, ParallelOptions parallelOptions, System.Action<TSource, ParallelLoopState> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Generic.IEnumerable<TSource> source, System.Action<TSource, ParallelLoopState, long> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Generic.IEnumerable<TSource> source, ParallelOptions parallelOptions, System.Action<TSource, ParallelLoopState, long> body);
+
+        public static ParallelLoopResult ForEach<TSource, TLocal>(System.Collections.Generic.IEnumerable<TSource> source, System.Func<TLocal> localInit, System.Func<TSource, ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult ForEach<TSource, TLocal>(System.Collections.Generic.IEnumerable<TSource> source, ParallelOptions parallelOptions, System.Func<TLocal> localInit, System.Func<TSource, ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult ForEach<TSource, TLocal>(System.Collections.Generic.IEnumerable<TSource> source, System.Func<TLocal> localInit, System.Func<TSource, ParallelLoopState, long, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult ForEach<TSource, TLocal>(System.Collections.Generic.IEnumerable<TSource> source, ParallelOptions parallelOptions, System.Func<TLocal> localInit, System.Func<TSource, ParallelLoopState, long, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.Partitioner<TSource> source, System.Action<TSource> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.Partitioner<TSource> source, System.Action<TSource, ParallelLoopState> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.OrderablePartitioner<TSource> source, System.Action<TSource, ParallelLoopState, long> body);
+
+        public static ParallelLoopResult ForEach<TSource, TLocal>(System.Collections.Concurrent.Partitioner<TSource> source, System.Func<TLocal> localInit, System.Func<TSource, ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult ForEach<TSource, TLocal>(System.Collections.Concurrent.OrderablePartitioner<TSource> source, System.Func<TLocal> localInit, System.Func<TSource, ParallelLoopState, long, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.Partitioner<TSource> source, ParallelOptions parallelOptions, System.Action<TSource> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.Partitioner<TSource> source, ParallelOptions parallelOptions, System.Action<TSource, ParallelLoopState> body);
+
+        public static ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.OrderablePartitioner<TSource> source, ParallelOptions parallelOptions, System.Action<TSource, ParallelLoopState, long> body);
+
+        public static ParallelLoopResult ForEach<TSource, TLocal>(System.Collections.Concurrent.Partitioner<TSource> source, ParallelOptions parallelOptions, System.Func<TLocal> localInit, System.Func<TSource, ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static ParallelLoopResult ForEach<TSource, TLocal>(System.Collections.Concurrent.OrderablePartitioner<TSource> source, ParallelOptions parallelOptions, System.Func<TLocal> localInit, System.Func<TSource, ParallelLoopState, long, TLocal, TLocal> body, System.Action<TLocal> localFinally);
+
+        public static void Invoke(params System.Action[] actions);
+
+        public static void Invoke(ParallelOptions parallelOptions, params System.Action[] actions);
+    }
+
+    public struct ParallelLoopResult
+    {
+        public bool IsCompleted { get; }
+
+        public long? LowestBreakIteration { get; }
+    }
+
+    [System.Diagnostics.DebuggerDisplay("ShouldExitCurrentIteration = {ShouldExitCurrentIteration}")]
+    public class ParallelLoopState
+    {
+        public bool IsExceptional { get; }
+
+        public bool IsStopped { get; }
+
+        public long? LowestBreakIteration { get; }
+
+        public bool ShouldExitCurrentIteration { get; }
+
+        public void Break();
+
+        public void Stop();
+    }
+
+    public class ParallelOptions
+    {
+        public System.Threading.CancellationToken CancellationToken { get; set; }
+
+        public int MaxDegreeOfParallelism { get; set; }
+
+        public TaskScheduler TaskScheduler { get; set; }
+
+        public ParallelOptions();
+    }
+
     [System.Diagnostics.DebuggerTypeProxy(typeof(SystemThreadingTasks_TaskDebugView))]
     [System.Diagnostics.DebuggerDisplay("Id = {Id}, Status = {Status}, Method = {DebuggerDisplayMethodDescription}")]
     public class Task : System.IAsyncResult, System.IDisposable
