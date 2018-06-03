@@ -263,27 +263,32 @@ namespace AsyncBridge.Tests
 
 #if !ATP
         [TestMethod]
-        public void TaskRunShouldNotFlowSyncContextWhenInlined()
+        public void TaskRunShouldNotFlowCapturedSyncContextWhenInlined()
         {
-            var copyableContext = new CopyableSynchronizationContext();
-            SynchronizationContext.SetSynchronizationContext(copyableContext);
+            SynchronizationContext.SetSynchronizationContext(null);
 
+            // Captured null
             var task = Task.Factory.StartNew(
-                () => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)),
+                () => Assert.IsInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)),
                 CancellationToken.None,
                 TaskCreationOptions.None,
                 new InliningScheduler());
 
+            var copyableContext = new CopyableSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(copyableContext);
+
+            // Should execute with copyableContext
             task.GetAwaiter().GetResult();
         }
 #endif
 
         [TestMethod]
-        public void TaskRunShouldNotFlowSyncContextWhenNotInlined()
+        public void TaskRunShouldNotFlowCapturedSyncContextWhenNotInlined()
         {
             var copyableContext = new CopyableSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(copyableContext);
 
+            // Captured copyableContext, should execute with threadpool default context
             var task = TaskEx.Run(
                 () => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)));
 
@@ -291,24 +296,29 @@ namespace AsyncBridge.Tests
         }
 
         [TestMethod]
-        public void ContinueWithShouldNotFlowSyncContextWhenInlined()
+        public void ContinueWithShouldNotFlowCapturedSyncContextWhenInlined()
         {
+            SynchronizationContext.SetSynchronizationContext(null);
+
+            // Captured null
+            var task = TaskEx.FromResult<object>(null).ContinueWith(
+                _ => Assert.IsInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)),
+                new InliningScheduler());
+
             var copyableContext = new CopyableSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(copyableContext);
 
-            var task = TaskEx.FromResult<object>(null).ContinueWith(
-                _ => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)),
-                new InliningScheduler());
-
+            // Should execute with copyableContext
             task.GetAwaiter().GetResult();
         }
 
         [TestMethod]
-        public void ContinueWithShouldNotFlowSyncContextWhenNotInlined()
+        public void ContinueWithShouldNotFlowCapturedSyncContextWhenNotInlined()
         {
             var copyableContext = new CopyableSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(copyableContext);
 
+            // Captured copyableContext, should execute with threadpool default context
             var task = TaskEx.FromResult<object>(null).ContinueWith(
                 _ => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)));
 
