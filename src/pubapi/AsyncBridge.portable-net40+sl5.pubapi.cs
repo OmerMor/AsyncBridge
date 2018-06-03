@@ -53,7 +53,7 @@ public static class AsyncCompatLibExtensions
 }
 namespace System.Runtime.CompilerServices
 {
-    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [System.AttributeUsage(System.AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
     public sealed class AsyncStateMachineAttribute : StateMachineAttribute
     {
         public AsyncStateMachineAttribute(System.Type stateMachineType);
@@ -189,13 +189,13 @@ namespace System.Runtime.CompilerServices
         void OnCompleted(System.Action continuation);
     }
 
-    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [System.AttributeUsage(System.AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
     public sealed class IteratorStateMachineAttribute : StateMachineAttribute
     {
         public IteratorStateMachineAttribute(System.Type stateMachineType);
     }
 
-    [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    [System.AttributeUsage(System.AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
     public class StateMachineAttribute : System.Attribute
     {
         public System.Type StateMachineType { get; }

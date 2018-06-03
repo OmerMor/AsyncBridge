@@ -1,7 +1,6 @@
 // https://github.com/dotnet/coreclr/blob/v2.1.0/src/mscorlib/src/System/Threading/Tasks/Task.cs
 // Original work under MIT license, Copyright (c) .NET Foundation and Contributors https://github.com/dotnet/coreclr/blob/v2.1.0/LICENSE.TXT
 
-#if NET20 || NET35
 // =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 //
 //
@@ -21,6 +20,7 @@ using System.Runtime.ExceptionServices;
 
 namespace System.Threading.Tasks
 {
+#if NET20 || NET35
     /// <summary>
     /// Utility class for allocating structs as heap variables
     /// </summary>
@@ -2448,7 +2448,7 @@ namespace System.Threading.Tasks
             }
         }
 
-        #region Await Support
+    #region Await Support
         /// <summary>Gets an awaiter used to await this <see cref="System.Threading.Tasks.Task"/>.</summary>
         /// <returns>An awaiter instance.</returns>
         /// <remarks>This method is intended for compiler user rather than use directly in code.</remarks>
@@ -2601,7 +2601,7 @@ namespace System.Threading.Tasks
         {
             return new YieldAwaitable();
         }
-        #endregion
+    #endregion
 
         /// <summary>
         /// Waits for the <see cref="Task"/> to complete execution.
@@ -3238,9 +3238,9 @@ namespace System.Threading.Tasks
             }
         }
 
-        #region Continuation methods
+    #region Continuation methods
 
-        #region Action<Task> continuation
+    #region Action<Task> continuation
         /// <summary>
         /// Creates a continuation that executes when the target <see cref="Task"/> completes.
         /// </summary>
@@ -3422,9 +3422,9 @@ namespace System.Threading.Tasks
 
             return continuationTask;
         }
-        #endregion
+    #endregion
 
-        #region Action<Task, Object> continuation
+    #region Action<Task, Object> continuation
 
         /// <summary>
         /// Creates a continuation that executes when the target <see cref="Task"/> completes.
@@ -3613,9 +3613,9 @@ namespace System.Threading.Tasks
             return continuationTask;
         }
 
-        #endregion
+    #endregion
 
-        #region Func<Task, TResult> continuation
+    #region Func<Task, TResult> continuation
 
         /// <summary>
         /// Creates a continuation that executes when the target <see cref="Task"/> completes.
@@ -3815,9 +3815,9 @@ namespace System.Threading.Tasks
 
             return continuationTask;
         }
-        #endregion
+    #endregion
 
-        #region Func<Task, Object, TResult> continuation
+    #region Func<Task, Object, TResult> continuation
 
         /// <summary>
         /// Creates a continuation that executes when the target <see cref="Task"/> completes.
@@ -4022,7 +4022,7 @@ namespace System.Threading.Tasks
 
             return continuationTask;
         }
-        #endregion
+    #endregion
 
         /// <summary>
         /// Converts TaskContinuationOptions to TaskCreationOptions, and also does
@@ -4140,7 +4140,7 @@ namespace System.Threading.Tasks
                 if (!continuationQueued) continuation.Run(this, bCanInlineContinuationTask: true);
             }
         }
-        #endregion
+    #endregion
 
         // Adds a lightweight completion action to a task.  This is similar to a continuation
         // task except that it is stored as an action, and thus does not require the allocation/
@@ -4915,7 +4915,7 @@ namespace System.Threading.Tasks
             return signaledTaskIndex;
         }
 
-        #region FromResult / FromException / FromCanceled
+    #region FromResult / FromException / FromCanceled
 
         /// <summary>Creates a <see cref="Task{TResult}"/> that's completed successfully with the specified result.</summary>
         /// <typeparam name="TResult">The type of the result returned by the task.</typeparam>
@@ -4984,9 +4984,9 @@ namespace System.Threading.Tasks
             return task;
         }
 
-        #endregion
+    #endregion
 
-        #region Run methods
+    #region Run methods
 
 
         /// <summary>
@@ -5146,9 +5146,9 @@ namespace System.Threading.Tasks
         }
 
 
-        #endregion
+    #endregion
 
-        #region Delay methods
+    #region Delay methods
 
         /// <summary>
         /// Creates a Task that will complete after a time delay.
@@ -5310,9 +5310,9 @@ namespace System.Threading.Tasks
                 }
             }
         }
-        #endregion
+    #endregion
 
-        #region WhenAll
+    #region WhenAll
         /// <summary>
         /// Creates a task that will complete when all of the supplied tasks have completed.
         /// </summary>
@@ -5792,9 +5792,9 @@ namespace System.Threading.Tasks
                 }
             }
         }
-        #endregion
+    #endregion
 
-        #region WhenAny
+    #region WhenAny
         /// <summary>
         /// Creates a task that will complete when any of the supplied tasks have completed.
         /// </summary>
@@ -5927,7 +5927,7 @@ namespace System.Threading.Tasks
             return intermediate.ContinueWith(Task<TResult>.TaskWhenAnyCast, default(CancellationToken),
                 TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.DenyChildAttach, TaskScheduler.Default);
         }
-        #endregion
+    #endregion
 
         internal static Task<TResult> CreateUnwrapPromise<TResult>(Task outerTask, bool lookForOce)
         {
@@ -6272,11 +6272,13 @@ namespace System.Threading.Tasks
             return false;
         }
     }
+#endif
 
     // Special internal struct that we use to signify that we are not interested in
     // a Task<VoidTaskResult>'s result.
     internal struct VoidTaskResult { }
 
+#if NET20 || NET35
     // Interface to which all completion actions must conform.
     // This interface allows us to combine functionality and reduce allocations.
     // For example, see Task.SetOnInvokeMres, and its use in Task.SpinThenBlockingWait().
@@ -6510,5 +6512,5 @@ namespace System.Threading.Tasks
 
         public bool InvokeMayRunArbitraryCode { get { return true; } }
     }
-}
 #endif
+}

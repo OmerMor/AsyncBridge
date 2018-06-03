@@ -1,24 +1,18 @@
+// https://github.com/dotnet/coreclr/blob/v2.1.0/src/mscorlib/shared/System/Runtime/CompilerServices/StateMachineAttribute.cs
+// Original work under MIT license, Copyright (c) .NET Foundation and Contributors https://github.com/dotnet/coreclr/blob/v2.1.0/LICENSE.TXT
+
+using System;
+
 namespace System.Runtime.CompilerServices
 {
-    /// <summary>
-    /// Identities the state machine type for this method.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    [Serializable]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
     public class StateMachineAttribute : Attribute
     {
-        /// <summary>
-        /// Gets the type that implements the state machine.
-        /// </summary>
-        public Type StateMachineType { get; private set; }
-
-        /// <summary>
-        /// Initializes the attribute.
-        /// </summary>
-        /// <param name="stateMachineType">The type that implements the state machine.</param>
         public StateMachineAttribute(Type stateMachineType)
         {
             StateMachineType = stateMachineType;
         }
+
+        public Type StateMachineType { get; }
     }
 }

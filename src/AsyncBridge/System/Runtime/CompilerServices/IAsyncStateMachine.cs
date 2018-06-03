@@ -1,19 +1,26 @@
+// https://github.com/dotnet/coreclr/blob/v2.1.0/src/mscorlib/shared/System/Runtime/CompilerServices/IAsyncStateMachine.cs
+// Original work under MIT license, Copyright (c) .NET Foundation and Contributors https://github.com/dotnet/coreclr/blob/v2.1.0/LICENSE.TXT
+
+// =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+//
+//
+//
+// Represents state machines generated for asynchronous methods.
+//
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 namespace System.Runtime.CompilerServices
 {
     /// <summary>
-    ///   Represents state machines generated for asynchronous methods. This type is intended for compiler use only.
+    /// Represents state machines generated for asynchronous methods.
+    /// This type is intended for compiler use only.
     /// </summary>
     public interface IAsyncStateMachine
     {
-        /// <summary>
-        ///   Moves the state machine to its next state.
-        /// </summary>
+        /// <summary>Moves the state machine to its next state.</summary>
         void MoveNext();
-
-        /// <summary>
-        ///   Configures the state machine with a heap-allocated replica.
-        /// </summary>
-        /// <param name="stateMachine"> The heap-allocated replica. </param>
+        /// <summary>Configures the state machine with a heap-allocated replica.</summary>
+        /// <param name="stateMachine">The heap-allocated replica.</param>
         void SetStateMachine(IAsyncStateMachine stateMachine);
     }
 }
