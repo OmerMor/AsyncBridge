@@ -261,28 +261,58 @@ namespace AsyncBridge.Tests
             }
         }
 
+#if !ATP
         [TestMethod]
-        public void TaskRunShouldNotFlowSyncContext()
+        public void TaskRunShouldNotFlowSyncContextWhenInlined()
         {
             var copyableContext = new CopyableSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(copyableContext);
 
-            TaskEx.Run(() =>
-            {
-                Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext));
-            }).GetAwaiter().GetResult();
+            var task = Task.Factory.StartNew(
+                () => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)),
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                new InliningScheduler());
+
+            task.GetAwaiter().GetResult();
+        }
+#endif
+
+        [TestMethod]
+        public void TaskRunShouldNotFlowSyncContextWhenNotInlined()
+        {
+            var copyableContext = new CopyableSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(copyableContext);
+
+            var task = TaskEx.Run(
+                () => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)));
+
+            TestUtils.WaitWithoutInlining(task);
         }
 
         [TestMethod]
-        public void ContinueWithShouldNotFlowSyncContext()
+        public void ContinueWithShouldNotFlowSyncContextWhenInlined()
         {
             var copyableContext = new CopyableSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(copyableContext);
 
-            TaskEx.FromResult<object>(null).ContinueWith(_ =>
-            {
-                Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext));
-            }).GetAwaiter().GetResult();
+            var task = TaskEx.FromResult<object>(null).ContinueWith(
+                _ => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)),
+                new InliningScheduler());
+
+            task.GetAwaiter().GetResult();
+        }
+
+        [TestMethod]
+        public void ContinueWithShouldNotFlowSyncContextWhenNotInlined()
+        {
+            var copyableContext = new CopyableSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(copyableContext);
+
+            var task = TaskEx.FromResult<object>(null).ContinueWith(
+                _ => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)));
+
+            TestUtils.WaitWithoutInlining(task);
         }
 
         /// <summary>

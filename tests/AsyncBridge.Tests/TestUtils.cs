@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 #if NET45
@@ -21,6 +22,22 @@ namespace AsyncBridge.Tests
         {
             if (asyncTestMethod == null) throw new ArgumentNullException(nameof(asyncTestMethod));
             return asyncTestMethod.Invoke().GetAwaiter().GetResult();
+        }
+
+        public static void WaitWithoutInlining(Task task)
+        {
+            var awaiter = task.GetAwaiter();
+
+            if (!awaiter.IsCompleted)
+            {
+                using (var mres = new ManualResetEventSlim())
+                {
+                    awaiter.OnCompleted(mres.Set);
+                    mres.Wait();
+                }
+            }
+
+            awaiter.GetResult();
         }
     }
 }
