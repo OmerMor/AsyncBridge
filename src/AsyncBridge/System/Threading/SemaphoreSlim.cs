@@ -564,9 +564,6 @@ namespace System.Threading
         /// A <see cref="System.TimeSpan"/> that represents the number of milliseconds
         /// to wait, or a <see cref="System.TimeSpan"/> that represents -1 milliseconds to wait indefinitely.
         /// </param>
-        /// <param name="cancellationToken">
-        /// The <see cref="T:System.Threading.CancellationToken"/> token to observe.
-        /// </param>
         /// <returns>
         /// A task that will complete with a result of true if the current thread successfully entered 
         /// the <see cref="SemaphoreSlim"/>, otherwise with a result of false.
@@ -590,6 +587,9 @@ namespace System.Threading
         /// <param name="timeout">
         /// A <see cref="System.TimeSpan"/> that represents the number of milliseconds
         /// to wait, or a <see cref="System.TimeSpan"/> that represents -1 milliseconds to wait indefinitely.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The <see cref="T:System.Threading.CancellationToken"/> token to observe.
         /// </param>
         /// <returns>
         /// A task that will complete with a result of true if the current thread successfully entered 
@@ -725,8 +725,6 @@ namespace System.Threading
         }
 
         /// <summary>Performs the asynchronous wait.</summary>
-        /// <param name="millisecondsTimeout">The timeout.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task to return to the caller.</returns>
         private async Task<bool> WaitUntilCountOrTimeoutAsync(TaskNode asyncWaiter, int millisecondsTimeout, CancellationToken cancellationToken)
         {

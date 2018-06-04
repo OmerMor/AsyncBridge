@@ -154,7 +154,6 @@ namespace System.Threading
         /// <param name="initialized">A reference to a location tracking whether the target has been initialized.</param>
         /// <param name="syncLock">A reference to a location containing a mutual exclusive lock. If <paramref name="syncLock"/> is null, 
         /// a new object will be instantiated.</param>
-        /// </param>
         /// <returns>The initialized object.</returns>
         private static T EnsureInitializedCore<T>(ref T target, ref bool initialized, ref object syncLock)
         {

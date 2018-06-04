@@ -730,7 +730,7 @@ namespace System.Collections.Concurrent
         /// <remarks>
         /// The enumeration represents a moment-in-time snapshot of the contents
         /// of the stack.  It does not reflect any updates to the collection after 
-        /// <see cref="GetEnumerator"/> was called.  The enumerator is safe to use
+        /// <see cref="GetEnumerator()"/> was called.  The enumerator is safe to use
         /// concurrently with reads from and writes to the stack.
         /// </remarks>
         public IEnumerator<T> GetEnumerator()
@@ -764,7 +764,7 @@ namespace System.Collections.Concurrent
         /// <remarks>
         /// The enumeration represents a moment-in-time snapshot of the contents of the stack. It does not
         /// reflect any updates to the collection after
-        /// <see cref="GetEnumerator"/> was called. The enumerator is safe to use concurrently with reads
+        /// <see cref="GetEnumerator()"/> was called. The enumerator is safe to use concurrently with reads
         /// from and writes to the stack.
         /// </remarks>
         IEnumerator IEnumerable.GetEnumerator()

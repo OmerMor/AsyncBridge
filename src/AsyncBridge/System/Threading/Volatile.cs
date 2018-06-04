@@ -229,7 +229,7 @@ namespace System.Threading
         /// <typeparam name="T">The type of field to read. This must be a reference type, not a value type.</typeparam>
         /// <param name="location">The field to read.</param>
         /// <summary>Reads the object reference from the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
-        /// <returns>The reference to <paramref name="T" /> that was read. This reference is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
+        /// <returns>The reference to <typeparamref name="T" /> that was read. This reference is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         [SecuritySafeCritical] //the intrinsic implementation of this method contains unverifiable code
         public static T Read<T>(ref T location) where T : class
         {

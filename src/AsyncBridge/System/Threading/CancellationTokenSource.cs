@@ -18,7 +18,7 @@ namespace System.Threading
     /// token may have cancellation requested by calling to the source's <see cref="Cancel()"/> method.
     /// </para>
     /// <para>
-    /// All members of this class, except <see cref="Dispose"/>, are thread-safe and may be used
+    /// All members of this class, except <see cref="Dispose()"/>, are thread-safe and may be used
     /// concurrently from multiple threads.
     /// </para>
     /// </remarks>
@@ -840,7 +840,7 @@ namespace System.Threading
             public SpinLock Lock = new SpinLock(enableThreadOwnerTracking: false); // mutable struct; do not make this readonly
             /// <summary>
             /// The array of callbacks registered in the partition.  Slots may be empty, meaning a default value of the struct.
-            /// <see cref="NextCallbacksSlot"/> - 1 defines the last filled slot.
+            /// <see cref="NextAvailableId"/> - 1 defines the last filled slot.
             /// </summary>
             /// <remarks>
             /// Initialized to an array with at least 1 slot because a partition is only ever created if we're about

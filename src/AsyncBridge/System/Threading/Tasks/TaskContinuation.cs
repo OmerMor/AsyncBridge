@@ -223,7 +223,7 @@ namespace System.Threading.Tasks
     {
         /// <summary>Inlines or schedules the continuation.</summary>
         /// <param name="completedTask">The antecedent task that has completed.</param>
-        /// <param name="canInlineContinuationTask">true if inlining is permitted; otherwise, false.</param>
+        /// <param name="bCanInlineContinuationTask">true if inlining is permitted; otherwise, false.</param>
         internal abstract void Run(Task completedTask, bool bCanInlineContinuationTask);
 
         /// <summary>Tries to run the task on the current thread, if possible; otherwise, schedules it.</summary>
@@ -388,7 +388,7 @@ namespace System.Threading.Tasks
         }
 
         /// <summary>Inlines or schedules the continuation.</summary>
-        /// <param name="ignored">The antecedent task, which is ignored.</param>
+        /// <param name="task">The antecedent task, which is ignored.</param>
         /// <param name="canInlineContinuationTask">true if inlining is permitted; otherwise, false.</param>
         [SecuritySafeCritical]
         internal sealed override void Run(Task task, bool canInlineContinuationTask)
@@ -533,7 +533,7 @@ namespace System.Threading.Tasks
         }
 
         /// <summary>Inlines or schedules the continuation onto the default scheduler.</summary>
-        /// <param name="ignored">The antecedent task, which is ignored.</param>
+        /// <param name="task">The antecedent task, which is ignored.</param>
         /// <param name="canInlineContinuationTask">true if inlining is permitted; otherwise, false.</param>
         [SecuritySafeCritical]
         internal override void Run(Task task, bool canInlineContinuationTask)
@@ -697,7 +697,7 @@ namespace System.Threading.Tasks
             // If we're not allowed to run here, schedule the action
             if (!allowInlining || !IsValidLocationForInlining)
             {
-                UnsafeScheduleAction(action, prevCurrentTask);
+                UnsafeScheduleAction(action);
                 return;
             }
 
@@ -734,7 +734,7 @@ namespace System.Threading.Tasks
             // If we're not allowed to run here, schedule the action
             if (!allowInlining || !IsValidLocationForInlining)
             {
-                UnsafeScheduleAction(box.MoveNextAction, prevCurrentTask);
+                UnsafeScheduleAction(box.MoveNextAction);
                 return;
             }
 
@@ -757,7 +757,7 @@ namespace System.Threading.Tasks
         /// <summary>Schedules the action to be executed.  No ExecutionContext work is performed used.</summary>
         /// <param name="action">The action to invoke or queue.</param>
         [SecurityCritical]
-        internal static void UnsafeScheduleAction(Action action, Task task)
+        internal static void UnsafeScheduleAction(Action action)
         {
             AwaitTaskContinuation atc = new AwaitTaskContinuation(action, flowExecutionContext: false);
 
