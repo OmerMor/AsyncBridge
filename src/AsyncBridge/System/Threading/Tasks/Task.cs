@@ -1,5 +1,7 @@
 // https://github.com/dotnet/coreclr/blob/v2.1.0/src/mscorlib/src/System/Threading/Tasks/Task.cs
 // Original work under MIT license, Copyright (c) .NET Foundation and Contributors https://github.com/dotnet/coreclr/blob/v2.1.0/LICENSE.TXT
+// Docs supplemented from https://github.com/dotnet/dotnet-api-docs/blob/live/xml/System.Threading.Tasks/TaskContinuationOptions.xml
+// Docs under Creative Commons Attribution 4.0 International Public License https://github.com/dotnet/dotnet-api-docs/blob/live/LICENSE
 
 // =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 //
@@ -1433,7 +1435,9 @@ namespace System.Threading.Tasks
             return (flags & TASK_STATE_COMPLETED_MASK) != 0;
         }
 
+#pragma warning disable CS1591 // Per .NET Core 2.1
         public bool IsCompletedSuccessfully
+#pragma warning restore CS1591
         {
             get { return (m_stateFlags & TASK_STATE_COMPLETED_MASK) == TASK_STATE_RAN_TO_COMPLETION; }
         }
@@ -6197,6 +6201,7 @@ namespace System.Threading.Tasks
         /// </summary>
         LazyCancellation = 0x20,
 
+        /// <summary>Specifies that the continuation task should be run asynchronously.  This option has precedence over <see cref="F:System.Threading.Tasks.TaskContinuationOptions.ExecuteSynchronously" />.</summary>
         RunContinuationsAsynchronously = 0x40,
 
         // These are specific to continuations

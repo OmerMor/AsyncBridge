@@ -1,5 +1,7 @@
 // https://github.com/dotnet/coreclr/blob/v2.1.0/src/mscorlib/src/System/Threading/Volatile.cs
 // Original work under MIT license, Copyright (c) .NET Foundation and Contributors https://github.com/dotnet/coreclr/blob/v2.1.0/LICENSE.TXT
+// Docs supplemented from https://github.com/dotnet/dotnet-api-docs/blob/live/xml/System.Threading/Volatile.xml
+// Docs under Creative Commons Attribution 4.0 International Public License https://github.com/dotnet/dotnet-api-docs/blob/live/LICENSE
 
 // This comment below does not apply, but it is left in the spirit of making minimal alterations.
 //
@@ -20,8 +22,12 @@ namespace System.Threading
     // not allow us to express a volatile read/write from/to a byref arg.
     // See getILIntrinsicImplementationForVolatile() in jitinterface.cpp.
     //
+    /// <summary>Contains methods for performing volatile memory operations.</summary>
     public static class Volatile
     {
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         public static bool Read(ref bool location)
         {
             // 
@@ -32,6 +38,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         [CLSCompliant(false)]
         public static sbyte Read(ref sbyte location)
         {
@@ -43,6 +52,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         public static byte Read(ref byte location)
         {
             // 
@@ -53,6 +65,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         public static short Read(ref short location)
         {
             // 
@@ -63,6 +78,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         [CLSCompliant(false)]
         public static ushort Read(ref ushort location)
         {
@@ -74,6 +92,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         public static int Read(ref int location)
         {
             // 
@@ -84,6 +105,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         [CLSCompliant(false)]
         public static uint Read(ref uint location)
         {
@@ -96,6 +120,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         public static long Read(ref long location)
         {
             //
@@ -107,6 +134,9 @@ namespace System.Threading
             return Interlocked.CompareExchange(ref location, 0, 0);
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         [CLSCompliant(false)]
         [SecuritySafeCritical] // contains unsafe code
         public static ulong Read(ref ulong location)
@@ -124,6 +154,9 @@ namespace System.Threading
             }
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         public static IntPtr Read(ref IntPtr location)
         {
             // 
@@ -134,6 +167,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         [CLSCompliant(false)]
         public static UIntPtr Read(ref UIntPtr location)
         {
@@ -145,6 +181,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         public static float Read(ref float location)
         {
             // 
@@ -155,6 +194,9 @@ namespace System.Threading
             return value;
         }
 
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the value of the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The value that was read. This value is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
 #if PORTABLE
         [SecuritySafeCritical] // contains unsafe code
 #endif
@@ -184,6 +226,10 @@ namespace System.Threading
 #endif
         }
 
+        /// <typeparam name="T">The type of field to read. This must be a reference type, not a value type.</typeparam>
+        /// <param name="location">The field to read.</param>
+        /// <summary>Reads the object reference from the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears after this method in the code, the processor cannot move it before this method.</summary>
+        /// <returns>The reference to <paramref name="T" /> that was read. This reference is the latest written by any processor in the computer, regardless of the number of processors or the state of processor cache.</returns>
         [SecuritySafeCritical] //the intrinsic implementation of this method contains unverifiable code
         public static T Read<T>(ref T location) where T : class
         {
@@ -198,6 +244,9 @@ namespace System.Threading
 
 
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         public static void Write(ref bool location, bool value)
         {
             // 
@@ -207,6 +256,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         [CLSCompliant(false)]
         public static void Write(ref sbyte location, sbyte value)
         {
@@ -217,6 +269,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         public static void Write(ref byte location, byte value)
         {
             // 
@@ -226,6 +281,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         public static void Write(ref short location, short value)
         {
             // 
@@ -235,6 +293,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         [CLSCompliant(false)]
         public static void Write(ref ushort location, ushort value)
         {
@@ -245,6 +306,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         public static void Write(ref int location, int value)
         {
             // 
@@ -254,6 +318,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         [CLSCompliant(false)]
         public static void Write(ref uint location, uint value)
         {
@@ -264,6 +331,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         public static void Write(ref long location, long value)
         {
             //
@@ -275,6 +345,9 @@ namespace System.Threading
             Interlocked.Exchange(ref location, value);
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         [CLSCompliant(false)]
         [SecuritySafeCritical] // contains unsafe code
         public static void Write(ref ulong location, ulong value)
@@ -298,6 +371,9 @@ namespace System.Threading
             }
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         public static void Write(ref IntPtr location, IntPtr value)
         {
             // 
@@ -307,6 +383,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         [CLSCompliant(false)]
         public static void Write(ref UIntPtr location, UIntPtr value)
         {
@@ -317,6 +396,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         public static void Write(ref float location, float value)
         {
             // 
@@ -326,6 +408,9 @@ namespace System.Threading
             location = value;
         }
 
+        /// <param name="location">The field where the value is written.</param>
+        /// <param name="value">The value to write. The value is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified value to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
 #if PORTABLE
         [SecuritySafeCritical] // contains unsafe code
 #endif
@@ -353,7 +438,11 @@ namespace System.Threading
             Interlocked.Exchange(ref location, value);
 #endif
         }
-
+        
+        /// <typeparam name="T">The type of field to write. This must be a reference type, not a value type.</typeparam>
+        /// <param name="location">The field where the object reference is written.</param>
+        /// <param name="value">The object reference to write. The reference is written immediately so that it is visible to all processors in the computer.</param>
+        /// <summary>Writes the specified object reference to the specified field. On systems that require it, inserts a memory barrier that prevents the processor from reordering memory operations as follows: If a read or write appears before this method in the code, the processor cannot move it after this method.</summary>
         [SecuritySafeCritical] //the intrinsic implementation of this method contains unverifiable code
         public static void Write<T>(ref T location, T value) where T : class
         {
