@@ -11,6 +11,7 @@ public static partial class AsyncBridgeExtensions
     #region Await Support
 
     /// <summary>Gets an awaiter used to await this <see cref="System.Threading.Tasks.Task"/>.</summary>
+    /// <param name="task">The current instance.</param>
     /// <returns>An awaiter instance.</returns>
     /// <remarks>This method is intended for compiler user rather than use directly in code.</remarks>
     public static TaskAwaiter GetAwaiter(this Task task)
@@ -19,6 +20,7 @@ public static partial class AsyncBridgeExtensions
     }
 
     /// <summary>Configures an awaiter used to await this <see cref="System.Threading.Tasks.Task"/>.</summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continueOnCapturedContext">
     /// true to attempt to marshal the continuation back to the original context captured; otherwise, false.
     /// </param>
@@ -37,6 +39,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task"/> completes. When run, the delegate will be
     /// passed the completed task as and the caller-supplied state object as arguments.
@@ -59,6 +62,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -85,6 +89,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task"/> completes.  When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -113,6 +118,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -147,6 +153,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -199,6 +206,7 @@ public static partial class AsyncBridgeExtensions
     /// <typeparam name="TResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -226,6 +234,7 @@ public static partial class AsyncBridgeExtensions
     /// <typeparam name="TResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -255,6 +264,7 @@ public static partial class AsyncBridgeExtensions
     /// <typeparam name="TResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task"/> completes.  When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -286,6 +296,7 @@ public static partial class AsyncBridgeExtensions
     /// <typeparam name="TResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -323,6 +334,7 @@ public static partial class AsyncBridgeExtensions
     /// <typeparam name="TResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -376,6 +388,7 @@ public static partial class AsyncBridgeExtensions
     #region Await Support
 
     /// <summary>Gets an awaiter used to await this <see cref="System.Threading.Tasks.Task{TResult}"/>.</summary>
+    /// <param name="task">The current instance.</param>
     /// <returns>An awaiter instance.</returns>
     /// <remarks>This method is intended for compiler user rather than use directly in code.</remarks>
     public static TaskAwaiter<TResult> GetAwaiter<TResult>(this Task<TResult> task)
@@ -384,6 +397,7 @@ public static partial class AsyncBridgeExtensions
     }
 
     /// <summary>Configures an awaiter used to await this <see cref="System.Threading.Tasks.Task{TResult}"/>.</summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continueOnCapturedContext">
     /// true to attempt to marshal the continuation back to the original context captured; otherwise, false.
     /// </param>
@@ -402,6 +416,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -425,6 +440,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -452,6 +468,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -480,6 +497,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -514,6 +532,7 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationAction">
     /// An action to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -563,9 +582,13 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the result of the current instance.
+    /// </typeparam>
     /// <typeparam name="TNewResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -589,9 +612,13 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the result of the current instance.
+    /// </typeparam>
     /// <typeparam name="TNewResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -619,9 +646,13 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the result of the current instance.
+    /// </typeparam>
     /// <typeparam name="TNewResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task{TResult}"/> completes.  When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -651,9 +682,13 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the result of the current instance.
+    /// </typeparam>
     /// <typeparam name="TNewResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
@@ -695,9 +730,13 @@ public static partial class AsyncBridgeExtensions
     /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task{TResult}"/> completes.
     /// </summary>
+    /// <typeparam name="TResult">
+    /// The type of the result of the current instance.
+    /// </typeparam>
     /// <typeparam name="TNewResult">
     /// The type of the result produced by the continuation.
     /// </typeparam>
+    /// <param name="task">The current instance.</param>
     /// <param name="continuationFunction">
     /// A function to run when the <see cref="Task{TResult}"/> completes. When run, the delegate will be
     /// passed the completed task and the caller-supplied state object as arguments.
