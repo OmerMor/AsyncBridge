@@ -2410,8 +2410,29 @@ namespace System.Threading.Tasks
         {
             // See AsyncBridge note in ExecuteWithThreadLocal
             var tuple = (Tuple<Task, SynchronizationContext>)state;
-            SynchronizationContext.SetSynchronizationContext(tuple.Item2);
-            tuple.Item1.InnerInvoke();
+            var preservedOriginalSyncCtx = tuple.Item2;
+            var executionContextSyncCtx = SynchronizationContext.Current;
+
+            if (preservedOriginalSyncCtx == executionContextSyncCtx)
+            {
+                tuple.Item1.InnerInvoke();
+            }
+            else
+            {
+                SynchronizationContext.SetSynchronizationContext(preservedOriginalSyncCtx);
+                try
+                {
+                    tuple.Item1.InnerInvoke();
+                }
+                finally
+                {
+                    if (SynchronizationContext.Current == preservedOriginalSyncCtx)
+                    {
+                        // ExecutionContext.Undo throws if the context is changed by the callback
+                        SynchronizationContext.SetSynchronizationContext(executionContextSyncCtx);
+                    }
+                }
+            }
         }
 
         /// <summary>

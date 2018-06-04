@@ -253,6 +253,12 @@ namespace AsyncBridge.Tests
             });
         }
 
+        private sealed class UncopyableSynchronizationContext : SynchronizationContext
+        {
+            public static UncopyableSynchronizationContext Instance { get; } = new UncopyableSynchronizationContext();
+            private UncopyableSynchronizationContext() { }
+        }
+
         private sealed class CopyableSynchronizationContext : SynchronizationContext
         {
             public override SynchronizationContext CreateCopy()
@@ -323,6 +329,16 @@ namespace AsyncBridge.Tests
                 _ => Assert.IsNotInstanceOfType(SynchronizationContext.Current, typeof(CopyableSynchronizationContext)));
 
             TestUtils.WaitWithoutInlining(task);
+        }
+
+        [TestMethod]
+        public void TaskRunShouldNotThrowWhenUsedWithSynchronizationContext()
+        {
+            TestUtils.RunAsync(async () =>
+            {
+                SynchronizationContext.SetSynchronizationContext(UncopyableSynchronizationContext.Instance);
+                await TaskEx.Run(() => { });
+            });
         }
 
         /// <summary>
