@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net40-client;net35-client;portable-net40+sl5;net20</TargetFrameworks>
@@ -19,6 +19,7 @@ This package is now unified to include all functionality from AsyncBridge.Net35 
     <LangVersion>Latest</LangVersion>
     <DefineConstants Condition="'$(TargetFramework)' == 'portable-net40+sl5'">$(DefineConstants);PORTABLE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootNamespace></RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\AsyncBridgeKey.snk</AssemblyOriginatorKeyFile>
