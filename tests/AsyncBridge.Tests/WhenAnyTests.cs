@@ -7,8 +7,6 @@ using TaskEx = System.Threading.Tasks.Task;
 
 #if NET45
 namespace ReferenceAsync.Tests
-#elif ATP
-namespace AsyncTargetingPack.Tests
 #else
 namespace AsyncBridge.Tests
 #endif

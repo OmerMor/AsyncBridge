@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 
 #if NET45
 namespace ReferenceAsync.Tests
-#elif ATP
-namespace AsyncTargetingPack.Tests
 #else
 namespace AsyncBridge.Tests
 #endif

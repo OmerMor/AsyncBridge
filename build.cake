@@ -81,7 +81,6 @@ private void RunTests(ICakeContext testToolContext)
             ("AsyncBridge.Tests", "net20"),
             ("AsyncBridge.Tests", "net35"),
             ("AsyncBridge.Tests", "net40"),
-            ("AsyncTargetingPack.Tests", "net40"),
             ("ReferenceAsync.Net45", "net45")
         }
         select File($"tests/{project.name}/bin/{configuration}/{project.framework}/{project.name}.dll").Path,

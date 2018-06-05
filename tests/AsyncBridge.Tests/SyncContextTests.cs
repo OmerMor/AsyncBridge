@@ -9,8 +9,6 @@ using TaskEx = System.Threading.Tasks.Task;
 
 #if NET45
 namespace ReferenceAsync.Tests
-#elif ATP
-namespace AsyncTargetingPack.Tests
 #else
 namespace AsyncBridge.Tests
 #endif
@@ -142,9 +140,6 @@ namespace AsyncBridge.Tests
         }
 
         [TestMethod]
-#if ATP
-        [Ignore]
-#endif
         public void ConfigureAwaitFalse()
         {
             var spyContext = new SpySynchronizationContext();
@@ -175,9 +170,6 @@ namespace AsyncBridge.Tests
         }
 
         [TestMethod]
-#if ATP
-        [Ignore]
-#endif
         public void NotCapturedSimpleTaskSyncContext()
         {
             TestUtils.RunAsync(async () =>
@@ -235,9 +227,6 @@ namespace AsyncBridge.Tests
         }
 
         [TestMethod]
-#if ATP
-        [Ignore]
-#endif
         public void NotCapturedReturningTaskSyncContext()
         {
             TestUtils.RunAsync(async () =>
@@ -273,7 +262,6 @@ namespace AsyncBridge.Tests
             }
         }
 
-#if !ATP
         [TestMethod]
         public void TaskRunShouldNotFlowCapturedSyncContextWhenInlined()
         {
@@ -292,7 +280,6 @@ namespace AsyncBridge.Tests
             // Should execute with copyableContext
             task.GetAwaiter().GetResult();
         }
-#endif
 
         [TestMethod]
         public void TaskRunShouldNotFlowCapturedSyncContextWhenNotInlined()

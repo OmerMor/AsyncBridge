@@ -9,13 +9,10 @@ using TaskEx = System.Threading.Tasks.Task;
 
 #if NET45
 namespace ReferenceAsync.Tests
-#elif ATP
-namespace AsyncTargetingPack.Tests
 #else
 namespace AsyncBridge.Tests
 #endif
 {
-#if !ATP
     [TestClass]
     public class ContinueWithTests
     {
@@ -308,5 +305,4 @@ namespace AsyncBridge.Tests
             TaskEx.Run(() => true).ContinueWith((Func<Task<bool>, object, bool>)null, false, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Current);
         }
     }
-#endif
 }
