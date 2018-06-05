@@ -475,7 +475,7 @@ namespace System.Runtime.CompilerServices
                 }
                 else
                 {
-                    ExecutionContext.Run(context, s_callback, this);
+                    ExecutionContextEx.Run(context, s_callback, this, preserveSyncCtx: true);
                 }
             }
 

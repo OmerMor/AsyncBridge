@@ -2374,11 +2374,7 @@ namespace System.Threading.Tasks
                         var callback = s_ecCallback;
                         if (callback == null) s_ecCallback = callback = new ContextCallback(ExecutionContextCallback);
 
-                        // AsyncBridge note: since the synchronization context captured and restored with the execution context
-                        // in .NET Framework but not .NET Core, emulate what .NET Framework does here:
-                        // ExecutionContext.Run(ec, s_ecCallback, this, preserveSyncCtx: true)
-                        // https://referencesource.microsoft.com/#mscorlib/system/threading/Tasks/Task.cs,2823
-                        ExecutionContext.Run(ec, s_ecCallback, Tuple.Create(this, SynchronizationContext.Current));
+                        ExecutionContextEx.Run(ec, s_ecCallback, this, true);
                     }
                 }
                 catch (Exception exn)
@@ -2408,31 +2404,7 @@ namespace System.Threading.Tasks
         [SecurityCritical]
         private static void ExecutionContextCallback(object state)
         {
-            // See AsyncBridge note in ExecuteWithThreadLocal
-            var tuple = (Tuple<Task, SynchronizationContext>)state;
-            var preservedOriginalSyncCtx = tuple.Item2;
-            var executionContextSyncCtx = SynchronizationContext.Current;
-
-            if (preservedOriginalSyncCtx == executionContextSyncCtx)
-            {
-                tuple.Item1.InnerInvoke();
-            }
-            else
-            {
-                SynchronizationContext.SetSynchronizationContext(preservedOriginalSyncCtx);
-                try
-                {
-                    tuple.Item1.InnerInvoke();
-                }
-                finally
-                {
-                    if (SynchronizationContext.Current == preservedOriginalSyncCtx)
-                    {
-                        // ExecutionContext.Undo throws if the context is changed by the callback
-                        SynchronizationContext.SetSynchronizationContext(executionContextSyncCtx);
-                    }
-                }
-            }
+            ((Task)state).InnerInvoke();
         }
 
         /// <summary>

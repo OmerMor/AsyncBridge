@@ -141,7 +141,7 @@ namespace System.Runtime.CompilerServices
                     var callback = invokeMoveNext;
                     if (callback == null)
                         invokeMoveNext = callback = InvokeMoveNext;
-                    ExecutionContext.Run(context, callback, StateMachine);
+                    ExecutionContextEx.Run(context, callback, StateMachine, preserveSyncCtx: true);
                 }
                 finally
                 {

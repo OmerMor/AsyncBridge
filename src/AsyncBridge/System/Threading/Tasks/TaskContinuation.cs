@@ -602,7 +602,7 @@ namespace System.Threading.Tasks
             // If there is an execution context, get the cached delegate and run the action under the context.
             else
             {
-                ExecutionContext.Run(context, GetInvokeActionCallback(), m_action);
+                ExecutionContextEx.Run(context, GetInvokeActionCallback(), m_action, true);
             }
         }
 
@@ -663,7 +663,7 @@ namespace System.Threading.Tasks
                 else
                 {
                     // Otherwise, use the captured context to do so.
-                    ExecutionContext.Run(context, callback, state);
+                    ExecutionContextEx.Run(context, callback, state, true);
                 }
             }
             catch (Exception exc) // we explicitly do not request handling of dangerous exceptions like AVs

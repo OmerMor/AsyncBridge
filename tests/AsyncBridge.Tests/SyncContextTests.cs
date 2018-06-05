@@ -174,7 +174,10 @@ namespace AsyncBridge.Tests
             }
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
+#if ATP
+        [Ignore]
+#endif
         public void NotCapturedSimpleTaskSyncContext()
         {
             TestUtils.RunAsync(async () =>
@@ -231,7 +234,10 @@ namespace AsyncBridge.Tests
             });
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
+#if ATP
+        [Ignore]
+#endif
         public void NotCapturedReturningTaskSyncContext()
         {
             TestUtils.RunAsync(async () =>
