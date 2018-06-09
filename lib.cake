@@ -1,43 +1,86 @@
+public void DefaultClean()
+{
+    var binDirectories = GetFiles("**/*.*proj")
+        .Select(csproj => csproj.GetDirectory().Combine("bin"))
+        .Where(binDirectory => DirectoryExists(binDirectory))
+        .ToList();
+
+    if (binDirectories.Any())
+    {
+        Information("Deleting bin directories:");
+
+        foreach (var binDirectory in binDirectories)
+        {
+            for (var attempt = 1;; attempt++)
+            {
+                Information(binDirectory);
+                try
+                {
+                    DeleteDirectory(binDirectory, new DeleteDirectorySettings { Recursive = true });
+                    break;
+                }
+                catch (IOException ex) when (attempt < 3 && (WinErrorCode)ex.HResult == WinErrorCode.DirNotEmpty)
+                {
+                    Information("Another process added files to the directory while its contents were being deleted. Retrying...");
+                }
+            }
+        }
+    }
+    else
+    {
+        Information("No bin directories to delete.");
+    }
+}
+
+private enum WinErrorCode : ushort
+{
+    DirNotEmpty = 145
+}
+
 public static string GetCISuffix(CISettings settings)
 {
-    var build = settings.BuildNumber.ToString("0000");
-
     if (settings.PullRequestNumber != null)
     {
-        return $"{build}-pr-{settings.PullRequestNumber.Value:0000}";
+        return $"{settings.BuildNumber}.pr.{settings.PullRequestNumber.Value}";
     }
 
     if ("master".Equals(settings.Branch, StringComparison.OrdinalIgnoreCase))
     {
-        return $"ci-{build}";
+        return $"ci.{settings.BuildNumber}";
     }
 
-    if (settings.Branch == null) return build;
+    if (settings.Branch == null) return settings.BuildNumber.ToString();
 
-    var builder = new StringBuilder(build);
+    var builder = (StringBuilder)null;
     var separate = true;
 
-    foreach (var c in settings.Branch)
+    if (settings.Branch != null)
     {
-        if (IsValidPrereleaseChar(c))
+        foreach (var c in settings.Branch)
         {
-            if (separate)
+            if (IsValidSemVerLabelChar(c))
             {
-                separate = false;
-                builder.Append('-');
+                if (separate)
+                {
+                    if (builder == null)
+                        builder = new StringBuilder().Append(settings.BuildNumber).Append('.');
+                    else
+                        builder.Append('-');
+                    separate = false;
+                }
+                builder.Append(c);
+                if (builder.Length == 20) break; // NuGet prerelease version length limit
             }
-            builder.Append(c);
-            if (builder.Length == 20) break; // NuGet prerelease label length limit
-        }
-        else
-        {
-            separate = true;
+            else
+            {
+                separate = true;
+            }
         }
     }
 
-    return builder.ToString();
+    return builder?.ToString() ?? settings.BuildNumber.ToString();
 
-    bool IsValidPrereleaseChar(char value)
+    bool IsValidSemVerLabelChar(char value)
     {
         // https://semver.org/#spec-item-9
         return value == '-'

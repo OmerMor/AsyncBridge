@@ -37,7 +37,7 @@ namespace System.Runtime.CompilerServices
             /// <summary>
             ///   A completed task.
             /// </summary>
-            private static readonly Task s_completed = TaskEx.FromResult(0);
+            private static readonly Task Completed = TaskEx.FromResult(0);
 
             /// <summary>
             ///   Gets whether a yield is not required.
@@ -61,7 +61,7 @@ namespace System.Runtime.CompilerServices
             /// <exception cref="InvalidOperationException">The awaiter was not properly initialized.</exception>
             public void OnCompleted(Action continuation)
             {
-                s_completed.GetAwaiter().OnCompleted(continuation);
+                Completed.GetAwaiter().OnCompleted(continuation);
             }
 
             /// <summary>
@@ -72,7 +72,7 @@ namespace System.Runtime.CompilerServices
             [SecurityCritical]
             public void UnsafeOnCompleted(Action continuation)
             {
-                s_completed.GetAwaiter().UnsafeOnCompleted(continuation);
+                Completed.GetAwaiter().UnsafeOnCompleted(continuation);
             }
 
             /// <summary>

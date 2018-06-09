@@ -11,6 +11,46 @@ public static class AsyncCompatLibExtensions
 
     public static System.Runtime.CompilerServices.ConfiguredTaskAwaitable ConfigureAwait(this System.Threading.Tasks.Task task, bool continueOnCapturedContext);
 
+    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state);
+
+    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken);
+
+    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions);
+
+    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task ContinueWith(this System.Threading.Tasks.Task task, System.Action<System.Threading.Tasks.Task, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state);
+
+    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken);
+
+    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions);
+
+    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task ContinueWith<TResult>(this System.Threading.Tasks.Task<TResult> task, System.Action<System.Threading.Tasks.Task<TResult>, object> continuationAction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task<TResult> ContinueWith<TResult>(this System.Threading.Tasks.Task task, System.Func<System.Threading.Tasks.Task, object, TResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state);
+
+    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken);
+
+    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.Tasks.TaskContinuationOptions continuationOptions);
+
+    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.Tasks.TaskScheduler scheduler);
+
+    public static System.Threading.Tasks.Task<TNewResult> ContinueWith<TResult, TNewResult>(this System.Threading.Tasks.Task<TResult> task, System.Func<System.Threading.Tasks.Task<TResult>, object, TNewResult> continuationFunction, object state, System.Threading.CancellationToken cancellationToken, System.Threading.Tasks.TaskContinuationOptions continuationOptions, System.Threading.Tasks.TaskScheduler scheduler);
+
     public static System.Runtime.CompilerServices.TaskAwaiter GetAwaiter(this System.Threading.Tasks.Task task);
 
     public static System.Runtime.CompilerServices.TaskAwaiter<TResult> GetAwaiter<TResult>(this System.Threading.Tasks.Task<TResult> task);

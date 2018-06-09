@@ -11,7 +11,7 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         /// A singleton cache for this result type.
         ///             This may be null if there are no cached tasks for this TResult.
-        /// 
+        ///
         /// </summary>
         internal static readonly AsyncMethodTaskCache<TResult> Singleton = CreateCache();
 
@@ -36,7 +36,7 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         /// Creates a cache.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// A task cache for this result type.
         /// </returns>
@@ -47,7 +47,7 @@ namespace System.Runtime.CompilerServices
                 return (AsyncMethodTaskCache<TResult>)(object)new AsyncMethodBooleanTaskCache();
             if (type == typeof(int))
                 return (AsyncMethodTaskCache<TResult>)(object)new AsyncMethodInt32TaskCache();
-            
+
             return null;
         }
 
@@ -71,11 +71,11 @@ namespace System.Runtime.CompilerServices
             /// <summary>
             /// A true task.
             /// </summary>
-            private readonly TaskCompletionSource<bool> m_true = CreateCompleted(true);
+            private static readonly TaskCompletionSource<bool> True = CreateCompleted(true);
             /// <summary>
             /// A false task.
             /// </summary>
-            private readonly TaskCompletionSource<bool> m_false = CreateCompleted(false);
+            private static readonly TaskCompletionSource<bool> False = CreateCompleted(false);
 
             /// <summary>
             /// Gets a cached task for the Boolean result.
@@ -86,7 +86,7 @@ namespace System.Runtime.CompilerServices
             /// </returns>
             internal override TaskCompletionSource<bool> FromResult(bool result)
             {
-                return result ? m_true : m_false;
+                return result ? True : False;
             }
         }
 
@@ -102,11 +102,11 @@ namespace System.Runtime.CompilerServices
             /// <summary>
             /// The minimum value, inclusive, for which we want a cached task.
             /// </summary>
-            private const int INCLUSIVE_INT32_MIN = -1;
+            private const int InclusiveInt32Min = -1;
             /// <summary>
             /// The maximum value, exclusive, for which we want a cached task.
             /// </summary>
-            private const int EXCLUSIVE_INT32_MAX = 9;
+            private const int ExclusiveInt32Max = 9;
 
             static AsyncMethodInt32TaskCache()
             {
@@ -132,7 +132,7 @@ namespace System.Runtime.CompilerServices
             /// </returns>
             internal override TaskCompletionSource<int> FromResult(int result)
             {
-                if (result < INCLUSIVE_INT32_MIN || result >= EXCLUSIVE_INT32_MAX)
+                if (result < InclusiveInt32Min || result >= ExclusiveInt32Max)
                     return CreateCompleted(result);
 
                 return Int32Tasks[result - -1];

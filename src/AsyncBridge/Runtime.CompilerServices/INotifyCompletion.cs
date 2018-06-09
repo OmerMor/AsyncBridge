@@ -2,7 +2,6 @@ namespace System.Runtime.CompilerServices
 {
     /// <summary>
     /// Represents an operation that will schedule continuations when the operation completes.
-    /// 
     /// </summary>
     public interface INotifyCompletion
     {

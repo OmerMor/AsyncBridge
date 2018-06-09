@@ -6,7 +6,7 @@ namespace System.Runtime.CompilerServices
     /// <summary>
     /// Provides an awaitable object that allows for configured awaits on <see cref="T:System.Threading.Tasks.Task`1"/>.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// This type is intended for compiler use only.
     /// </remarks>
@@ -15,7 +15,7 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         /// The underlying awaitable on whose logic this awaitable relies.
         /// </summary>
-        private readonly ConfiguredTaskAwaiter m_configuredTaskAwaiter;
+        private readonly ConfiguredTaskAwaiter configuredTaskAwaiter;
 
         /// <summary>
         /// Initializes the <see cref="T:System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1"/>.
@@ -24,25 +24,25 @@ namespace System.Runtime.CompilerServices
         ///             </param>
         internal ConfiguredTaskAwaitable(Task<TResult> task, bool continueOnCapturedContext)
         {
-            m_configuredTaskAwaiter = new ConfiguredTaskAwaiter(task, continueOnCapturedContext);
+            configuredTaskAwaiter = new ConfiguredTaskAwaiter(task, continueOnCapturedContext);
         }
 
         /// <summary>
         /// Gets an awaiter for this awaitable.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The awaiter.
         /// </returns>
         public ConfiguredTaskAwaiter GetAwaiter()
         {
-            return m_configuredTaskAwaiter;
+            return configuredTaskAwaiter;
         }
 
         /// <summary>
         /// Provides an awaiter for a <see cref="T:System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1"/>.
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// This type is intended for compiler use only.
         /// </remarks>
@@ -51,16 +51,16 @@ namespace System.Runtime.CompilerServices
             /// <summary>
             /// The task being awaited.
             /// </summary>
-            private readonly Task<TResult> m_task;
+            private readonly Task<TResult> task;
             /// <summary>
             /// Whether to attempt marshaling back to the original context.
             /// </summary>
-            private readonly bool m_continueOnCapturedContext;
+            private readonly bool continueOnCapturedContext;
 
             /// <summary>
             /// Gets whether the task being awaited is completed.
             /// </summary>
-            /// 
+            ///
             /// <remarks>
             /// This property is intended for compiler user rather than use directly in code.
             /// </remarks>
@@ -69,7 +69,7 @@ namespace System.Runtime.CompilerServices
             {
                 get
                 {
-                    return m_task.IsCompleted;
+                    return task.IsCompleted;
                 }
             }
 
@@ -80,8 +80,8 @@ namespace System.Runtime.CompilerServices
             ///             </param>
             internal ConfiguredTaskAwaiter(Task<TResult> task, bool continueOnCapturedContext)
             {
-                m_task = task;
-                m_continueOnCapturedContext = continueOnCapturedContext;
+                this.task = task;
+                this.continueOnCapturedContext = continueOnCapturedContext;
             }
 
             /// <summary>
@@ -93,7 +93,7 @@ namespace System.Runtime.CompilerServices
             /// </remarks>
             public void OnCompleted(Action continuation)
             {
-                TaskAwaiter.OnCompletedInternal(m_task, continuation, m_continueOnCapturedContext);
+                TaskAwaiter.OnCompletedInternal(task, continuation, continueOnCapturedContext);
             }
 
             /// <summary>
@@ -106,21 +106,21 @@ namespace System.Runtime.CompilerServices
             [SecurityCritical]
             public void UnsafeOnCompleted(Action continuation)
             {
-                TaskAwaiter.OnCompletedInternal(m_task, continuation, m_continueOnCapturedContext);
+                TaskAwaiter.OnCompletedInternal(task, continuation, continueOnCapturedContext);
             }
 
             /// <summary>
             /// Ends the await on the completed <see cref="T:System.Threading.Tasks.Task`1"/>.
             /// </summary>
-            /// 
+            ///
             /// <returns>
             /// The result of the completed <see cref="T:System.Threading.Tasks.Task`1"/>.
             /// </returns>
             /// <exception cref="T:System.NullReferenceException">The awaiter was not properly initialized.</exception><exception cref="T:System.InvalidOperationException">The task was not yet completed.</exception><exception cref="T:System.Threading.Tasks.TaskCanceledException">The task was canceled.</exception><exception cref="T:System.Exception">The task completed in a Faulted state.</exception>
             public TResult GetResult()
             {
-                TaskAwaiter.ValidateEnd(m_task);
-                return m_task.Result;
+                TaskAwaiter.ValidateEnd(task);
+                return task.Result;
             }
         }
     }
@@ -128,7 +128,7 @@ namespace System.Runtime.CompilerServices
     /// <summary>
     /// Provides an awaitable object that allows for configured awaits on <see cref="T:System.Threading.Tasks.Task"/>.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// This type is intended for compiler use only.
     /// </remarks>
@@ -137,7 +137,7 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         /// The task being awaited.
         /// </summary>
-        private readonly ConfiguredTaskAwaiter m_configuredTaskAwaiter;
+        private readonly ConfiguredTaskAwaiter configuredTaskAwaiter;
 
         /// <summary>
         /// Initializes the <see cref="T:System.Runtime.CompilerServices.ConfiguredTaskAwaitable"/>.
@@ -146,25 +146,25 @@ namespace System.Runtime.CompilerServices
         ///             </param>
         internal ConfiguredTaskAwaitable(Task task, bool continueOnCapturedContext)
         {
-            m_configuredTaskAwaiter = new ConfiguredTaskAwaiter(task, continueOnCapturedContext);
+            configuredTaskAwaiter = new ConfiguredTaskAwaiter(task, continueOnCapturedContext);
         }
 
         /// <summary>
         /// Gets an awaiter for this awaitable.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The awaiter.
         /// </returns>
         public ConfiguredTaskAwaiter GetAwaiter()
         {
-            return m_configuredTaskAwaiter;
+            return configuredTaskAwaiter;
         }
 
         /// <summary>
         /// Provides an awaiter for a <see cref="T:System.Runtime.CompilerServices.ConfiguredTaskAwaitable"/>.
         /// </summary>
-        /// 
+        ///
         /// <remarks>
         /// This type is intended for compiler use only.
         /// </remarks>
@@ -173,16 +173,16 @@ namespace System.Runtime.CompilerServices
             /// <summary>
             /// The task being awaited.
             /// </summary>
-            private readonly Task m_task;
+            private readonly Task task;
             /// <summary>
             /// Whether to attempt marshaling back to the original context.
             /// </summary>
-            private readonly bool m_continueOnCapturedContext;
+            private readonly bool continueOnCapturedContext;
 
             /// <summary>
             /// Gets whether the task being awaited is completed.
             /// </summary>
-            /// 
+            ///
             /// <remarks>
             /// This property is intended for compiler user rather than use directly in code.
             /// </remarks>
@@ -191,7 +191,7 @@ namespace System.Runtime.CompilerServices
             {
                 get
                 {
-                    return m_task.IsCompleted;
+                    return task.IsCompleted;
                 }
             }
 
@@ -203,8 +203,8 @@ namespace System.Runtime.CompilerServices
             ///             </param>
             internal ConfiguredTaskAwaiter(Task task, bool continueOnCapturedContext)
             {
-                m_task = task;
-                m_continueOnCapturedContext = continueOnCapturedContext;
+                this.task = task;
+                this.continueOnCapturedContext = continueOnCapturedContext;
             }
 
             /// <summary>
@@ -218,7 +218,7 @@ namespace System.Runtime.CompilerServices
             /// </remarks>
             public void OnCompleted(Action continuation)
             {
-                TaskAwaiter.OnCompletedInternal(m_task, continuation, m_continueOnCapturedContext);
+                TaskAwaiter.OnCompletedInternal(task, continuation, continueOnCapturedContext);
             }
 
             /// <summary>
@@ -233,20 +233,20 @@ namespace System.Runtime.CompilerServices
             [SecurityCritical]
             public void UnsafeOnCompleted(Action continuation)
             {
-                TaskAwaiter.OnCompletedInternal(m_task, continuation, m_continueOnCapturedContext);
+                TaskAwaiter.OnCompletedInternal(task, continuation, continueOnCapturedContext);
             }
 
             /// <summary>
             /// Ends the await on the completed <see cref="T:System.Threading.Tasks.Task"/>.
             /// </summary>
-            /// 
+            ///
             /// <returns>
             /// The result of the completed <see cref="T:System.Threading.Tasks.Task`1"/>.
             /// </returns>
             /// <exception cref="T:System.NullReferenceException">The awaiter was not properly initialized.</exception><exception cref="T:System.InvalidOperationException">The task was not yet completed.</exception><exception cref="T:System.Threading.Tasks.TaskCanceledException">The task was canceled.</exception><exception cref="T:System.Exception">The task completed in a Faulted state.</exception>
             public void GetResult()
             {
-                TaskAwaiter.ValidateEnd(m_task);
+                TaskAwaiter.ValidateEnd(task);
             }
         }
     }

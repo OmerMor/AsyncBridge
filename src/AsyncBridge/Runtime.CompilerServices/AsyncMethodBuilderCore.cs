@@ -7,7 +7,7 @@ namespace System.Runtime.CompilerServices
     /// <summary>
     /// Holds state related to the builder's IAsyncStateMachine.
     /// </summary>
-    /// 
+    ///
     /// <remarks>
     /// This is a mutable struct.  Be very delicate with it.
     /// </remarks>
@@ -16,7 +16,7 @@ namespace System.Runtime.CompilerServices
         /// <summary>
         /// A reference to the heap-allocated state machine object associated with this builder.
         /// </summary>
-        internal IAsyncStateMachine m_stateMachine;
+        private IAsyncStateMachine stateMachine;
 
         /// <summary>
         /// Initiates the builder's execution with the associated state machine.
@@ -41,15 +41,15 @@ namespace System.Runtime.CompilerServices
         {
             if (stateMachine == null)
                 throw new ArgumentNullException("stateMachine");
-            if (m_stateMachine != null)
+            if (this.stateMachine != null)
                 throw new InvalidOperationException("The builder was not properly initialized.");
-            m_stateMachine = stateMachine;
+            this.stateMachine = stateMachine;
         }
 
         /// <summary>
         /// Gets the Action to use with an awaiter's OnCompleted or UnsafeOnCompleted method.
         ///             On first invocation, the supplied state machine will be boxed.
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TMethodBuilder">Specifies the type of the method builder used.</typeparam><typeparam name="TStateMachine">Specifies the type of the state machine used.</typeparam><param name="builder">The builder.</param><param name="stateMachine">The state machine.</param>
         /// <returns>
@@ -62,13 +62,13 @@ namespace System.Runtime.CompilerServices
         {
             var moveNextRunner = new MoveNextRunner(ExecutionContext.Capture());
             Action action = moveNextRunner.Run;
-            if (m_stateMachine == null)
+            if (this.stateMachine == null)
             {
                 builder.PreBoxInitialization();
-                m_stateMachine = stateMachine;
-                m_stateMachine.SetStateMachine(m_stateMachine);
+                this.stateMachine = stateMachine;
+                this.stateMachine.SetStateMachine(this.stateMachine);
             }
-            moveNextRunner.m_stateMachine = m_stateMachine;
+            moveNextRunner.StateMachine = this.stateMachine;
             return action;
         }
 
@@ -107,16 +107,16 @@ namespace System.Runtime.CompilerServices
             /// <summary>
             /// The context with which to run MoveNext.
             /// </summary>
-            private readonly ExecutionContext m_context;
+            private readonly ExecutionContext context;
             /// <summary>
             /// The state machine whose MoveNext method should be invoked.
             /// </summary>
-            internal IAsyncStateMachine m_stateMachine;
+            internal IAsyncStateMachine StateMachine;
             /// <summary>
             /// Cached delegate used with ExecutionContext.Run.
             /// </summary>
             [SecurityCritical]
-            private static ContextCallback s_invokeMoveNext;
+            private static ContextCallback invokeMoveNext;
 
             /// <summary>
             /// Initializes the runner.
@@ -125,7 +125,7 @@ namespace System.Runtime.CompilerServices
             [SecurityCritical]
             internal MoveNextRunner(ExecutionContext context)
             {
-                m_context = context;
+                this.context = context;
             }
 
             /// <summary>
@@ -134,23 +134,23 @@ namespace System.Runtime.CompilerServices
             [SecuritySafeCritical]
             internal void Run()
             {
-                if (m_context == null)
+                if (context == null)
                 {
-                    m_stateMachine.MoveNext();
+                    StateMachine.MoveNext();
                     return;
                 }
-                
+
                 try
                 {
-                    var callback = s_invokeMoveNext;
+                    var callback = invokeMoveNext;
                     if (callback == null)
-                        s_invokeMoveNext = callback = InvokeMoveNext;
-                    ExecutionContext.Run(m_context, callback, m_stateMachine);
+                        invokeMoveNext = callback = InvokeMoveNext;
+                    ExecutionContext.Run(context, callback, StateMachine);
                 }
                 finally
                 {
 #if !NET35
-                    m_context.Dispose();
+                    context.Dispose();
 #endif
                 }
             }

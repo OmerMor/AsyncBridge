@@ -9,8 +9,6 @@ using TaskEx = System.Threading.Tasks.Task;
 
 #if NET45
 namespace ReferenceAsync.Tests
-#elif NET35
-namespace AsyncBridge.Net35.Tests
 #elif ATP
 namespace AsyncTargetingPack.Tests
 #else
@@ -21,10 +19,10 @@ namespace AsyncBridge.Tests
     {
         public static void Line(string line)
         {
-            Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + ":" + getContext() + ": " + line);
+            Trace.WriteLine(Thread.CurrentThread.ManagedThreadId + ":" + GetContext() + ": " + line);
         }
 
-        private static string getContext()
+        private static string GetContext()
         {
             var context = SynchronizationContext.Current;
             return context == null ? "null" : context.GetType().Name;

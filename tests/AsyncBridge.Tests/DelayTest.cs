@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,8 +8,6 @@ using TaskEx = System.Threading.Tasks.Task;
 
 #if NET45
 namespace ReferenceAsync.Tests
-#elif NET35
-namespace AsyncBridge.Net35.Tests
 #elif ATP
 namespace AsyncTargetingPack.Tests
 #else
@@ -53,9 +51,18 @@ namespace AsyncBridge.Tests
             TestUtils.RunAsync(async () =>
             {
                 var keepGcing = true;
-                // ReSharper disable AccessToModifiedClosure
-                var gcAllTheTime = new Thread(() => { while (keepGcing) GC.Collect(); });
-                // ReSharper restore AccessToModifiedClosure
+
+                var gcAllTheTime = new Thread(() =>
+                {
+                    // ReSharper disable AccessToModifiedClosure
+                    while (keepGcing)
+                    // ReSharper restore AccessToModifiedClosure
+                    {
+                        GC.Collect();
+                        Thread.Sleep(1);
+                    }
+                });
+
                 gcAllTheTime.Start();
                 await TaskEx.Delay(500);
                 keepGcing = false;
