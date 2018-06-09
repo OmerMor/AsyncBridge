@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -91,7 +91,9 @@ namespace AsyncBridge.Tests
                 {
                     var continueSource = new TaskCompletionSource<bool>();
 
-                    // Spawn ten threads to create an immediate timer
+                    // Spawn some tasks to create an immediate timer.
+                    // All we need to test here is that at least one of them runs concurrently with another,
+                    // so dumping a large number on the ThreadPool should be sufficient.
                     var cancelTasks = Enumerable.Range(0, 10).Select(async (index) =>
                     {
                         await continueSource.Task;
@@ -123,7 +125,9 @@ namespace AsyncBridge.Tests
 
                     var continueSource = new TaskCompletionSource<bool>();
 
-                    // Spawn ten threads to set the timer to immediate
+                    // Spawn some tasks to create an immediate timer.
+                    // All we need to test here is that at least one of them runs concurrently with another,
+                    // so dumping a large number on the ThreadPool should be sufficient.
                     var cancelTasks = Enumerable.Range(0, 10).Select(async (index) =>
                     {
                         await continueSource.Task;
