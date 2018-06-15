@@ -327,6 +327,7 @@ public static class AsyncCompatLibExtensions
     }
 #endif
 
+    /// <summary>
     /// Creates a continuation that executes when the target <see cref="Task"/> completes.
     /// </summary>
     /// <param name="task">The target Task</param>
