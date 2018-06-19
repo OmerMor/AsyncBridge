@@ -3,6 +3,10 @@
 
 public static class AsyncCompatLibExtensions
 {
+    public static void CancelAfter(this System.Threading.CancellationTokenSource cancelSource, int millisecondsDelay);
+
+    public static void CancelAfter(this System.Threading.CancellationTokenSource cancelSource, System.TimeSpan delay);
+
     public static System.Runtime.CompilerServices.ConfiguredTaskAwaitable<TResult> ConfigureAwait<TResult>(this System.Threading.Tasks.Task<TResult> task, bool continueOnCapturedContext);
 
     public static System.Runtime.CompilerServices.ConfiguredTaskAwaitable ConfigureAwait(this System.Threading.Tasks.Task task, bool continueOnCapturedContext);
